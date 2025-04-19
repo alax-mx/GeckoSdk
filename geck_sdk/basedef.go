@@ -12,6 +12,13 @@ const (
 )
 
 const (
+	TRENDING_DURATION_5M  string = "5m"
+	TRENDING_DURATION_1H  string = "1h"
+	TRENDING_DURATION_6H  string = "6h"
+	TRENDING_DURATION_24H string = "24h"
+)
+
+const (
 	OHLCV_TIME_FRAME_TYPE_MINUTE string = "minute"
 	OHLCV_TIME_FRAME_TYPE_HOUR   string = "hour"
 	OHLCV_TIME_FRAME_TYPE_DAY    string = "day"
