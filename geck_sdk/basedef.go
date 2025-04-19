@@ -11,6 +11,22 @@ const (
 	SORY_BY_H24_VOLUME_USD_DESC string = "h24_volume_usd_desc"
 )
 
+const (
+	OHLCV_TIME_FRAME_TYPE_MINUTE string = "minute"
+	OHLCV_TIME_FRAME_TYPE_HOUR   string = "hour"
+	OHLCV_TIME_FRAME_TYPE_DAY    string = "day"
+)
+
+const (
+	OHLCV_AGREGATE_MINUTE_1  string = "1"
+	OHLCV_AGREGATE_MINUTE_5  string = "5"
+	OHLCV_AGREGATE_MINUTE_15 string = "15"
+	OHLCV_AGREGATE_HOUR_1    string = "1"
+	OHLCV_AGREGATE_HOUR_4    string = "4"
+	OHLCV_AGREGATE_HOUR_12   string = "12"
+	OHLCV_AGREGATE_DAY_1     string = "1"
+)
+
 type STErrors struct {
 	Status string `json:"status"`
 	Title  string `json:"title"`
