@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/alax-mx/geckosdk/baseutils"
 	"github.com/alax-mx/geckosdk/geck_sdk"
@@ -12,10 +13,16 @@ func main() {
 }
 
 func GetTokenOhlcvInfo(poolAddress string, tokenAddress string) {
-	resp, err := geck_sdk.NewNetworkOhlcvTool().GetNetworkOhlcv("solana", poolAddress, geck_sdk.OHLCV_TIME_FRAME_TYPE_MINUTE, geck_sdk.OHLCV_AGREGATE_HOUR_1, tokenAddress)
+	ohlcvTool := geck_sdk.NewNetworkOhlcvTool()
+	resp, err := ohlcvTool.GetNetworkOhlcv("solana", poolAddress, geck_sdk.OHLCV_TIME_FRAME_TYPE_HOUR, geck_sdk.OHLCV_AGREGATE_HOUR_1, tokenAddress)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	baseutils.ShowObjectValue(resp)
+	ohlcvInfoList := ohlcvTool.ParseOHLCVData(resp.Data.Attributes.OhlcvList)
+	for i := 0; i < len(ohlcvInfoList); i++ {
+		tm := time.Unix(ohlcvInfoList[i].Time, 0)
+		fmt.Println("time = ", tm.Format("2006-01-02 15:04:05"))
+		baseutils.ShowObjectValue(ohlcvInfoList[i])
+	}
 }

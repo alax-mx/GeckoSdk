@@ -2,12 +2,13 @@ package geck_sdk
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/alax-mx/geckosdk/gecknet"
 )
 
 type STOhlcv struct {
-	Time   int
+	Time   int64
 	Open   float64
 	High   float64
 	Low    float64
@@ -80,4 +81,26 @@ func (not *NetworkOhlcvTool) GetNetworkOhlcv(network string, poolAddress string,
 	}
 
 	return ret, nil
+}
+
+func (not *NetworkOhlcvTool) ParseOHLCVData(data [][]float64) []*STOhlcv {
+	retList := make([]*STOhlcv, 0)
+	count := len(data)
+	for i := 0; i < count; i++ {
+		infoDataList := data[i]
+		fmt.Println("len(infoDataList) = ", len(infoDataList))
+		if len(infoDataList) != 6 {
+			return nil
+		}
+
+		ohlcvInfo := &STOhlcv{}
+		ohlcvInfo.Time = int64(infoDataList[0])
+		ohlcvInfo.Open = infoDataList[1]
+		ohlcvInfo.High = infoDataList[2]
+		ohlcvInfo.Low = infoDataList[3]
+		ohlcvInfo.Close = infoDataList[4]
+		ohlcvInfo.Volume = infoDataList[5]
+		retList = append(retList, ohlcvInfo)
+	}
+	return retList
 }
