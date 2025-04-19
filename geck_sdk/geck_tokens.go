@@ -35,7 +35,7 @@ type STAttributes_TokenInfo struct {
 	TwitterHandle     string   `json:"twitter_handle"`
 	Categories        []string `json:"categories"`
 	GTCategoryIds     []string `json:"gt_category_ids"`
-	GTScore           int      `json:"gt_score"`
+	GTScore           float64  `json:"gt_score"`
 	MetadataUpdatedAt string   `json:"metadata_updated_at"`
 }
 
