@@ -16,7 +16,7 @@ type STOhlcv struct {
 }
 
 type STAttributes_Ohlcv struct {
-	OhlcvList []*STOhlcv `json:"ohlcv_list"`
+	OhlcvList [][]float64 `json:"ohlcv_list"`
 }
 
 type STNetworkOhlcvData struct {
@@ -38,7 +38,7 @@ type STMeta struct {
 }
 
 type STNetworkOhlcvResp struct {
-	Data   STNetworkPoolsData `json:"data"`
+	Data   STNetworkOhlcvData `json:"data"`
 	Meta   STMeta             `json:"meta"`
 	Errors []*STErrors        `json:"errors"`
 }
@@ -50,8 +50,23 @@ func NewNetworkOhlcvTool() *NetworkOhlcvTool {
 	return &NetworkOhlcvTool{}
 }
 
-func (not *NetworkOhlcvTool) GetNetworkOhlcv(network string, poolAddress string, timeFrame string) (*STNetworkOhlcvResp, error) {
+func (not *NetworkOhlcvTool) GetNetworkOhlcv(network string, poolAddress string,
+	timeFrame string, aggregate string, token string) (*STNetworkOhlcvResp, error) {
 	newUrl := "/networks/" + network + "/pools/" + poolAddress + "/ohlcv/" + timeFrame
+
+	count := 0
+	if len(aggregate) > 0 {
+		newUrl += "?aggregate=" + aggregate
+		count++
+	}
+
+	if len(token) > 0 {
+		if count <= 0 {
+			newUrl += "?token=" + token
+		} else {
+			newUrl += "&token=" + token
+		}
+	}
 
 	data, err := gecknet.HttpGet(newUrl)
 	if err != nil {
