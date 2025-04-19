@@ -6,6 +6,11 @@ const (
 	INCLUDE_DEX         string = "dex"
 )
 
+const (
+	SORY_BY_H24_TX_COUNT_DESC   string = "h24_tx_count_desc"
+	SORY_BY_H24_VOLUME_USD_DESC string = "h24_volume_usd_desc"
+)
+
 type STErrors struct {
 	Status string `json:"status"`
 	Title  string `json:"title"`

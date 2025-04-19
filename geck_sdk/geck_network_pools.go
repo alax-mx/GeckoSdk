@@ -2,6 +2,8 @@ package geck_sdk
 
 import (
 	"encoding/json"
+	"errors"
+	"strconv"
 
 	"flyu.gecksdk/gecknet"
 )
@@ -36,6 +38,16 @@ type STNetworkPoolsResp struct {
 	Errors []*STErrors        `json:"errors"`
 }
 
+type STNetworkMultiPoolsResp struct {
+	Data   []*STNetworkPoolsData `json:"data"`
+	Errors []*STErrors           `json:"errors"`
+}
+
+type STNetworkTopPoolsResp struct {
+	Data   []*STNetworkPoolsData `json:"data"`
+	Errors []*STErrors           `json:"errors"`
+}
+
 type NetworkPoolsTool struct {
 }
 
@@ -55,6 +67,76 @@ func (ndt *NetworkPoolsTool) GetNetworkPools(network string, poolAddress string,
 	}
 
 	ret := &STNetworkPoolsResp{}
+	err = json.Unmarshal(data, ret)
+	if err != nil {
+		return nil, err
+	}
+
+	return ret, nil
+}
+
+func (ndt *NetworkPoolsTool) GetNetworkMultisPools(network string, poolAddress []string, include string) (*STNetworkMultiPoolsResp, error) {
+	newUrl := "/networks/" + network + "/pools/multi/"
+	if len(poolAddress) <= 0 {
+		return nil, errors.New("err: GetNetworkPoolsList len(poolAddress) <= 0")
+	}
+
+	for i := 0; i < len(poolAddress); i++ {
+		if i > 0 {
+			newUrl += ","
+		}
+		newUrl += poolAddress[i]
+	}
+
+	if len(include) > 0 {
+		newUrl += "?include=" + include
+	}
+
+	data, err := gecknet.HttpGet(newUrl)
+	if err != nil {
+		return nil, err
+	}
+
+	ret := &STNetworkMultiPoolsResp{}
+	err = json.Unmarshal(data, ret)
+	if err != nil {
+		return nil, err
+	}
+
+	return ret, nil
+}
+
+func (ndt *NetworkPoolsTool) GetNetworkTopPools(network string, include string, page int, sortBy string) (*STNetworkTopPoolsResp, error) {
+	newUrl := "/networks/" + network + "/pools"
+	count := 0
+	if len(include) > 0 {
+		newUrl += "?include=" + include
+		count++
+	}
+
+	if page > 0 {
+		if count == 0 {
+			newUrl += "?page=" + strconv.Itoa(page)
+		} else {
+			newUrl += "&page=" + strconv.Itoa(page)
+		}
+		count++
+	}
+
+	if len(sortBy) > 0 {
+		if count == 0 {
+			newUrl += "?sort=" + sortBy
+		} else {
+			newUrl += "&sort=" + sortBy
+		}
+	}
+
+	data, err := gecknet.HttpGet(newUrl)
+	if err != nil {
+		return nil, err
+	}
+
+	ret := &STNetworkTopPoolsResp{}
 	err = json.Unmarshal(data, ret)
 	if err != nil {
 		return nil, err
