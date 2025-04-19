@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strconv"
 
-	"flyu.gecksdk/gecknet"
+	"github.com/alax-mx/geckosdk/gecknet"
 )
 
 type STAttributes_NetworkPools struct {

@@ -1,6 +1,6 @@
 package token
 
-import "flyu.gecksdk/solana_sdk/basedef"
+import "github.com/alax-mx/geckosdk/solana_sdk/basedef"
 
 type STTokenMarketsData struct {
 	PoolID             string  `json:"pool_id"`

@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"flyu.gecksdk/baseutils"
-	"flyu.gecksdk/geck_sdk"
+	"github.com/alax-mx/geckosdk/baseutils"
+	"github.com/alax-mx/geckosdk/geck_sdk"
 )
 
 func main() {

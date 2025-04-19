@@ -3,7 +3,7 @@ package solana_sdk
 import (
 	"encoding/json"
 
-	"flyu.gecksdk/solana_sdk/httptool"
+	"github.com/alax-mx/geckosdk/solana_sdk/httptool"
 )
 
 type TopHolder struct {

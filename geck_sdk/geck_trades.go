@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"flyu.gecksdk/gecknet"
+	"github.com/alax-mx/geckosdk/gecknet"
 )
 
 type STAttributes_Trades struct {

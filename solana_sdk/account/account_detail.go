@@ -3,9 +3,8 @@ package account
 import (
 	"encoding/json"
 
-	"flyu.gecksdk/solana_sdk/httptool"
-
-	"flyu.gecksdk/solana_sdk/basedef"
+	"github.com/alax-mx/geckosdk/solana_sdk/basedef"
+	"github.com/alax-mx/geckosdk/solana_sdk/httptool"
 )
 
 type STAccountDetailData struct {

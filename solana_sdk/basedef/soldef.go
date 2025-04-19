@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"flyu.gecksdk/baseutils"
+	"github.com/alax-mx/geckosdk/baseutils"
 )
 
 type STSolanaDefine struct {

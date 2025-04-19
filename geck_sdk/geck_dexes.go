@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"flyu.gecksdk/gecknet"
+	"github.com/alax-mx/geckosdk/gecknet"
 )
 
 type STAttributes_Dexes struct {

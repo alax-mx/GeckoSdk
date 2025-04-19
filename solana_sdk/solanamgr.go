@@ -3,9 +3,9 @@ package solana_sdk
 import (
 	"fmt"
 
-	"flyu.gecksdk/solana_sdk/account"
-	"flyu.gecksdk/solana_sdk/basedef"
-	"flyu.gecksdk/solana_sdk/token"
+	"github.com/alax-mx/geckosdk/solana_sdk/account"
+	"github.com/alax-mx/geckosdk/solana_sdk/basedef"
+	"github.com/alax-mx/geckosdk/solana_sdk/token"
 )
 
 type SolanaMgr struct {

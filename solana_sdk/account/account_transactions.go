@@ -1,6 +1,6 @@
 package account
 
-import "flyu.gecksdk/solana_sdk/basedef"
+import "github.com/alax-mx/geckosdk/solana_sdk/basedef"
 
 type STParsedInstructions struct {
 	Type      string `json:"type"`

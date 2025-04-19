@@ -3,7 +3,7 @@ package geck_sdk
 import (
 	"encoding/json"
 
-	"flyu.gecksdk/gecknet"
+	"github.com/alax-mx/geckosdk/gecknet"
 )
 
 type STOhlcv struct {

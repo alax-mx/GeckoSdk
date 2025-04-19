@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"flyu.gecksdk/solana_sdk/basedef"
-	"flyu.gecksdk/solana_sdk/httptool"
+	"github.com/alax-mx/geckosdk/solana_sdk/basedef"
+	"github.com/alax-mx/geckosdk/solana_sdk/httptool"
 )
 
 const (
