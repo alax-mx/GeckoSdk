@@ -39,8 +39,8 @@ type STQuoteInfo struct {
 	OutputMint           string         `json:"outputMint"`
 	OutputAmount         interface{}    `json:"outAmount"`
 	OtherAmountThreshold interface{}    `json:"otherAmountThreshold"`
-	InDecimals           interface{}    `json:"inDecimals"`
-	OutDecimals          interface{}    `json:"outDecimals"`
+	InDecimals           int            `json:"inDecimals"`
+	OutDecimals          int            `json:"outDecimals"`
 	SwapMode             string         `json:"swapMode"`
 	SlippageBps          interface{}    `json:"slippageBps"`
 	PlatformFee          interface{}    `json:"platformFee"`
