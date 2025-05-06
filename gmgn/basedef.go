@@ -163,6 +163,16 @@ type GetTokenPairResp struct {
 	Data STTokenPairsData `json:"Data"`
 }
 
+type STTokenPrice struct {
+	UsdPrice float64 `json:"usd_price"`
+}
+
+type GetTokenPriceResp struct {
+	Code int          `json:"code"`
+	Msg  string       `json:"msg"`
+	Data STTokenPrice `json:"Data"`
+}
+
 type STTradeInfo struct {
 	Hash       string
 	RouterInfo STRouterInfo

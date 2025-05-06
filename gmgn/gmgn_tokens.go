@@ -45,3 +45,19 @@ func (gtt *GmgnTokenTool) GetNewTokens(limit int, orderBy string, direction stri
 
 	return resp, nil
 }
+
+func (gtt *GmgnTokenTool) GetTokenPrice(tokenAddress string) (*GetTokenPriceResp, error) {
+	urlAddr := "/v1/sol/tokens/realtime_token_price?address=" + tokenAddress
+	data, err := HttpGet(urlAddr)
+	if err != nil {
+		return nil, err
+	}
+
+	ret := &GetTokenPriceResp{}
+	err = json.Unmarshal(data, ret)
+	if err != nil {
+		return nil, err
+	}
+
+	return ret, nil
+}
