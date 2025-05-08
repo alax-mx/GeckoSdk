@@ -1,7 +1,8 @@
 package gmgn
 
 const (
-	ORDER_BY_OPEN_TIME = "open_timestamp"
+	ORDER_BY_OPEN_TIME   = "open_timestamp"
+	ORDER_BY_CREATE_TIME = "creation_timestamp"
 
 	DIRECTION_DESC = "desc"
 )
