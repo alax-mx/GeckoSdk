@@ -5,6 +5,11 @@ const (
 	TW_QUERY_TYPE_TOP    string = "Top"
 )
 
+const (
+	STATUS_SUCCESS string = "success"
+	STATUS_ERROR   string = "error"
+)
+
 type STUserInfo struct {
 	ID              string `json:"id"`
 	Name            string `json:"name"`
