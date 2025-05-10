@@ -1,5 +1,10 @@
 package tw
 
+const (
+	TW_QUERY_TYPE_LATEST string = "Latest"
+	TW_QUERY_TYPE_TOP    string = "Top"
+)
+
 type STUserInfo struct {
 	ID              string `json:"id"`
 	Name            string `json:"name"`

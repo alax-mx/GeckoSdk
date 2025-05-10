@@ -34,6 +34,12 @@ type GetUserFollwingsResp struct {
 	Followings []STFollowingInfo `json:"followings"`
 }
 
+type AdvancedSearchResp struct {
+	Tweets      []STTweetInfo `json:"tweets"`
+	HasNextPage bool          `json:"has_next_page"`
+	NextCursor  string        `json:"next_cursor"`
+}
+
 type TwUserTool struct {
 	apiKey string
 }
@@ -124,6 +130,25 @@ func (tut *TwUserTool) GetUserFollwings(userName string, cursor string) (*GetUse
 	}
 
 	ret := &GetUserFollwingsResp{}
+	err = json.Unmarshal(data, ret)
+	if err != nil {
+		return nil, err
+	}
+
+	return ret, nil
+}
+
+func (tut *TwUserTool) AdvancedSearch(query string, queryType string, cursor string) (*AdvancedSearchResp, error) {
+	url := "tweet/advanced_search?query=" + query + "&queryType=" + queryType
+	if len(cursor) > 0 {
+		url += "&cursor=" + cursor
+	}
+	data, err := HttpGet(url, tut.apiKey)
+	if err != nil {
+		return nil, err
+	}
+
+	ret := &AdvancedSearchResp{}
 	err = json.Unmarshal(data, ret)
 	if err != nil {
 		return nil, err
