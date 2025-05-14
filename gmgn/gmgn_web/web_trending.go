@@ -1,4 +1,4 @@
-package gmgn
+package gmgn_web
 
 import (
 	"encoding/json"
@@ -64,18 +64,21 @@ type GetTrendingTokensResp struct {
 	Data STData `json:"data"`
 }
 
-type GmgnTrendingTool struct {
+type WebTrendingTool struct {
+	baseUrl string
 }
 
-func NewGmgnTrendingTool() *GmgnTrendingTool {
-	return &GmgnTrendingTool{}
+func NewWebTrendingTool(baseUrl string) *WebTrendingTool {
+	return &WebTrendingTool{
+		baseUrl: baseUrl,
+	}
 }
 
-func (gtt *GmgnTrendingTool) GetTrendingTokens(timeFrame string, direction string, limit int) (*GetTrendingTokensResp, error) {
-	urlAddr := "/v1/rank/sol/swaps/" + timeFrame + "?"
+func (gtt *WebTrendingTool) GetTrendingTokens(timeFrame string, direction string, limit int) (*GetTrendingTokensResp, error) {
+	urlAddr := "v1/rank/sol/swaps/" + timeFrame + "?"
 	urlAddr += "&orderby=swaps&direction=" + direction
 	urlAddr += "&limit" + strconv.Itoa(limit)
-	data, err := HttpGet(urlAddr)
+	data, err := HttpGet(gtt.baseUrl + urlAddr)
 	if err != nil {
 		return nil, err
 	}

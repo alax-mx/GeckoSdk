@@ -1,4 +1,4 @@
-package gmgn
+package gmgn_trade
 
 import (
 	"encoding/base64"
@@ -8,6 +8,11 @@ import (
 
 	"github.com/gagliardetto/solana-go"
 )
+
+type STTradeInfo struct {
+	Hash       string
+	RouterInfo STRouterInfo
+}
 
 type STSwapInfo struct {
 	Ammkey       string      `json:"ammKey"`
@@ -102,19 +107,21 @@ type GetTransactionStatusResp struct {
 	Data STTradeStatusInfo `json:"data"`
 }
 
-type GmgnTradeTool struct {
-	pubKey solana.PublicKey
-	priKey solana.PrivateKey
+type TradeTool struct {
+	baseUrl string
+	pubKey  solana.PublicKey
+	priKey  solana.PrivateKey
 }
 
-func NewGmgnTradeTool(pubKey string, priKey string) *GmgnTradeTool {
-	return &GmgnTradeTool{
-		pubKey: solana.MustPublicKeyFromBase58(pubKey),
-		priKey: solana.MustPrivateKeyFromBase58(priKey),
+func NewTradeTool(baseUrl string, pubKey string, priKey string) *TradeTool {
+	return &TradeTool{
+		baseUrl: baseUrl,
+		pubKey:  solana.MustPublicKeyFromBase58(pubKey),
+		priKey:  solana.MustPrivateKeyFromBase58(priKey),
 	}
 }
 
-func (gtt *GmgnTradeTool) Swap(inAddress string, outAddress string, amount int, slippage float64, bundled bool) (*STTradeInfo, error) {
+func (gtt *TradeTool) Swap(inAddress string, outAddress string, amount int, slippage float64, bundled bool) (*STTradeInfo, error) {
 	// GetRouter
 	resp, err := gtt.getSwapRouter(inAddress, outAddress, amount, gtt.pubKey.String(), slippage)
 	if err != nil {
@@ -151,7 +158,7 @@ func (gtt *GmgnTradeTool) Swap(inAddress string, outAddress string, amount int, 
 	}, nil
 }
 
-func (gtt *GmgnTradeTool) getSwapRouter(inAddress string, outAddress string, amount int,
+func (gtt *TradeTool) getSwapRouter(inAddress string, outAddress string, amount int,
 	walletPubkey string, slippage float64) (*GetRouterResp, error) {
 
 	tmpUrl := "/get_swap_route?token_in_address=" + inAddress
@@ -161,7 +168,7 @@ func (gtt *GmgnTradeTool) getSwapRouter(inAddress string, outAddress string, amo
 	tmpUrl += "&fee=0.006"
 	tmpUrl += "&slippage=" + strconv.FormatFloat(slippage, 'f', 2, 64)
 
-	data, err := HttpGetRouter(tmpUrl)
+	data, err := HttpGet(gtt.baseUrl + tmpUrl)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +182,7 @@ func (gtt *GmgnTradeTool) getSwapRouter(inAddress string, outAddress string, amo
 	return ret, nil
 }
 
-func (gtt *GmgnTradeTool) signTransaction(rawTx STRawTx) (string, error) {
+func (gtt *TradeTool) signTransaction(rawTx STRawTx) (string, error) {
 	// Decode base64 transaction
 	txBytes, err := base64.StdEncoding.DecodeString(rawTx.SwapTransaction)
 	if err != nil {
@@ -199,7 +206,7 @@ func (gtt *GmgnTradeTool) signTransaction(rawTx STRawTx) (string, error) {
 	return tx.MustToBase64(), nil
 }
 
-func (gtt *GmgnTradeTool) sendTransaction(signedTx string) (*SendTransactionResp, error) {
+func (gtt *TradeTool) sendTransaction(signedTx string) (*SendTransactionResp, error) {
 	tmpUrl := "/submit_signed_transaction"
 	param := make(map[string]interface{})
 	param["signed_tx"] = signedTx
@@ -218,13 +225,13 @@ func (gtt *GmgnTradeTool) sendTransaction(signedTx string) (*SendTransactionResp
 	return ret, nil
 }
 
-func (gtt *GmgnTradeTool) sendBundleTransaction(signedTx string, walletPubkey string) (*SendBundledTransactionResp, error) {
+func (gtt *TradeTool) sendBundleTransaction(signedTx string, walletPubkey string) (*SendBundledTransactionResp, error) {
 	tmpUrl := "/submit_signed_bundle_transaction"
 	param := make(map[string]interface{})
 	param["signed_tx"] = signedTx
 	param["from_address"] = walletPubkey
 	bytesData, _ := json.Marshal(param)
-	data, err := HttpPostRouter(tmpUrl, bytesData)
+	data, err := HttpPostRouter(gtt.baseUrl+tmpUrl, bytesData)
 	if err != nil {
 		return nil, err
 	}
@@ -238,11 +245,11 @@ func (gtt *GmgnTradeTool) sendBundleTransaction(signedTx string, walletPubkey st
 	return ret, nil
 }
 
-func (gtt *GmgnTradeTool) GetTransactionStatus(hash string, lastValidHeight int) (*GetTransactionStatusResp, error) {
+func (gtt *TradeTool) GetTransactionStatus(hash string, lastValidHeight int) (*GetTransactionStatusResp, error) {
 	tmpUrl := "/get_transaction_status?"
 	tmpUrl += "hash=" + hash
 	tmpUrl += "&last_valid_height" + strconv.Itoa(lastValidHeight)
-	data, err := HttpGetRouter(tmpUrl)
+	data, err := HttpGet(gtt.baseUrl + tmpUrl)
 	if err != nil {
 		return nil, err
 	}

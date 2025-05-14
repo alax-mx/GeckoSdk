@@ -1,10 +1,16 @@
-package gmgn
+package gmgn_define
 
 const (
 	ORDER_BY_OPEN_TIME   = "open_timestamp"
 	ORDER_BY_CREATE_TIME = "creation_timestamp"
 
 	DIRECTION_DESC = "desc"
+)
+
+const (
+	G_BASE_GMGN_WEB_DEFI_URL string = "https://gmgn.ai/defi/quotation/"
+	G_BASE_GMGN_TRADE_URL    string = "https://gmgn.ai/defi/router/v1/sol/tx"
+	G_BASE_GMGN_MOBI_URL     string = "https://gmgn.mobi/"
 )
 
 type STTokenInfo struct {
@@ -172,9 +178,4 @@ type GetTokenPriceResp struct {
 	Code int          `json:"code"`
 	Msg  string       `json:"msg"`
 	Data STTokenPrice `json:"Data"`
-}
-
-type STTradeInfo struct {
-	Hash       string
-	RouterInfo STRouterInfo
 }

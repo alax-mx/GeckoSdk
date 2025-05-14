@@ -3,9 +3,7 @@ package baseutils
 import (
 	"encoding/binary"
 	"math/rand"
-	"reflect"
 	"strconv"
-	"strings"
 	"time"
 	"unsafe"
 )
@@ -470,72 +468,14 @@ func ASCIIToBCD2(ascData []byte, bFlag bool) []byte {
 	return retBytes
 }
 
-// ParseInt 去掉除数字外的其他字符
-func ParseInt(srcData string) uint32 {
-	retBytes := make([]byte, 0)
-	tmpLen := len(srcData)
-	for index := 0; index < tmpLen; index++ {
-		if srcData[index] >= '0' && srcData[index] <= '9' {
-			retBytes = append(retBytes, srcData[index])
-		}
-	}
-
-	retValue, err := strconv.Atoi(string(retBytes))
-	if err != nil {
-		return 0
-	}
-	return uint32(retValue)
+func GetIntValue(value interface{}) int {
+	valueStr, _ := value.(string)
+	intValue, _ := strconv.Atoi(valueStr)
+	return intValue
 }
 
-func ParseSimple(str string, dataTemp interface{}) {
-	// 判断是否标准的json格式数据
-	if str != "" && str[0] == '{' && str[len(str)-1] == '}' {
-		// 替换掉前后的{}
-		str = strings.ReplaceAll(strings.ReplaceAll(str, "{", ""), "}", "")
-
-		// 将结构体的标签解析后，塞入map中备用 ：map [字段名] 字段地址
-		structMap := map[string]reflect.Value{}
-		// 通过反射获取字段名
-		rValue := reflect.ValueOf(dataTemp)
-		if rValue.Kind() == reflect.Ptr {
-			rValue = rValue.Elem()
-		}
-		rType := rValue.Type()
-		for i := 0; i < rType.NumField(); i++ {
-			name := rType.Field(i).Name
-			// 如果有定义标签，则使用标签的字段名
-			if lookup, ok := rType.Field(i).Tag.Lookup("json"); ok {
-				name = strings.ReplaceAll(lookup, ",omitempty", "")
-			}
-			// 将字段名和值映射起来
-			structMap[name] = rValue.Field(i)
-		}
-
-		// 按照,切割每个键值对
-		splitList := strings.Split(str, ",")
-		for i := range splitList {
-			s := splitList[i]
-
-			// 按照:切割出key 和 value
-			keyValue := strings.Split(s, ":")
-			key := keyValue[0]
-			key = strings.ReplaceAll(strings.TrimSpace(key), "\"", "") // 去除前后的空格
-			value := keyValue[1]
-			value = strings.ReplaceAll(strings.TrimSpace(value), "\"", "")
-
-			// 按照key将value塞回结构体
-			switch structMap[key].Type().Kind() {
-			// 注意判断类型，目前只写int和string，其他的类似
-			case reflect.Int:
-				intValue, _ := strconv.Atoi(value)
-				structMap[key].SetInt(int64(intValue))
-			case reflect.String:
-				structMap[key].SetString(value)
-			default:
-				panic("暂不支持的数据类型")
-			}
-
-		}
-	}
-
+func GetFloatValue(value interface{}) float64 {
+	valueStr, _ := value.(string)
+	floatValue, _ := strconv.ParseFloat(valueStr, 64)
+	return floatValue
 }
