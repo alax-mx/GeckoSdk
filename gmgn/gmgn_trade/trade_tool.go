@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"strconv"
 
 	"github.com/gagliardetto/solana-go"
@@ -114,6 +115,10 @@ type TradeTool struct {
 }
 
 func NewTradeTool(baseUrl string, pubKey string, priKey string) *TradeTool {
+	if pubKey == "" || priKey == "" {
+		fmt.Println("pubKey == nil || priKey == nil")
+		return nil
+	}
 	return &TradeTool{
 		baseUrl: baseUrl,
 		pubKey:  solana.MustPublicKeyFromBase58(pubKey),
