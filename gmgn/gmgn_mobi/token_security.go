@@ -63,7 +63,7 @@ func NewTokenSecurityTool(baseUrl string, baseParam string) *TokenSecurityTool {
 	}
 }
 
-func (gst *TokenSecurityTool) GetMutilWindowTokenSecurity(tokenAddress string) (*GetMutilWindowTokenSecurityResp, error) {
+func (gst *TokenSecurityTool) Get(tokenAddress string) (*GetMutilWindowTokenSecurityResp, error) {
 	url := "api/v1/mutil_window_token_security_launchpad/sol/" + tokenAddress + "?" + gst.baseParam
 	data, err := HttpGet(gst.baseUrl + url)
 	if err != nil {

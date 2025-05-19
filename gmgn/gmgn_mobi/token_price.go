@@ -70,7 +70,7 @@ func NewTokenPriceTool(baseUrl string, baseParam string) *TokenPriceTool {
 	}
 }
 
-func (tpt *TokenPriceTool) GetTokenPriceInfo(tokenAddress string) (*GetTokenPriceInfoResp, error) {
+func (tpt *TokenPriceTool) Get(tokenAddress string) (*GetTokenPriceInfoResp, error) {
 	url := "api/v1/token_price_info/sol/" + tokenAddress + "?" + tpt.baseParam
 	data, err := HttpGet(tpt.baseUrl + url)
 	if err != nil {

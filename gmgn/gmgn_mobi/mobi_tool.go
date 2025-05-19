@@ -7,9 +7,15 @@ import (
 )
 
 type MobiTool struct {
-	tokenSecurityTool *TokenSecurityTool
-	tokenStatTool     *TokenStatTool
-	tokenPriceTool    *TokenPriceTool
+	tokenSecurityTool      *TokenSecurityTool
+	tokenStatTool          *TokenStatTool
+	tokenPriceTool         *TokenPriceTool
+	tokenPoolTool          *TokenPoolTool
+	tokenWalletTagStatTool *TokenWalletTagStatTool
+	tokenDevTool           *TokenDevTool
+	tokenCandlesTool       *TokenCandlesTool
+	gasPriceTool           *GasPriceTool
+	tokenHolderStatTool    *TokenHolderStatTool
 }
 
 func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
@@ -25,6 +31,12 @@ func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
 	ret.tokenSecurityTool = NewTokenSecurityTool(baseUrl, baseParam)
 	ret.tokenStatTool = NewTokenStatTool(baseUrl, baseParam)
 	ret.tokenPriceTool = NewTokenPriceTool(baseUrl, baseParam)
+	ret.tokenPoolTool = NewTokenPoolTool(baseUrl, baseParam)
+	ret.tokenWalletTagStatTool = NewTokenWalletTagStatTool(baseUrl, baseParam)
+	ret.tokenDevTool = NewTokenDevTool(baseUrl, baseParam)
+	ret.tokenCandlesTool = NewTokenCandlesTool(baseUrl, baseParam)
+	ret.gasPriceTool = NewGasPriceTool(baseUrl, baseParam)
+	ret.tokenHolderStatTool = NewTokenHolderStatTool(baseUrl, baseParam)
 	return ret
 }
 
@@ -38,6 +50,30 @@ func (mt *MobiTool) GetTokenStatTool() *TokenStatTool {
 
 func (mt *MobiTool) GetTokenPriceTool() *TokenPriceTool {
 	return mt.tokenPriceTool
+}
+
+func (mt *MobiTool) GetTokenPoolTool() *TokenPoolTool {
+	return mt.tokenPoolTool
+}
+
+func (mt *MobiTool) GetTokenWalletTagStatTool() *TokenWalletTagStatTool {
+	return mt.tokenWalletTagStatTool
+}
+
+func (mt *MobiTool) GetTokenDevTool() *TokenDevTool {
+	return mt.tokenDevTool
+}
+
+func (mt *MobiTool) GetTokenCandlesTool() *TokenCandlesTool {
+	return mt.tokenCandlesTool
+}
+
+func (mt *MobiTool) GetGasPriceTool() *GasPriceTool {
+	return mt.gasPriceTool
+}
+
+func (mt *MobiTool) GetTokenHolderStatTool() *TokenHolderStatTool {
+	return mt.tokenHolderStatTool
 }
 
 func (mt *MobiTool) GetBaseParam(deviceInfo *DeviceInfo) string {

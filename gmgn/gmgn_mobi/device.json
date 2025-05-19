@@ -1,0 +1,16 @@
+{
+    "device_id":"a82c21e5cab4525e",
+    "client_id":"gmgn_android_1010108",
+    "from_app":"gmgn",
+    "app_ver":"1010108",
+    "pkg":"com.gmgn.app",
+    "app_lang":"zh-CN",
+    "sys_lang":"zh-CN",
+    "brand":"OPPO",
+    "model":"PGFM10",
+    "os":"android",
+    "os_api":"9",
+    "tz_name":"Asia/Shanghai",
+    "tz_offset":"-480",
+    "gpv":"10000001"
+}

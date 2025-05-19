@@ -34,7 +34,7 @@ func NewTokenStatTool(baseUrl string, baseParam string) *TokenStatTool {
 	}
 }
 
-func (tst *TokenStatTool) GetTokenStat(tokenAddress string) (*GetTokenStatResp, error) {
+func (tst *TokenStatTool) Get(tokenAddress string) (*GetTokenStatResp, error) {
 	url := "api/v1/token_stat/sol/" + tokenAddress + "?" + tst.baseParam
 	data, err := HttpGet(tst.baseUrl + url)
 	if err != nil {
