@@ -1,6 +1,7 @@
 package gmgn_trade
 
 import (
+	"context"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -8,7 +9,14 @@ import (
 	"strconv"
 
 	"github.com/gagliardetto/solana-go"
+	"github.com/gagliardetto/solana-go/rpc"
 )
+
+type STTokenBalanceInfo struct {
+	Amount   int64
+	FAmount  float64
+	Decimals uint8
+}
 
 type STTradeInfo struct {
 	Hash       string
@@ -109,9 +117,10 @@ type GetTransactionStatusResp struct {
 }
 
 type TradeTool struct {
-	baseUrl string
-	pubKey  solana.PublicKey
-	priKey  solana.PrivateKey
+	baseUrl   string
+	pubKey    solana.PublicKey
+	priKey    solana.PrivateKey
+	rpcClinet *rpc.Client
 }
 
 func NewTradeTool(baseUrl string, pubKey string, priKey string) *TradeTool {
@@ -120,9 +129,10 @@ func NewTradeTool(baseUrl string, pubKey string, priKey string) *TradeTool {
 		return nil
 	}
 	return &TradeTool{
-		baseUrl: baseUrl,
-		pubKey:  solana.MustPublicKeyFromBase58(pubKey),
-		priKey:  solana.MustPrivateKeyFromBase58(priKey),
+		baseUrl:   baseUrl,
+		pubKey:    solana.MustPublicKeyFromBase58(pubKey),
+		priKey:    solana.MustPrivateKeyFromBase58(priKey),
+		rpcClinet: rpc.New(rpc.MainNetBeta_RPC),
 	}
 }
 
@@ -264,5 +274,29 @@ func (gtt *TradeTool) GetTransactionStatus(hash string, lastValidHeight int) (*G
 	if err != nil {
 		return nil, err
 	}
+	return ret, nil
+}
+
+func (gtt *TradeTool) GetSolBalance() (*rpc.GetBalanceResult, error) {
+	out, err := gtt.rpcClinet.GetBalance(context.Background(), gtt.pubKey, rpc.CommitmentFinalized)
+	if err != nil {
+		return nil, err
+	}
+
+	return out, nil
+}
+
+func (gtt *TradeTool) GetTokenBalance(tokenAddress string) (*STTokenBalanceInfo, error) {
+	tokenmint := solana.MustPublicKeyFromBase58(tokenAddress)                  //token 地址
+	tokenacc, _, _ := solana.FindAssociatedTokenAddress(gtt.pubKey, tokenmint) //算出token账号地址
+	outtbl, err := gtt.rpcClinet.GetTokenAccountBalance(context.Background(), tokenacc, rpc.CommitmentFinalized)
+	if err != nil {
+		return nil, err
+	}
+
+	ret := &STTokenBalanceInfo{}
+	ret.Amount, _ = strconv.ParseInt(outtbl.Value.Amount, 10, 64)
+	ret.Decimals = outtbl.Value.Decimals
+	ret.FAmount = *outtbl.Value.UiAmount
 	return ret, nil
 }
