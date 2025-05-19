@@ -17,6 +17,7 @@ type MobiTool struct {
 	gasPriceTool           *GasPriceTool
 	tokenHolderStatTool    *TokenHolderStatTool
 	tokenTopBuyersTool     *TokenTopBuyersTool
+	tokenRugInfoTool       *TokenRugInfoTool
 }
 
 func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
@@ -39,6 +40,7 @@ func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
 	ret.gasPriceTool = NewGasPriceTool(baseUrl, baseParam)
 	ret.tokenHolderStatTool = NewTokenHolderStatTool(baseUrl, baseParam)
 	ret.tokenTopBuyersTool = NewTokenTopBuyersTool(baseUrl, baseParam)
+	ret.tokenRugInfoTool = NewTokenRugInfoTool(baseUrl, baseParam)
 	return ret
 }
 
@@ -80,6 +82,10 @@ func (mt *MobiTool) GetTokenHolderStatTool() *TokenHolderStatTool {
 
 func (mt *MobiTool) GetTokenTopBuyersTool() *TokenTopBuyersTool {
 	return mt.tokenTopBuyersTool
+}
+
+func (mt *MobiTool) GetTokenRugInfoTool() *TokenRugInfoTool {
+	return mt.tokenRugInfoTool
 }
 
 func (mt *MobiTool) GetBaseParam(deviceInfo *DeviceInfo) string {
