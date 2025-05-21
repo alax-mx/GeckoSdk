@@ -132,11 +132,11 @@ type STBaseTokenInfo struct {
 	Creator                 string        `json:"creator"`
 	CreatorClose            bool          `json:"creator_close"`
 	CreatorTokenStatus      string        `json:"creator_token_status"`
-	BurnRatio               interface{}   `json:"burn_ratio"`
+	BurnRatio               any           `json:"burn_ratio"`
 	BurnStatus              string        `json:"burn_status"`
 	PoolID                  string        `json:"pool_id"`
 	BiggestPoolAddress      string        `json:"biggest_pool_address"`
-	Liquidity               interface{}   `json:"liquidity"`
+	Liquidity               any           `json:"liquidity"`
 	LaunchpadStatus         int           `json:"launchpad_status"`
 	IsShowAlert             bool          `json:"is_show_alert"`
 	HotLevel                int           `json:"hot_level"`
@@ -147,17 +147,17 @@ type STBaseTokenInfo struct {
 	RenouncedFreezeAccount  int           `json:"renounced_freeze_account"`
 	SocialLinks             STSocialLinks `json:"social_links"`
 	SniperCount             int           `json:"sniper_count"`
-	DevTokenBurnRatio       interface{}   `json:"dev_token_burn_ratio"`
+	DevTokenBurnRatio       any           `json:"dev_token_burn_ratio"`
 	DexscrAd                int           `json:"dexscr_ad"`
 	DexscrUpdateLink        int           `json:"dexscr_update_link"`
 	CtoFlag                 int           `json:"cto_flag"`
 	TwitterChangeFlag       int           `json:"twitter_change_flag"`
 	TwitterRenameCount      int           `json:"twitter_rename_count"`
-	RatTraderAmountRate     interface{}   `json:"rat_trader_amount_rate"`
-	Top10HolderRate         interface{}   `json:"top_10_holder_rate"`
-	RugRatio                interface{}   `json:"rug_ratio"`
-	BluechipOwnerPercentage interface{}   `json:"bluechip_owner_percentage"`
-	IsHoneypot              interface{}   `json:"is_honeypot"`
+	RatTraderAmountRate     any           `json:"rat_trader_amount_rate"`
+	Top10HolderRate         any           `json:"top_10_holder_rate"`
+	RugRatio                any           `json:"rug_ratio"`
+	BluechipOwnerPercentage any           `json:"bluechip_owner_percentage"`
+	IsHoneypot              any           `json:"is_honeypot"`
 }
 
 type STTokenPairsData struct {
