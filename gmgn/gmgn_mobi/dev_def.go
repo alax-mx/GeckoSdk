@@ -22,6 +22,11 @@ const (
 	NEW_PAIR_ORDER_BY_OPEN_TIMESTAMP string = "open_timestamp"
 )
 
+const (
+	WALLET_TOKEN_ORDER_BY_LAST_ACTIVE_TIMESTAMP string = "last_active_timestamp"
+	WALLET_TOKEN_DIRECTION_DESC                 string = "desc"
+)
+
 type DeviceInfo struct {
 	DeviceID string `json:"device_id"`
 	ClientID string `json:"client_id"`
