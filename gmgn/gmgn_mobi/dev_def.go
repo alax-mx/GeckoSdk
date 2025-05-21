@@ -10,6 +10,18 @@ const (
 	CANDLES_1D  string = "1D"
 )
 
+const (
+	NEW_PAIR_PERIOD_1M string = "1m"
+	NEW_PAIR_PERIOD_5M string = "5m"
+	NEW_PAIR_PERIOD_1H string = "1h"
+)
+
+const (
+	NEW_PAIR_DIRECTION_DESC string = "desc"
+
+	NEW_PAIR_ORDER_BY_OPEN_TIMESTAMP string = "open_timestamp"
+)
+
 type DeviceInfo struct {
 	DeviceID string `json:"device_id"`
 	ClientID string `json:"client_id"`
