@@ -19,7 +19,8 @@ const (
 const (
 	NEW_PAIR_DIRECTION_DESC string = "desc"
 
-	NEW_PAIR_ORDER_BY_OPEN_TIMESTAMP string = "open_timestamp"
+	NEW_PAIR_ORDER_BY_OPEN_TIMESTAMP   string = "open_timestamp"
+	NEW_PAIR_ORDER_BY_CREATE_TIMESTAMP string = "creation_timestamp"
 )
 
 const (

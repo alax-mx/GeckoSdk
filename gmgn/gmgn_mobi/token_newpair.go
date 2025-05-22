@@ -62,7 +62,7 @@ type STBaseTokenInfo struct {
 	Sells                   any           `json:"sells"`
 }
 type STPairs struct {
-	ID                  int             `json:"id"`
+	ID                  any             `json:"id"`
 	Address             string          `json:"address"`
 	BaseAddress         string          `json:"base_address"`
 	QuoteAddress        string          `json:"quote_address"`
