@@ -15,7 +15,7 @@ type STBaseTokenInfo struct {
 	Address                 string        `json:"address"`
 	Symbol                  string        `json:"symbol"`
 	Logo                    any           `json:"logo"`
-	TotalSupply             int           `json:"total_supply"`
+	TotalSupply             any           `json:"total_supply"`
 	Creator                 string        `json:"creator"`
 	CreatorClose            bool          `json:"creator_close"`
 	CreatorTokenStatus      string        `json:"creator_token_status"`
