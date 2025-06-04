@@ -2,7 +2,6 @@ package gmgn_mobi
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 type STStatusNow struct {
@@ -67,7 +66,6 @@ func (ttbt *TokenTopBuyersTool) Get(tokenAddress string) (*GetTokenTopBuyersResp
 		return nil, err
 	}
 
-	fmt.Println(string(data))
 	ret := &GetTokenTopBuyersResp{}
 	err = json.Unmarshal(data, ret)
 	if err != nil {
