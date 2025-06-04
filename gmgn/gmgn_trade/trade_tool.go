@@ -136,7 +136,7 @@ func NewTradeTool(baseUrl string, pubKey string, priKey string) *TradeTool {
 	}
 }
 
-func (gtt *TradeTool) Swap(inAddress string, outAddress string, amount int, slippage float64, bundled bool) (*STTradeInfo, error) {
+func (gtt *TradeTool) Swap(inAddress string, outAddress string, amount int, slippage float64, isAntiMev bool) (*STTradeInfo, error) {
 	// GetRouter
 	resp, err := gtt.getSwapRouter(inAddress, outAddress, amount, gtt.pubKey.String(), slippage)
 	if err != nil {
@@ -149,17 +149,7 @@ func (gtt *TradeTool) Swap(inAddress string, outAddress string, amount int, slip
 		return nil, err
 	}
 
-	if bundled {
-		transResp, err := gtt.sendBundleTransaction(signStr, gtt.pubKey.String())
-		if err != nil {
-			return nil, err
-		}
-		if transResp.Code != 0 {
-			return nil, errors.New("sendTransaction err: " + transResp.Msg)
-		}
-	}
-
-	transResp, err := gtt.sendTransaction(signStr)
+	transResp, err := gtt.sendTransaction(signStr, isAntiMev)
 	if err != nil {
 		return nil, err
 	}
@@ -221,10 +211,12 @@ func (gtt *TradeTool) signTransaction(rawTx STRawTx) (string, error) {
 	return tx.MustToBase64(), nil
 }
 
-func (gtt *TradeTool) sendTransaction(signedTx string) (*SendTransactionResp, error) {
-	tmpUrl := "/submit_signed_transaction"
+func (gtt *TradeTool) sendTransaction(signedTx string, isAntiMev bool) (*SendTransactionResp, error) {
+	tmpUrl := "https://gmgn.ai/txproxy/v1/send_transaction"
 	param := make(map[string]interface{})
-	param["signed_tx"] = signedTx
+	param["chain"] = "sol"
+	param["signedTx"] = signedTx
+	param["isAntiMev"] = isAntiMev
 	bytesData, _ := json.Marshal(param)
 	data, err := HttpPostRouter(tmpUrl, bytesData)
 	if err != nil {
@@ -232,26 +224,6 @@ func (gtt *TradeTool) sendTransaction(signedTx string) (*SendTransactionResp, er
 	}
 
 	ret := &SendTransactionResp{}
-	err = json.Unmarshal(data, ret)
-	if err != nil {
-		return nil, err
-	}
-
-	return ret, nil
-}
-
-func (gtt *TradeTool) sendBundleTransaction(signedTx string, walletPubkey string) (*SendBundledTransactionResp, error) {
-	tmpUrl := "/submit_signed_bundle_transaction"
-	param := make(map[string]interface{})
-	param["signed_tx"] = signedTx
-	param["from_address"] = walletPubkey
-	bytesData, _ := json.Marshal(param)
-	data, err := HttpPostRouter(gtt.baseUrl+tmpUrl, bytesData)
-	if err != nil {
-		return nil, err
-	}
-
-	ret := &SendBundledTransactionResp{}
 	err = json.Unmarshal(data, ret)
 	if err != nil {
 		return nil, err
