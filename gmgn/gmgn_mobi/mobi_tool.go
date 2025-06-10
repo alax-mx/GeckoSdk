@@ -78,7 +78,7 @@ func (mt *MobiTool) GetTokenDevTool() *TokenDevTool {
 	return mt.tokenDevTool
 }
 
-func (mt *MobiTool) GetTokeLinkTool() *TokenLinkTool {
+func (mt *MobiTool) GetTokenLinkTool() *TokenLinkTool {
 	return mt.tokenLinkTool
 }
 
