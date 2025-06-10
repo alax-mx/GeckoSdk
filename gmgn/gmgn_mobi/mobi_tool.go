@@ -21,6 +21,8 @@ type MobiTool struct {
 	tokenRugInfoTool       *TokenRugInfoTool
 	tokenNewPairTool       *TokenNewPairTool
 	walletHoldingsTool     *WalletHoldingsTool
+	tokenLinkTool          *TokenLinkTool
+	tokenLaunchpadInfoTool *TokenLaunchpadInfoTool
 }
 
 func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
@@ -47,6 +49,8 @@ func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
 	ret.tokenRugInfoTool = NewTokenRugInfoTool(baseUrl, baseParam)
 	ret.tokenNewPairTool = NewTokenNewPairTool(baseUrl, baseParam)
 	ret.walletHoldingsTool = NewWalletHoldingsTool(baseUrl, baseParam)
+	ret.tokenLinkTool = NewTokenLinkTool(baseUrl, baseParam)
+	ret.tokenLaunchpadInfoTool = NewTokenLaunchpadInfoTool(baseUrl, baseParam)
 	return ret
 }
 
@@ -72,6 +76,14 @@ func (mt *MobiTool) GetTokenWalletTagStatTool() *TokenWalletTagStatTool {
 
 func (mt *MobiTool) GetTokenDevTool() *TokenDevTool {
 	return mt.tokenDevTool
+}
+
+func (mt *MobiTool) GetTokeLinkTool() *TokenLinkTool {
+	return mt.tokenLinkTool
+}
+
+func (mt *MobiTool) GetTokenLaunchpadInfoTool() *TokenLaunchpadInfoTool {
+	return mt.tokenLaunchpadInfoTool
 }
 
 func (mt *MobiTool) GetTokenCandlesTool() *TokenCandlesTool {
