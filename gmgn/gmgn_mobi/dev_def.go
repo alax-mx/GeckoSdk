@@ -25,6 +25,14 @@ const (
 )
 
 const (
+	WALLET_ORDERBY_PNL_7D      string = "pnl_7d"
+	WALLET_ORDERBY_WINRATE_7D  string = "winrate_7d"
+	WALLET_ORDERBY_TXS         string = "txs"
+	WALLET_ORDERBY_SOL_BALANCE string = "sol_balance"
+	WALLET_ORDERBY_LAST_ACTIVE string = "last_active"
+)
+
+const (
 	NEW_PAIR_DIRECTION_DESC string = "desc"
 
 	NEW_PAIR_ORDER_BY_OPEN_TIMESTAMP   string = "open_timestamp"

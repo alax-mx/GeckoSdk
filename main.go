@@ -14,7 +14,7 @@ func main() {
 	deviceInfo := &gmgn_mobi.DeviceInfo{}
 	json.Unmarshal(data, deviceInfo)
 	gmgnTool := gmgn.NewGmgnTool("", "", deviceInfo)
-	resp, err := gmgnTool.GetMobiTool().GetKolCardsTool().Get("24h")
+	resp, err := gmgnTool.GetMobiTool().GetTokenWalletMonitorTool().Get(gmgn_mobi.WALLET_ORDERBY_PNL_7D, 1000)
 	if err != nil {
 		fmt.Println(err)
 		return
