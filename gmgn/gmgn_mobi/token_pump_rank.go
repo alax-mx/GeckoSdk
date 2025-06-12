@@ -251,8 +251,8 @@ func NewTokenPumpRankTool(baseUrl string, baseParam string) *TokenPumpRankTool {
 	}
 }
 
-func (tpt *TokenPumpRankTool) Get(timeFilter string, limit int) (*GetTokenPumpRankResp, error) {
-	url := "defi/quotation/v1/rank/sol/pump_ranks/" + timeFilter + "?" + tpt.baseParam
+func (tpt *TokenPumpRankTool) Get(interval string, limit int) (*GetTokenPumpRankResp, error) {
+	url := "defi/quotation/v1/rank/sol/pump_ranks/" + interval + "?" + tpt.baseParam
 	tmpParam := "{\"filters\":[\"not_wash_trading\"],\"limit\":" + strconv.Itoa(limit) + "}"
 	url += "&new_creation=" + tmpParam
 	url += "&completed=" + tmpParam

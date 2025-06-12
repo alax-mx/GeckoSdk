@@ -103,12 +103,12 @@ func NewTokenNewPairTool(baseUrl string, baseParam string) *TokenNewPairTool {
 	}
 }
 
-func (tnpt *TokenNewPairTool) Get(period string, limit int, orderBy string, direction string) (*GetTokenNewPairResp, error) {
+func (tnpt *TokenNewPairTool) Get(period string, limit int, orderBy string) (*GetTokenNewPairResp, error) {
 	url := "defi/quotation/v1/pairs/sol/new_pairs/" + period + "?" + tnpt.baseParam
 	url += "&period=" + period
 	url += "&limit=" + strconv.Itoa(limit)
 	url += "&orderby=" + orderBy
-	url += "&direction=" + direction
+	url += "&direction=desc"
 	data, err := HttpGet(tnpt.baseUrl + url)
 	if err != nil {
 		return nil, err
