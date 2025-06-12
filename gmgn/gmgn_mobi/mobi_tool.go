@@ -27,6 +27,8 @@ type MobiTool struct {
 	tokenBluchipRankTool   *TokenBluchipRankTool
 	tokenPumpTool          *TokenPumpTool
 	tokenSwapsTool         *TokenSwapsTool
+	smartMoneyCardsTool    *SmartMoneyCardsTool
+	kolCardsTool           *KolCardsTool
 }
 
 func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
@@ -38,27 +40,31 @@ func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
 		data, _ := baseutils.ReadFile("device.json")
 		json.Unmarshal(data, deviceInfo)
 	}
-	baseParam := ret.GetBaseParam(deviceInfo)
-	ret.tokenSecurityTool = NewTokenSecurityTool(baseUrl, baseParam)
-	ret.tokenStatTool = NewTokenStatTool(baseUrl, baseParam)
-	ret.tokenPriceTool = NewTokenPriceTool(baseUrl, baseParam)
-	ret.tokenPoolTool = NewTokenPoolTool(baseUrl, baseParam)
-	ret.tokenWalletTagStatTool = NewTokenWalletTagStatTool(baseUrl, baseParam)
-	ret.tokenDevTool = NewTokenDevTool(baseUrl, baseParam)
-	ret.tokenCandlesTool = NewTokenCandlesTool(baseUrl, baseParam)
-	ret.gasPriceTool = NewGasPriceTool(baseUrl, baseParam)
-	ret.tokenHoldersTool = NewTokenHoldersTool(baseUrl, baseParam)
-	ret.tokenHolderStatTool = NewTokenHolderStatTool(baseUrl, baseParam)
-	ret.tokenTopBuyersTool = NewTokenTopBuyersTool(baseUrl, baseParam)
-	ret.tokenRugInfoTool = NewTokenRugInfoTool(baseUrl, baseParam)
-	ret.tokenNewPairTool = NewTokenNewPairTool(baseUrl, baseParam)
-	ret.walletHoldingsTool = NewWalletHoldingsTool(baseUrl, baseParam)
-	ret.tokenLinkTool = NewTokenLinkTool(baseUrl, baseParam)
-	ret.tokenLaunchpadInfoTool = NewTokenLaunchpadInfoTool(baseUrl, baseParam)
-	ret.tokenPumpRankTool = NewTokenPumpRankTool(baseUrl, baseParam)
-	ret.tokenBluchipRankTool = NewTokenBluchipRankTool(baseUrl, baseParam)
-	ret.tokenPumpTool = NewTokenPumpTool(baseUrl, baseParam)
-	ret.tokenSwapsTool = NewTokenSwapsTool(baseUrl, baseParam)
+	baseGetParam := ret.GetBaseGetParam(deviceInfo)
+	basePostParam, _ := json.Marshal(deviceInfo)
+	ret.tokenSecurityTool = NewTokenSecurityTool(baseUrl, baseGetParam)
+	ret.tokenStatTool = NewTokenStatTool(baseUrl, baseGetParam)
+	ret.tokenPriceTool = NewTokenPriceTool(baseUrl, baseGetParam)
+	ret.tokenPoolTool = NewTokenPoolTool(baseUrl, baseGetParam)
+	ret.tokenWalletTagStatTool = NewTokenWalletTagStatTool(baseUrl, baseGetParam)
+	ret.tokenDevTool = NewTokenDevTool(baseUrl, baseGetParam)
+	ret.tokenCandlesTool = NewTokenCandlesTool(baseUrl, baseGetParam)
+	ret.gasPriceTool = NewGasPriceTool(baseUrl, baseGetParam)
+	ret.tokenHoldersTool = NewTokenHoldersTool(baseUrl, baseGetParam)
+	ret.tokenHolderStatTool = NewTokenHolderStatTool(baseUrl, baseGetParam)
+	ret.tokenTopBuyersTool = NewTokenTopBuyersTool(baseUrl, baseGetParam)
+	ret.tokenRugInfoTool = NewTokenRugInfoTool(baseUrl, baseGetParam)
+	ret.tokenNewPairTool = NewTokenNewPairTool(baseUrl, baseGetParam)
+	ret.walletHoldingsTool = NewWalletHoldingsTool(baseUrl, baseGetParam)
+	ret.tokenLinkTool = NewTokenLinkTool(baseUrl, baseGetParam)
+	ret.tokenLaunchpadInfoTool = NewTokenLaunchpadInfoTool(baseUrl, baseGetParam)
+	ret.tokenPumpRankTool = NewTokenPumpRankTool(baseUrl, baseGetParam)
+	ret.tokenBluchipRankTool = NewTokenBluchipRankTool(baseUrl, baseGetParam)
+	ret.tokenPumpTool = NewTokenPumpTool(baseUrl, baseGetParam)
+	ret.tokenSwapsTool = NewTokenSwapsTool(baseUrl, baseGetParam)
+	ret.smartMoneyCardsTool = NewSmartMoneyCardsTool(baseUrl, baseGetParam, basePostParam)
+	ret.kolCardsTool = NewKolCardsTool(baseUrl, baseGetParam, basePostParam)
+
 	return ret
 }
 
@@ -142,7 +148,15 @@ func (mt *MobiTool) GetTokenSwapsTool() *TokenSwapsTool {
 	return mt.tokenSwapsTool
 }
 
-func (mt *MobiTool) GetBaseParam(deviceInfo *DeviceInfo) string {
+func (mt *MobiTool) GetSmartMoneyCardsTool() *SmartMoneyCardsTool {
+	return mt.smartMoneyCardsTool
+}
+
+func (mt *MobiTool) GetKolCardsTool() *KolCardsTool {
+	return mt.kolCardsTool
+}
+
+func (mt *MobiTool) GetBaseGetParam(deviceInfo *DeviceInfo) string {
 	retStr := "device_id=" + deviceInfo.DeviceID
 	retStr += "&client_id=" + deviceInfo.ClientID
 	retStr += "&from_app=" + deviceInfo.FromApp

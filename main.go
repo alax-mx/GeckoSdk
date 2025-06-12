@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/alax-mx/geckosdk/baseutils"
 	"github.com/alax-mx/geckosdk/gmgn"
@@ -13,6 +14,10 @@ func main() {
 	deviceInfo := &gmgn_mobi.DeviceInfo{}
 	json.Unmarshal(data, deviceInfo)
 	gmgnTool := gmgn.NewGmgnTool("", "", deviceInfo)
-	resp, _ := gmgnTool.GetMobiTool().GetTokenLaunchpadInfoTool().Get("Asuu49BSxjz4Qj9hkdrwt3GpxdjvYUfbt5rXnsNWpump")
+	resp, err := gmgnTool.GetMobiTool().GetKolCardsTool().Get("24h")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	baseutils.ShowObjectValue(resp)
 }
