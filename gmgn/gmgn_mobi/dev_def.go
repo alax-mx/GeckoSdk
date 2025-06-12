@@ -17,6 +17,14 @@ const (
 )
 
 const (
+	PUMP_RANK_PERIOD_1M  string = "1m"
+	PUMP_RANK_PERIOD_5M  string = "5m"
+	PUMP_RANK_PERIOD_1H  string = "1h"
+	PUMP_RANK_PERIOD_6H  string = "6h"
+	PUMP_RANK_PERIOD_24H string = "24h"
+)
+
+const (
 	NEW_PAIR_DIRECTION_DESC string = "desc"
 
 	NEW_PAIR_ORDER_BY_OPEN_TIMESTAMP   string = "open_timestamp"
