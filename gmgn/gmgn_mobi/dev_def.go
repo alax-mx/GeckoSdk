@@ -30,6 +30,11 @@ const (
 	WALLET_ORDERBY_TXS         string = "txs"
 	WALLET_ORDERBY_SOL_BALANCE string = "sol_balance"
 	WALLET_ORDERBY_LAST_ACTIVE string = "last_active"
+
+	WALLET_TAG_SMART_DEGEN string = "smart_degen"
+	WALLET_TAG_PUMP_SMART  string = "pump_smart"
+	WALLET_TAG_RENOWNED    string = "renowned"
+	WALLET_TAG_FRESH       string = "fresh_wallet"
 )
 
 const (

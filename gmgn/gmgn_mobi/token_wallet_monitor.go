@@ -99,11 +99,14 @@ func NewTokenWalletMonitorTool(baseUrl string, baseParam string) *TokenWalletMon
 	}
 }
 
-func (tst *TokenWalletMonitorTool) Get(orderBy string, limit int) (*GetTokenWalletMonitorResp, error) {
+func (tst *TokenWalletMonitorTool) Get(orderBy string, limit int, tag []string) (*GetTokenWalletMonitorResp, error) {
 	url := "defi/quotation/v1/rank/sol/wallets/7d?" + tst.baseParam
 	url += "&orderby=" + orderBy
 	url += "&direction=desc"
 	url += "&limit=" + strconv.Itoa(limit)
+	for i := 0; i < len(tag); i++ {
+		url += "&tag[]=" + tag[i]
+	}
 	data, err := HttpGet(tst.baseUrl + url)
 	if err != nil {
 		return nil, err
