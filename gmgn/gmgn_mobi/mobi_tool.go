@@ -24,6 +24,7 @@ type MobiTool struct {
 	tokenLinkTool          *TokenLinkTool
 	tokenLaunchpadInfoTool *TokenLaunchpadInfoTool
 	tokenPumpRankTool      *TokenPumpRankTool
+	tokenBluchipRankTool   *TokenBluchipRankTool
 }
 
 func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
@@ -53,6 +54,7 @@ func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
 	ret.tokenLinkTool = NewTokenLinkTool(baseUrl, baseParam)
 	ret.tokenLaunchpadInfoTool = NewTokenLaunchpadInfoTool(baseUrl, baseParam)
 	ret.tokenPumpRankTool = NewTokenPumpRankTool(baseUrl, baseParam)
+	ret.tokenBluchipRankTool = NewTokenBluchipRankTool(baseUrl, baseParam)
 	return ret
 }
 
@@ -122,6 +124,10 @@ func (mt *MobiTool) GetWalletHoldingsTool() *WalletHoldingsTool {
 
 func (mt *MobiTool) GetTokenPumpRankTool() *TokenPumpRankTool {
 	return mt.tokenPumpRankTool
+}
+
+func (mt *MobiTool) GetTokenBluchipRankTool() *TokenBluchipRankTool {
+	return mt.tokenBluchipRankTool
 }
 
 func (mt *MobiTool) GetBaseParam(deviceInfo *DeviceInfo) string {
