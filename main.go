@@ -14,9 +14,7 @@ func main() {
 	deviceInfo := &gmgn_mobi.DeviceInfo{}
 	json.Unmarshal(data, deviceInfo)
 	gmgnTool := gmgn.NewGmgnTool("", "", deviceInfo)
-	tag := make([]string, 0)
-	tag = append(tag, gmgn_mobi.WALLET_TAG_PUMP_SMART)
-	resp, err := gmgnTool.GetMobiTool().GetTokenWalletMonitorTool().Get(gmgn_mobi.WALLET_ORDERBY_PNL_7D, 1000, tag)
+	resp, err := gmgnTool.GetMobiTool().GetTokenDevCreatedTool().Get("97Huu1ibsRsDZ7iQZYfWdx69YgimACoJmCuGsxR7HrRX")
 	if err != nil {
 		fmt.Println(err)
 		return

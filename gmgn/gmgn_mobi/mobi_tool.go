@@ -30,6 +30,7 @@ type MobiTool struct {
 	smartMoneyCardsTool    *SmartMoneyCardsTool
 	kolCardsTool           *KolCardsTool
 	tokenWalletMonitorTool *TokenWalletMonitorTool
+	tokenDevCreatedTool    *TokenDevCreatedTool
 }
 
 func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
@@ -63,6 +64,7 @@ func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
 	ret.tokenBluchipRankTool = NewTokenBluchipRankTool(baseUrl, baseGetParam)
 	ret.tokenPumpTool = NewTokenPumpTool(baseUrl, baseGetParam)
 	ret.tokenSwapsTool = NewTokenSwapsTool(baseUrl, baseGetParam)
+	ret.tokenDevCreatedTool = NewTokenDevCreatedTool(baseUrl, baseGetParam)
 	ret.tokenWalletMonitorTool = NewTokenWalletMonitorTool(baseUrl, baseGetParam)
 	ret.smartMoneyCardsTool = NewSmartMoneyCardsTool(baseUrl, baseGetParam, basePostParam)
 	ret.kolCardsTool = NewKolCardsTool(baseUrl, baseGetParam, basePostParam)
@@ -128,6 +130,10 @@ func (mt *MobiTool) GetTokenRugInfoTool() *TokenRugInfoTool {
 
 func (mt *MobiTool) GetTokenNewPairTool() *TokenNewPairTool {
 	return mt.tokenNewPairTool
+}
+
+func (mt *MobiTool) GetTokenDevCreatedTool() *TokenDevCreatedTool {
+	return mt.tokenDevCreatedTool
 }
 
 func (mt *MobiTool) GetWalletHoldingsTool() *WalletHoldingsTool {
