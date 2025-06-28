@@ -1,6 +1,10 @@
 package gmgn_mobi
 
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"github.com/alax-mx/geckosdk/proxy"
+)
 
 type STTokenLaunchpadInfo struct {
 	Address           string `json:"address"`
@@ -21,18 +25,24 @@ type GetTokenLaunchpadInfoResp struct {
 type TokenLaunchpadInfoTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenLaunchpadInfoTool(baseUrl string, baseParam string) *TokenLaunchpadInfoTool {
 	return &TokenLaunchpadInfoTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (tpt *TokenLaunchpadInfoTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	tpt.proxyInfo = proxyInfo
 }
 
 func (tpt *TokenLaunchpadInfoTool) Get(tokenAddress string) (*GetTokenLaunchpadInfoResp, error) {
 	url := "api/v1/token_launchpad_info/sol/" + tokenAddress + "?" + tpt.baseParam
-	data, err := HttpGet(tpt.baseUrl + url)
+	data, err := HttpGet(tpt.baseUrl+url, tpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

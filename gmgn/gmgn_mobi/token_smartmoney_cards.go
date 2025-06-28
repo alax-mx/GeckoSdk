@@ -1,6 +1,10 @@
 package gmgn_mobi
 
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"github.com/alax-mx/geckosdk/proxy"
+)
 
 type STWallets struct {
 	Ens             string   `json:"ens"`
@@ -69,6 +73,7 @@ type SmartMoneyCardsTool struct {
 	baseUrl   string
 	baseParam string
 	postData  []byte
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewSmartMoneyCardsTool(baseUrl string, baseParam string, postData []byte) *SmartMoneyCardsTool {
@@ -76,12 +81,17 @@ func NewSmartMoneyCardsTool(baseUrl string, baseParam string, postData []byte) *
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
 		postData:  postData,
+		proxyInfo: nil,
 	}
+}
+
+func (tdt *SmartMoneyCardsTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	tdt.proxyInfo = proxyInfo
 }
 
 func (tdt *SmartMoneyCardsTool) Get(interval string) (*GetSmartMoneyCardsResp, error) {
 	url := "api/v1/smartmoney_cards/cards/sol/" + interval + "?" + tdt.baseParam
-	data, err := HttpPost(tdt.baseUrl+url, tdt.postData)
+	data, err := HttpPost(tdt.baseUrl+url, tdt.postData, tdt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

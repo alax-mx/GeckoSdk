@@ -5,6 +5,7 @@ import (
 	"github.com/alax-mx/geckosdk/gmgn/gmgn_mobi"
 	"github.com/alax-mx/geckosdk/gmgn/gmgn_trade"
 	"github.com/alax-mx/geckosdk/gmgn/gmgn_web"
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
 type GmgnTool struct {
@@ -31,4 +32,11 @@ func (gt *GmgnTool) GetMobiTool() *gmgn_mobi.MobiTool {
 
 func (gt *GmgnTool) GetTradeTool() *gmgn_trade.TradeTool {
 	return gt.tradeTool
+}
+
+func (gt *GmgnTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	gt.mobiTool.SetProxy(proxyInfo)
+	if gt.tradeTool != nil {
+		gt.tradeTool.SetProxy(proxyInfo)
+	}
 }

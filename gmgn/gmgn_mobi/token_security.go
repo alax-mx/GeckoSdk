@@ -1,6 +1,10 @@
 package gmgn_mobi
 
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"github.com/alax-mx/geckosdk/proxy"
+)
 
 type STLockSummary struct {
 	IsLocked        bool   `json:"is_locked"`
@@ -54,18 +58,24 @@ type GetMutilWindowTokenSecurityResp struct {
 type TokenSecurityTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenSecurityTool(baseUrl string, baseParam string) *TokenSecurityTool {
 	return &TokenSecurityTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (gst *TokenSecurityTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	gst.proxyInfo = proxyInfo
 }
 
 func (gst *TokenSecurityTool) Get(tokenAddress string) (*GetMutilWindowTokenSecurityResp, error) {
 	url := "api/v1/mutil_window_token_security_launchpad/sol/" + tokenAddress + "?" + gst.baseParam
-	data, err := HttpGet(gst.baseUrl + url)
+	data, err := HttpGet(gst.baseUrl+url, gst.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

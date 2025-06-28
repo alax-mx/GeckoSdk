@@ -1,6 +1,10 @@
 package gmgn_mobi
 
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"github.com/alax-mx/geckosdk/proxy"
+)
 
 type GetKolCardsResp struct {
 	Code    int         `json:"code"`
@@ -13,6 +17,7 @@ type KolCardsTool struct {
 	baseUrl   string
 	baseParam string
 	postData  []byte
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewKolCardsTool(baseUrl string, baseParam string, postData []byte) *KolCardsTool {
@@ -20,12 +25,17 @@ func NewKolCardsTool(baseUrl string, baseParam string, postData []byte) *KolCard
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
 		postData:  postData,
+		proxyInfo: nil,
 	}
+}
+
+func (tdt *KolCardsTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	tdt.proxyInfo = proxyInfo
 }
 
 func (tdt *KolCardsTool) Get(interval string) (*GetKolCardsResp, error) {
 	url := "api/v1/kol_cards/cards/sol/" + interval + "?" + tdt.baseParam
-	data, err := HttpPost(tdt.baseUrl+url, tdt.postData)
+	data, err := HttpPost(tdt.baseUrl+url, tdt.postData, tdt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

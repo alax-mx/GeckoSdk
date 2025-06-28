@@ -3,6 +3,8 @@ package gmgn_mobi
 import (
 	"encoding/json"
 	"strconv"
+
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
 type STToken struct {
@@ -62,13 +64,19 @@ type GetWalletHoldingsResp struct {
 type WalletHoldingsTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewWalletHoldingsTool(baseUrl string, baseParam string) *WalletHoldingsTool {
 	return &WalletHoldingsTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (wht *WalletHoldingsTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	wht.proxyInfo = proxyInfo
 }
 
 func (wht *WalletHoldingsTool) Get(walletAddress string, limit int, orderBy string,
@@ -92,7 +100,7 @@ func (wht *WalletHoldingsTool) Get(walletAddress string, limit int, orderBy stri
 	} else {
 		url += "&hide_abnormal=false"
 	}
-	data, err := HttpGet(wht.baseUrl + url)
+	data, err := HttpGet(wht.baseUrl+url, wht.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

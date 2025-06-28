@@ -3,6 +3,8 @@ package gmgn_mobi
 import (
 	"encoding/json"
 	"strconv"
+
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
 type STCandlesData struct {
@@ -37,20 +39,26 @@ type GetTokenCandlesResp struct {
 type TokenCandlesTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenCandlesTool(baseUrl string, baseParam string) *TokenCandlesTool {
 	return &TokenCandlesTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (tct *TokenCandlesTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	tct.proxyInfo = proxyInfo
 }
 
 func (tct *TokenCandlesTool) Get(tokenAddress string, resolution string, limit int) (*GetTokenCandlesResp, error) {
 	url := "api/v1/token_candles/sol/" + tokenAddress + "?" + tct.baseParam
 	url += "&resolution=" + resolution
 	url += "&limit=" + strconv.Itoa(limit)
-	data, err := HttpGet(tct.baseUrl + url)
+	data, err := HttpGet(tct.baseUrl+url, tct.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

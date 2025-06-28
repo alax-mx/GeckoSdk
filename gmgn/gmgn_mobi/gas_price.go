@@ -1,6 +1,10 @@
 package gmgn_mobi
 
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"github.com/alax-mx/geckosdk/proxy"
+)
 
 type STGasPriceData struct {
 	Auto                string  `json:"auto"`
@@ -36,18 +40,24 @@ type GetGasPriceResp struct {
 type GasPriceTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewGasPriceTool(baseUrl string, baseParam string) *GasPriceTool {
 	return &GasPriceTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (gpt *GasPriceTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	gpt.proxyInfo = proxyInfo
 }
 
 func (gpt *GasPriceTool) Get() (*GetGasPriceResp, error) {
 	url := "api/v1/gas_price/sol?" + gpt.baseParam
-	data, err := HttpGet(gpt.baseUrl + url)
+	data, err := HttpGet(gpt.baseUrl+url, gpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

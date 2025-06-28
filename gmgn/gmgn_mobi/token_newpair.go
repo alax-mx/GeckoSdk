@@ -3,6 +3,8 @@ package gmgn_mobi
 import (
 	"encoding/json"
 	"strconv"
+
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
 type STSocialLinks struct {
@@ -94,13 +96,19 @@ type GetTokenNewPairResp struct {
 type TokenNewPairTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenNewPairTool(baseUrl string, baseParam string) *TokenNewPairTool {
 	return &TokenNewPairTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (tnpt *TokenNewPairTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	tnpt.proxyInfo = proxyInfo
 }
 
 func (tnpt *TokenNewPairTool) Get(period string, limit int, orderBy string) (*GetTokenNewPairResp, error) {
@@ -109,7 +117,7 @@ func (tnpt *TokenNewPairTool) Get(period string, limit int, orderBy string) (*Ge
 	url += "&limit=" + strconv.Itoa(limit)
 	url += "&orderby=" + orderBy
 	url += "&direction=desc"
-	data, err := HttpGet(tnpt.baseUrl + url)
+	data, err := HttpGet(tnpt.baseUrl+url, tnpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

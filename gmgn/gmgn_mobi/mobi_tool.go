@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/alax-mx/geckosdk/baseutils"
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
 type MobiTool struct {
@@ -184,4 +185,31 @@ func (mt *MobiTool) GetBaseGetParam(deviceInfo *DeviceInfo) string {
 	retStr += "&tz_offset=" + deviceInfo.TzOffset
 	retStr += "&gpv=" + deviceInfo.Gpv
 	return retStr
+}
+
+func (mt *MobiTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	mt.tokenSecurityTool.SetProxy(proxyInfo)
+	mt.tokenStatTool.SetProxy(proxyInfo)
+	mt.tokenPriceTool.SetProxy(proxyInfo)
+	mt.tokenPoolTool.SetProxy(proxyInfo)
+	mt.tokenWalletTagStatTool.SetProxy(proxyInfo)
+	mt.tokenDevTool.SetProxy(proxyInfo)
+	mt.tokenCandlesTool.SetProxy(proxyInfo)
+	mt.gasPriceTool.SetProxy(proxyInfo)
+	mt.tokenHoldersTool.SetProxy(proxyInfo)
+	mt.tokenHolderStatTool.SetProxy(proxyInfo)
+	mt.tokenTopBuyersTool.SetProxy(proxyInfo)
+	mt.tokenRugInfoTool.SetProxy(proxyInfo)
+	mt.tokenNewPairTool.SetProxy(proxyInfo)
+	mt.walletHoldingsTool.SetProxy(proxyInfo)
+	mt.tokenLinkTool.SetProxy(proxyInfo)
+	mt.tokenLaunchpadInfoTool.SetProxy(proxyInfo)
+	mt.tokenPumpRankTool.SetProxy(proxyInfo)
+	mt.tokenBluchipRankTool.SetProxy(proxyInfo)
+	mt.tokenPumpTool.SetProxy(proxyInfo)
+	mt.tokenSwapsTool.SetProxy(proxyInfo)
+	mt.smartMoneyCardsTool.SetProxy(proxyInfo)
+	mt.kolCardsTool.SetProxy(proxyInfo)
+	mt.tokenWalletMonitorTool.SetProxy(proxyInfo)
+	mt.tokenDevCreatedTool.SetProxy(proxyInfo)
 }

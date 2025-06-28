@@ -3,6 +3,8 @@ package gmgn_mobi
 import (
 	"encoding/json"
 	"strconv"
+
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
 type STTagRank struct {
@@ -90,13 +92,19 @@ type GetTokenWalletMonitorResp struct {
 type TokenWalletMonitorTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenWalletMonitorTool(baseUrl string, baseParam string) *TokenWalletMonitorTool {
 	return &TokenWalletMonitorTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (tst *TokenWalletMonitorTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	tst.proxyInfo = proxyInfo
 }
 
 func (tst *TokenWalletMonitorTool) Get(orderBy string, limit int, tag []string) (*GetTokenWalletMonitorResp, error) {
@@ -107,7 +115,7 @@ func (tst *TokenWalletMonitorTool) Get(orderBy string, limit int, tag []string) 
 	for i := 0; i < len(tag); i++ {
 		url += "&tag[]=" + tag[i]
 	}
-	data, err := HttpGet(tst.baseUrl + url)
+	data, err := HttpGet(tst.baseUrl+url, tst.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

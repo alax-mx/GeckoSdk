@@ -4,12 +4,26 @@ import (
 	"bytes"
 	"io"
 	"net/http"
+
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
-func HttpGet(url string) ([]byte, error) {
+func HttpGet(url string, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
 	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Add("user-agent", "Mozilla/5.0 (Linux; Android 9.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36")
 	req.Header.Add("Content-Type", "application/json; charset=utf-8")
-	res, err := http.DefaultClient.Do(req)
+	client := http.DefaultClient
+	if proxyInfo != nil {
+		dialer, err := proxyInfo.GetSocks5()
+		if err == nil {
+			client = &http.Client{
+				Transport: &http.Transport{
+					Dial: dialer.Dial,
+				},
+			}
+		}
+	}
+	res, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -23,8 +37,19 @@ func HttpGet(url string) ([]byte, error) {
 	return body, nil
 }
 
-func HttpPost(url string, param []byte) ([]byte, error) {
-	res, err := http.Post(url, "application/json; charset=utf-8", bytes.NewReader(param))
+func HttpPost(url string, param []byte, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
+	client := http.DefaultClient
+	if proxyInfo != nil {
+		dialer, err := proxyInfo.GetSocks5()
+		if err != nil {
+			client = &http.Client{
+				Transport: &http.Transport{
+					Dial: dialer.Dial,
+				},
+			}
+		}
+	}
+	res, err := client.Post(url, "application/json; charset=utf-8", bytes.NewReader(param))
 	if err != nil {
 		return nil, err
 	}

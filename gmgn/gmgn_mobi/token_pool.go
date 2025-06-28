@@ -2,6 +2,8 @@ package gmgn_mobi
 
 import (
 	"encoding/json"
+
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
 type STTokenPoolInfo struct {
@@ -35,18 +37,24 @@ type GetTokenPoolInfoResp struct {
 type TokenPoolTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenPoolTool(baseUrl string, baseParam string) *TokenPoolTool {
 	return &TokenPoolTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (tpt *TokenPoolTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	tpt.proxyInfo = proxyInfo
 }
 
 func (tpt *TokenPoolTool) Get(tokenAddress string) (*GetTokenPoolInfoResp, error) {
 	url := "api/v1/token_pool_info_sol/sol/" + tokenAddress + "?" + tpt.baseParam
-	data, err := HttpGet(tpt.baseUrl + url)
+	data, err := HttpGet(tpt.baseUrl+url, tpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

@@ -2,6 +2,8 @@ package gmgn_mobi
 
 import (
 	"encoding/json"
+
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
 type STTokenPriceInfo struct {
@@ -61,18 +63,24 @@ type GetTokenPriceInfoResp struct {
 type TokenPriceTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenPriceTool(baseUrl string, baseParam string) *TokenPriceTool {
 	return &TokenPriceTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (tpt *TokenPriceTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	tpt.proxyInfo = proxyInfo
 }
 
 func (tpt *TokenPriceTool) Get(tokenAddress string) (*GetTokenPriceInfoResp, error) {
 	url := "api/v1/token_price_info/sol/" + tokenAddress + "?" + tpt.baseParam
-	data, err := HttpGet(tpt.baseUrl + url)
+	data, err := HttpGet(tpt.baseUrl+url, tpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

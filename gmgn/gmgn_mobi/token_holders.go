@@ -3,6 +3,8 @@ package gmgn_mobi
 import (
 	"encoding/json"
 	"strconv"
+
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
 type List struct {
@@ -66,19 +68,25 @@ type GetTokenHoldersResp struct {
 type TokenHoldersTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenHoldersTool(baseUrl string, baseParam string) *TokenHoldersTool {
 	return &TokenHoldersTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (tht *TokenHoldersTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	tht.proxyInfo = proxyInfo
 }
 
 func (tht *TokenHoldersTool) Get(tokenAddress string, limit int) (*GetTokenHoldersResp, error) {
 	url := "vas/api/v1/token_holders/sol/" + tokenAddress + "?" + tht.baseParam
 	url += "&limit=" + strconv.Itoa(limit)
-	data, err := HttpGet(tht.baseUrl + url)
+	data, err := HttpGet(tht.baseUrl+url, tht.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

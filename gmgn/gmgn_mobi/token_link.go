@@ -1,6 +1,10 @@
 package gmgn_mobi
 
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"github.com/alax-mx/geckosdk/proxy"
+)
 
 type STTokenLinkInfo struct {
 	Address         string `json:"address"`
@@ -33,18 +37,24 @@ type GetTokenLinkInfoResp struct {
 type TokenLinkTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenLinkTool(baseUrl string, baseParam string) *TokenLinkTool {
 	return &TokenLinkTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (tpt *TokenLinkTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	tpt.proxyInfo = proxyInfo
 }
 
 func (tpt *TokenLinkTool) Get(tokenAddress string) (*GetTokenLinkInfoResp, error) {
 	url := "api/v1/token_link/sol/" + tokenAddress + "?" + tpt.baseParam
-	data, err := HttpGet(tpt.baseUrl + url)
+	data, err := HttpGet(tpt.baseUrl+url, tpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

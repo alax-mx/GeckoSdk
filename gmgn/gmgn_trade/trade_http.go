@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"io"
 	"net/http"
+
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
-func HttpGet(url string) ([]byte, error) {
+func HttpGet(url string, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Host", "gmgn.ai")
 	req.Header.Add("accept", "'application/json, text/plain, */*")
@@ -15,7 +17,19 @@ func HttpGet(url string) ([]byte, error) {
 	req.Header.Add("priority", "u=1, i")
 	req.Header.Add("referer", "https://gmgn.ai/?chain=sol")
 	req.Header.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
-	res, err := http.DefaultClient.Do(req)
+
+	client := http.DefaultClient
+	if proxyInfo != nil {
+		dialer, err := proxyInfo.GetSocks5()
+		if err != nil {
+			client = &http.Client{
+				Transport: &http.Transport{
+					Dial: dialer.Dial,
+				},
+			}
+		}
+	}
+	res, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -29,8 +43,19 @@ func HttpGet(url string) ([]byte, error) {
 	return body, nil
 }
 
-func HttpPostRouter(url string, data []byte) ([]byte, error) {
-	res, err := http.Post(url, "application/json", bytes.NewReader(data))
+func HttpPostRouter(url string, data []byte, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
+	client := http.DefaultClient
+	if proxyInfo != nil {
+		dialer, err := proxyInfo.GetSocks5()
+		if err != nil {
+			client = &http.Client{
+				Transport: &http.Transport{
+					Dial: dialer.Dial,
+				},
+			}
+		}
+	}
+	res, err := client.Post(url, "application/json", bytes.NewReader(data))
 	if err != nil {
 		return []byte{}, err
 	}

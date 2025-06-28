@@ -1,6 +1,10 @@
 package gmgn_mobi
 
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"github.com/alax-mx/geckosdk/proxy"
+)
 
 type STTokenHolderStatData struct {
 	SmartDegenCount    int `json:"smart_degen_count"`
@@ -24,18 +28,24 @@ type GetTokenHolderStatResp struct {
 type TokenHolderStatTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenHolderStatTool(baseUrl string, baseParam string) *TokenHolderStatTool {
 	return &TokenHolderStatTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (thst *TokenHolderStatTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	thst.proxyInfo = proxyInfo
 }
 
 func (thst *TokenHolderStatTool) Get(tokenAddress string) (*GetTokenHolderStatResp, error) {
 	url := "vas/api/v1/token_holder_stat/sol/" + tokenAddress + "?" + thst.baseParam
-	data, err := HttpGet(thst.baseUrl + url)
+	data, err := HttpGet(thst.baseUrl+url, thst.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

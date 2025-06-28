@@ -1,6 +1,10 @@
 package gmgn_mobi
 
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"github.com/alax-mx/geckosdk/proxy"
+)
 
 type STTokens struct {
 	TokenAddress             string `json:"token_address"`
@@ -42,18 +46,24 @@ type GetTokenDevCreatedResp struct {
 type TokenDevCreatedTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenDevCreatedTool(baseUrl string, baseParam string) *TokenDevCreatedTool {
 	return &TokenDevCreatedTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (tdt *TokenDevCreatedTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	tdt.proxyInfo = proxyInfo
 }
 
 func (tdt *TokenDevCreatedTool) Get(tokenAddress string) (*GetTokenDevCreatedResp, error) {
 	url := "api/v1/dev_created_tokens/sol/" + tokenAddress + "?" + tdt.baseParam
-	data, err := HttpGet(tdt.baseUrl + url)
+	data, err := HttpGet(tdt.baseUrl+url, tdt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

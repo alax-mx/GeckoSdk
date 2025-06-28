@@ -1,6 +1,10 @@
 package gmgn_mobi
 
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"github.com/alax-mx/geckosdk/proxy"
+)
 
 type STTokenWalletTagStat struct {
 	Chain            string `json:"chain"`
@@ -27,18 +31,24 @@ type GetTokenWalletTagStatResp struct {
 type TokenWalletTagStatTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenWalletTagStatTool(baseUrl string, baseParam string) *TokenWalletTagStatTool {
 	return &TokenWalletTagStatTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (twtst *TokenWalletTagStatTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	twtst.proxyInfo = proxyInfo
 }
 
 func (twtst *TokenWalletTagStatTool) Get(tokenAddress string) (*GetTokenWalletTagStatResp, error) {
 	url := "api/v1/token_wallet_tags_stat/sol/" + tokenAddress + "?" + twtst.baseParam
-	data, err := HttpGet(twtst.baseUrl + url)
+	data, err := HttpGet(twtst.baseUrl+url, twtst.proxyInfo)
 	if err != nil {
 		return nil, err
 

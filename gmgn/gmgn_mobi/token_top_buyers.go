@@ -2,6 +2,8 @@ package gmgn_mobi
 
 import (
 	"encoding/json"
+
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
 type STStatusNow struct {
@@ -50,18 +52,24 @@ type GetTokenTopBuyersResp struct {
 type TokenTopBuyersTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenTopBuyersTool(baseUrl string, baseParam string) *TokenTopBuyersTool {
 	return &TokenTopBuyersTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (ttbt *TokenTopBuyersTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	ttbt.proxyInfo = proxyInfo
 }
 
 func (ttbt *TokenTopBuyersTool) Get(tokenAddress string) (*GetTokenTopBuyersResp, error) {
 	url := "defi/quotation/v1/tokens/top_buyers/sol/" + tokenAddress + "?" + ttbt.baseParam
-	data, err := HttpGet(ttbt.baseUrl + url)
+	data, err := HttpGet(ttbt.baseUrl+url, ttbt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

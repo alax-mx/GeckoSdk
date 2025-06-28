@@ -3,6 +3,8 @@ package gmgn_mobi
 import (
 	"encoding/json"
 	"strconv"
+
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
 type STSwapsRank struct {
@@ -76,13 +78,19 @@ type GetTokenSwapsResp struct {
 type TokenSwapsTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenSwapsTool(baseUrl string, baseParam string) *TokenSwapsTool {
 	return &TokenSwapsTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (tst *TokenSwapsTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	tst.proxyInfo = proxyInfo
 }
 
 func (tst *TokenSwapsTool) Get(interval string, limit int) (*GetTokenSwapsResp, error) {
@@ -94,7 +102,7 @@ func (tst *TokenSwapsTool) Get(interval string, limit int) (*GetTokenSwapsResp, 
 	url += "&filters=renounced"
 	url += "&filters=frozen"
 
-	data, err := HttpGet(tst.baseUrl + url)
+	data, err := HttpGet(tst.baseUrl+url, tst.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

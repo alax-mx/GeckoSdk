@@ -3,6 +3,8 @@ package gmgn_mobi
 import (
 	"encoding/json"
 	"strconv"
+
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
 type STPumps struct {
@@ -242,13 +244,19 @@ type GetTokenPumpRankResp struct {
 type TokenPumpRankTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenPumpRankTool(baseUrl string, baseParam string) *TokenPumpRankTool {
 	return &TokenPumpRankTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (tpt *TokenPumpRankTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	tpt.proxyInfo = proxyInfo
 }
 
 func (tpt *TokenPumpRankTool) Get(interval string, limit int) (*GetTokenPumpRankResp, error) {
@@ -257,7 +265,7 @@ func (tpt *TokenPumpRankTool) Get(interval string, limit int) (*GetTokenPumpRank
 	url += "&new_creation=" + tmpParam
 	url += "&completed=" + tmpParam
 	url += "&pump=" + tmpParam
-	data, err := HttpGet(tpt.baseUrl + url)
+	data, err := HttpGet(tpt.baseUrl+url, tpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

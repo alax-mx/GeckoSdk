@@ -3,6 +3,8 @@ package gmgn_mobi
 import (
 	"encoding/json"
 	"strconv"
+
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
 type STTokenLinks struct {
@@ -83,13 +85,19 @@ type GetTokenBluchipRankResp struct {
 type TokenBluchipRankTool struct {
 	baseUrl   string
 	baseParam string
+	proxyInfo *proxy.STProxyInfo
 }
 
 func NewTokenBluchipRankTool(baseUrl string, baseParam string) *TokenBluchipRankTool {
 	return &TokenBluchipRankTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		proxyInfo: nil,
 	}
+}
+
+func (tbrt *TokenBluchipRankTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+	tbrt.proxyInfo = proxyInfo
 }
 
 func (tbrt *TokenBluchipRankTool) Get(interval string, limit int) (*GetTokenBluchipRankResp, error) {
@@ -103,7 +111,7 @@ func (tbrt *TokenBluchipRankTool) Get(interval string, limit int) (*GetTokenBluc
 	url += "&filters=not_wash_trading"
 	url += "&filters=renounced"
 	url += "&filters=frozen"
-	data, err := HttpGet(tbrt.baseUrl + url)
+	data, err := HttpGet(tbrt.baseUrl+url, tbrt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}
