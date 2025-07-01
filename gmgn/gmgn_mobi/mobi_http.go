@@ -10,7 +10,7 @@ import (
 
 func HttpGet(url string, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
 	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Add("user-agent", "Mozilla/5.0 (Linux; Android 9.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36")
+	req.Header.Add("user-agent", "okhttp/4.9.2")
 	req.Header.Add("Content-Type", "application/json; charset=utf-8")
 	client := http.DefaultClient
 	if proxyInfo != nil {
@@ -49,7 +49,10 @@ func HttpPost(url string, param []byte, proxyInfo *proxy.STProxyInfo) ([]byte, e
 			}
 		}
 	}
-	res, err := client.Post(url, "application/json; charset=utf-8", bytes.NewReader(param))
+	req, _ := http.NewRequest("POST", url, bytes.NewReader(param))
+	req.Header.Add("Content-Type", "application/json; charset=utf-8")
+	req.Header.Add("user-agent", "Mozilla/5.0 (Linux; Android 9.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36")
+	res, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
