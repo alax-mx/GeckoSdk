@@ -15,15 +15,15 @@ type STDailyProfit7D struct {
 	Profit    float64 `json:"profit"`
 }
 type STRisk struct {
-	TokenActive        string  `json:"token_active"`
-	TokenHoneypot      string  `json:"token_honeypot"`
-	TokenHoneypotRatio float64 `json:"token_honeypot_ratio"`
-	NoBuyHold          string  `json:"no_buy_hold"`
-	NoBuyHoldRatio     float64 `json:"no_buy_hold_ratio"`
-	SellPassBuy        string  `json:"sell_pass_buy"`
-	SellPassBuyRatio   float64 `json:"sell_pass_buy_ratio"`
-	FastTx             string  `json:"fast_tx"`
-	FastTxRatio        float64 `json:"fast_tx_ratio"`
+	TokenActive        any `json:"token_active"`
+	TokenHoneypot      any `json:"token_honeypot"`
+	TokenHoneypotRatio any `json:"token_honeypot_ratio"`
+	NoBuyHold          any `json:"no_buy_hold"`
+	NoBuyHoldRatio     any `json:"no_buy_hold_ratio"`
+	SellPassBuy        any `json:"sell_pass_buy"`
+	SellPassBuyRatio   any `json:"sell_pass_buy_ratio"`
+	FastTx             any `json:"fast_tx"`
+	FastTxRatio        any `json:"fast_tx_ratio"`
 }
 type STWalletRank struct {
 	WalletAddress            string            `json:"wallet_address"`

@@ -25,6 +25,12 @@ const (
 )
 
 const (
+	WALLET_STAT_PERIOD_1D  string = "1d"
+	WALLET_STAT_PERIOD_7D  string = "7d"
+	WALLET_STAT_PERIOD_30D string = "30d"
+)
+
+const (
 	WALLET_ORDERBY_PNL_7D      string = "pnl_7d"
 	WALLET_ORDERBY_WINRATE_7D  string = "winrate_7d"
 	WALLET_ORDERBY_TXS         string = "txs"

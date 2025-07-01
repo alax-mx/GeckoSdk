@@ -22,6 +22,7 @@ type MobiTool struct {
 	tokenRugInfoTool       *TokenRugInfoTool
 	tokenNewPairTool       *TokenNewPairTool
 	walletHoldingsTool     *WalletHoldingsTool
+	walletStatTool         *WalletStatTool
 	tokenLinkTool          *TokenLinkTool
 	tokenLaunchpadInfoTool *TokenLaunchpadInfoTool
 	tokenPumpRankTool      *TokenPumpRankTool
@@ -59,6 +60,7 @@ func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
 	ret.tokenRugInfoTool = NewTokenRugInfoTool(baseUrl, baseGetParam)
 	ret.tokenNewPairTool = NewTokenNewPairTool(baseUrl, baseGetParam)
 	ret.walletHoldingsTool = NewWalletHoldingsTool(baseUrl, baseGetParam)
+	ret.walletStatTool = NewWalletStatTool(baseUrl, baseGetParam)
 	ret.tokenLinkTool = NewTokenLinkTool(baseUrl, baseGetParam)
 	ret.tokenLaunchpadInfoTool = NewTokenLaunchpadInfoTool(baseUrl, baseGetParam)
 	ret.tokenPumpRankTool = NewTokenPumpRankTool(baseUrl, baseGetParam)
@@ -141,6 +143,10 @@ func (mt *MobiTool) GetWalletHoldingsTool() *WalletHoldingsTool {
 	return mt.walletHoldingsTool
 }
 
+func (mt *MobiTool) GetWalletStatTool() *WalletStatTool {
+	return mt.walletStatTool
+}
+
 func (mt *MobiTool) GetTokenPumpRankTool() *TokenPumpRankTool {
 	return mt.tokenPumpRankTool
 }
@@ -202,6 +208,7 @@ func (mt *MobiTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	mt.tokenRugInfoTool.SetProxy(proxyInfo)
 	mt.tokenNewPairTool.SetProxy(proxyInfo)
 	mt.walletHoldingsTool.SetProxy(proxyInfo)
+	mt.walletStatTool.SetProxy(proxyInfo)
 	mt.tokenLinkTool.SetProxy(proxyInfo)
 	mt.tokenLaunchpadInfoTool.SetProxy(proxyInfo)
 	mt.tokenPumpRankTool.SetProxy(proxyInfo)
