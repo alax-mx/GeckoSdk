@@ -14,12 +14,7 @@ func main() {
 	deviceInfo := &gmgn_mobi.DeviceInfo{}
 	json.Unmarshal(data, deviceInfo)
 	gmgnTool := gmgn.NewGmgnTool("", "", deviceInfo)
-	// resp, err := gmgnTool.GetMobiTool().GetTokenBluchipRankTool().Get("1h", 1)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
-	resp, err := gmgnTool.GetMobiTool().GetWalletStatTool().Get("DfMxre4cKmvogbLrPigxmibVTTQDuzjdXojWzjCXXhzj", "7d")
+	resp, err := gmgnTool.GetMobiTool().GetTokenBluchipRankTool().Get("1h", 1)
 	if err != nil {
 		fmt.Println(err)
 		return

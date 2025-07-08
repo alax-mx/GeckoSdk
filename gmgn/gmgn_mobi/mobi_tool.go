@@ -23,6 +23,8 @@ type MobiTool struct {
 	tokenNewPairTool       *TokenNewPairTool
 	walletHoldingsTool     *WalletHoldingsTool
 	walletStatTool         *WalletStatTool
+	walletActivity         *WalletActivity
+	walletTokenActivity    *WalletTokenActivity
 	tokenLinkTool          *TokenLinkTool
 	tokenLaunchpadInfoTool *TokenLaunchpadInfoTool
 	tokenPumpRankTool      *TokenPumpRankTool
@@ -61,6 +63,8 @@ func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
 	ret.tokenNewPairTool = NewTokenNewPairTool(baseUrl, baseGetParam)
 	ret.walletHoldingsTool = NewWalletHoldingsTool(baseUrl, baseGetParam)
 	ret.walletStatTool = NewWalletStatTool(baseUrl, baseGetParam)
+	ret.walletActivity = NewWalletActivity(baseUrl, baseGetParam)
+	ret.walletTokenActivity = NewWalletTokenActivity(baseUrl, baseGetParam)
 	ret.tokenLinkTool = NewTokenLinkTool(baseUrl, baseGetParam)
 	ret.tokenLaunchpadInfoTool = NewTokenLaunchpadInfoTool(baseUrl, baseGetParam)
 	ret.tokenPumpRankTool = NewTokenPumpRankTool(baseUrl, baseGetParam)
@@ -145,6 +149,14 @@ func (mt *MobiTool) GetWalletHoldingsTool() *WalletHoldingsTool {
 
 func (mt *MobiTool) GetWalletStatTool() *WalletStatTool {
 	return mt.walletStatTool
+}
+
+func (mt *MobiTool) GetWalletActivity() *WalletActivity {
+	return mt.walletActivity
+}
+
+func (mt *MobiTool) GetWalletTokenActivity() *WalletTokenActivity {
+	return mt.walletTokenActivity
 }
 
 func (mt *MobiTool) GetTokenPumpRankTool() *TokenPumpRankTool {
