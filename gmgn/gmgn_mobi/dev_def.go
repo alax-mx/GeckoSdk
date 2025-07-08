@@ -55,6 +55,11 @@ const (
 	WALLET_TOKEN_DIRECTION_DESC                 string = "desc"
 )
 
+const (
+	WALLET_TOKEN_ACTIVITY_EVENT_BUY  string = "buy"
+	WALLET_TOKEN_ACTIVITY_EVENT_SELL string = "sell"
+)
+
 type DeviceInfo struct {
 	DeviceID string `json:"device_id"`
 	ClientID string `json:"client_id"`
