@@ -7,15 +7,15 @@ import (
 	"github.com/alax-mx/geckosdk/proxy"
 )
 
-type Data struct {
+type STWalletTokenActivityData struct {
 	Activities []STActivities `json:"activities"`
 	Next       any            `json:"next"`
 }
 
 type GetWalletTokenActivityResp struct {
-	Code int    `json:"code"`
-	Msg  string `json:"msg"`
-	Data Data   `json:"data"`
+	Code int                       `json:"code"`
+	Msg  string                    `json:"msg"`
+	Data STWalletTokenActivityData `json:"data"`
 }
 
 type WalletTokenActivity struct {
