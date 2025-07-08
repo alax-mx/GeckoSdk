@@ -35,6 +35,7 @@ type MobiTool struct {
 	kolCardsTool           *KolCardsTool
 	tokenWalletMonitorTool *TokenWalletMonitorTool
 	tokenDevCreatedTool    *TokenDevCreatedTool
+	tokenTradesTool        *TokenTradesTool
 }
 
 func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
@@ -73,6 +74,7 @@ func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
 	ret.tokenSwapsTool = NewTokenSwapsTool(baseUrl, baseGetParam)
 	ret.tokenDevCreatedTool = NewTokenDevCreatedTool(baseUrl, baseGetParam)
 	ret.tokenWalletMonitorTool = NewTokenWalletMonitorTool(baseUrl, baseGetParam)
+	ret.tokenTradesTool = NewTokenTradesTool(baseUrl, baseGetParam)
 	ret.smartMoneyCardsTool = NewSmartMoneyCardsTool(baseUrl, baseGetParam, basePostParam)
 	ret.kolCardsTool = NewKolCardsTool(baseUrl, baseGetParam, basePostParam)
 
@@ -101,6 +103,10 @@ func (mt *MobiTool) GetTokenWalletTagStatTool() *TokenWalletTagStatTool {
 
 func (mt *MobiTool) GetTokenDevTool() *TokenDevTool {
 	return mt.tokenDevTool
+}
+
+func (mt *MobiTool) GetTokenTradesTool() *TokenTradesTool {
+	return mt.tokenTradesTool
 }
 
 func (mt *MobiTool) GetTokenLinkTool() *TokenLinkTool {

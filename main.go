@@ -14,7 +14,7 @@ func main() {
 	deviceInfo := &gmgn_mobi.DeviceInfo{}
 	json.Unmarshal(data, deviceInfo)
 	gmgnTool := gmgn.NewGmgnTool("", "", deviceInfo)
-	resp, err := gmgnTool.GetMobiTool().GetTokenBluchipRankTool().Get("1h", 1)
+	resp, err := gmgnTool.GetMobiTool().GetTokenTradesTool().Get("9Ertjp8ZpBwuEt1xoqz8gAPe6tvLCTkXvJYNqK35bonk", 10)
 	if err != nil {
 		fmt.Println(err)
 		return
