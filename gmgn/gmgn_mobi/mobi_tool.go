@@ -8,34 +8,38 @@ import (
 )
 
 type MobiTool struct {
-	tokenSecurityTool      *TokenSecurityTool
-	tokenStatTool          *TokenStatTool
-	tokenPriceTool         *TokenPriceTool
-	tokenPoolTool          *TokenPoolTool
-	tokenWalletTagStatTool *TokenWalletTagStatTool
-	tokenDevTool           *TokenDevTool
-	tokenCandlesTool       *TokenCandlesTool
-	gasPriceTool           *GasPriceTool
-	tokenHoldersTool       *TokenHoldersTool
-	tokenHolderStatTool    *TokenHolderStatTool
-	tokenTopBuyersTool     *TokenTopBuyersTool
-	tokenRugInfoTool       *TokenRugInfoTool
-	tokenNewPairTool       *TokenNewPairTool
-	walletHoldingsTool     *WalletHoldingsTool
-	walletStatTool         *WalletStatTool
-	walletActivity         *WalletActivity
-	walletTokenActivity    *WalletTokenActivity
-	tokenLinkTool          *TokenLinkTool
-	tokenLaunchpadInfoTool *TokenLaunchpadInfoTool
-	tokenPumpRankTool      *TokenPumpRankTool
-	tokenBluchipRankTool   *TokenBluchipRankTool
-	tokenPumpTool          *TokenPumpTool
-	tokenSwapsTool         *TokenSwapsTool
-	smartMoneyCardsTool    *SmartMoneyCardsTool
-	kolCardsTool           *KolCardsTool
-	tokenWalletMonitorTool *TokenWalletMonitorTool
-	tokenDevCreatedTool    *TokenDevCreatedTool
-	tokenTradesTool        *TokenTradesTool
+	tokenSecurityTool          *TokenSecurityTool
+	tokenStatTool              *TokenStatTool
+	tokenPriceTool             *TokenPriceTool
+	tokenPoolTool              *TokenPoolTool
+	tokenWalletTagStatTool     *TokenWalletTagStatTool
+	tokenDevTool               *TokenDevTool
+	tokenCandlesTool           *TokenCandlesTool
+	gasPriceTool               *GasPriceTool
+	tokenHoldersTool           *TokenHoldersTool
+	tokenHolderStatTool        *TokenHolderStatTool
+	tokenTopBuyersTool         *TokenTopBuyersTool
+	tokenRugInfoTool           *TokenRugInfoTool
+	tokenNewPairTool           *TokenNewPairTool
+	walletHoldingsTool         *WalletHoldingsTool
+	walletStatTool             *WalletStatTool
+	walletActivity             *WalletActivity
+	walletTokenActivity        *WalletTokenActivity
+	tokenLinkTool              *TokenLinkTool
+	tokenLaunchpadInfoTool     *TokenLaunchpadInfoTool
+	tokenPumpRankTool          *TokenPumpRankTool
+	tokenBluchipRankTool       *TokenBluchipRankTool
+	tokenPumpTool              *TokenPumpTool
+	tokenSwapsTool             *TokenSwapsTool
+	smartMoneyCardsTool        *SmartMoneyCardsTool
+	kolCardsTool               *KolCardsTool
+	tokenWalletMonitorTool     *TokenWalletMonitorTool
+	tokenDevCreatedTool        *TokenDevCreatedTool
+	tokenTradesTool            *TokenTradesTool
+	tokenLiquidityTrendTool    *TokenLiquidityTrendTool
+	tokenLiquidityDetailTool   *TokenLiquidityDetailTool
+	tokenLiquidityStatsTool    *TokenLiquidityStatsTool
+	tokenRecommendSlippageTool *TokenRecommendSlippageTool
 }
 
 func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
@@ -77,6 +81,10 @@ func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
 	ret.tokenTradesTool = NewTokenTradesTool(baseUrl, baseGetParam)
 	ret.smartMoneyCardsTool = NewSmartMoneyCardsTool(baseUrl, baseGetParam, basePostParam)
 	ret.kolCardsTool = NewKolCardsTool(baseUrl, baseGetParam, basePostParam)
+	ret.tokenLiquidityTrendTool = NewTokenLiquidityTrendTool(baseUrl, baseGetParam)
+	ret.tokenLiquidityDetailTool = NewTokenLiquidityDetailTool(baseUrl, baseGetParam)
+	ret.tokenLiquidityStatsTool = NewTokenLiquidityStatsTool(baseUrl, baseGetParam)
+	ret.tokenRecommendSlippageTool = NewTokenRecommendSlippageTool(baseUrl, baseGetParam)
 
 	return ret
 }
@@ -191,6 +199,22 @@ func (mt *MobiTool) GetSmartMoneyCardsTool() *SmartMoneyCardsTool {
 
 func (mt *MobiTool) GetKolCardsTool() *KolCardsTool {
 	return mt.kolCardsTool
+}
+
+func (mt *MobiTool) GetTokenLiquidityTrendTool() *TokenLiquidityTrendTool {
+	return mt.tokenLiquidityTrendTool
+}
+
+func (mt *MobiTool) GetTokenLiquidityDetailTool() *TokenLiquidityDetailTool {
+	return mt.tokenLiquidityDetailTool
+}
+
+func (mt *MobiTool) GetTokenLiquidityStatsTool() *TokenLiquidityStatsTool {
+	return mt.tokenLiquidityStatsTool
+}
+
+func (mt *MobiTool) GetTokenRecommendSlippageTool() *TokenRecommendSlippageTool {
+	return mt.tokenRecommendSlippageTool
 }
 
 func (mt *MobiTool) GetBaseGetParam(deviceInfo *DeviceInfo) string {
