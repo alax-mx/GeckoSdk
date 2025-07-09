@@ -143,9 +143,9 @@ func (gtt *TradeTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	gtt.proxyInfo = proxyInfo
 }
 
-func (gtt *TradeTool) Swap(inAddress string, outAddress string, amount int, slippage float64, isAntiMev bool) (*STTradeInfo, error) {
+func (gtt *TradeTool) Swap(inAddress string, outAddress string, amount int, slippage float64, isAntiMev bool, fee string) (*STTradeInfo, error) {
 	// GetRouter
-	resp, err := gtt.GetSwapRouter(inAddress, outAddress, amount, gtt.pubKey.String(), slippage)
+	resp, err := gtt.GetSwapRouter(inAddress, outAddress, amount, gtt.pubKey.String(), slippage, fee)
 	if err != nil {
 		return nil, err
 	}
@@ -192,12 +192,12 @@ func (gtt *TradeTool) SwapByRouter(routerResp *GetRouterResp, isAntiMev bool) (*
 }
 
 func (gtt *TradeTool) GetSwapRouter(inAddress string, outAddress string, amount int,
-	walletPubkey string, slippage float64) (*GetRouterResp, error) {
+	walletPubkey string, slippage float64, fee string) (*GetRouterResp, error) {
 	tmpUrl := "/get_swap_route?token_in_address=" + inAddress
 	tmpUrl += "&token_out_address=" + outAddress
 	tmpUrl += "&in_amount=" + strconv.Itoa(amount)
 	tmpUrl += "&from_address=" + walletPubkey
-	tmpUrl += "&fee=0.001"
+	tmpUrl += "&fee=" + fee
 	tmpUrl += "&slippage=" + strconv.FormatFloat(slippage, 'f', 2, 64)
 	data, err := HttpGet(gtt.baseUrl+tmpUrl, gtt.proxyInfo)
 	if err != nil {
