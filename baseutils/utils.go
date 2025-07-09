@@ -479,3 +479,55 @@ func GetFloatValue(value interface{}) float64 {
 	floatValue, _ := strconv.ParseFloat(valueStr, 64)
 	return floatValue
 }
+
+func CheckAnyString(data any) bool {
+	_, ok := data.(string)
+	return ok
+}
+
+func CheckAnyInt(data any) bool {
+	_, ok := data.(int)
+	return ok
+}
+
+func CheckAnyFloat(data any) bool {
+	_, ok := data.(float64)
+	return ok
+}
+
+func GetAnyIntValue(data any) int {
+	if CheckAnyString(data) {
+		str, _ := data.(string)
+		ret, _ := strconv.Atoi(str)
+		return ret
+	}
+
+	if CheckAnyInt(data) {
+		ret, _ := data.(int)
+		return ret
+	}
+	return 0
+}
+
+func GetAnyStringValue(data any) string {
+	if CheckAnyString(data) {
+		str, _ := data.(string)
+		return str
+	}
+	return ""
+}
+
+func GetAnyFloatValue(data any) float64 {
+	if CheckAnyString(data) {
+		str, _ := data.(string)
+		ret, _ := strconv.ParseFloat(str, 64)
+		return ret
+	}
+
+	if CheckAnyFloat(data) {
+		ret, _ := data.(float64)
+		return ret
+	}
+
+	return 0
+}

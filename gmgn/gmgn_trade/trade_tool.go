@@ -8,9 +8,10 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/alax-mx/geckosdk/proxy"
 	"github.com/gagliardetto/solana-go"
 	"github.com/gagliardetto/solana-go/rpc"
+
+	"github.com/alax-mx/geckosdk/proxy"
 )
 
 type STTokenBalanceInfo struct {
@@ -50,18 +51,18 @@ type STRawTx struct {
 
 type STQuoteInfo struct {
 	InputMint            string         `json:"inputMint"`
-	InAmount             interface{}    `json:"inAmount"`
+	InAmount             any            `json:"inAmount"`
 	OutputMint           string         `json:"outputMint"`
-	OutputAmount         interface{}    `json:"outAmount"`
-	OtherAmountThreshold interface{}    `json:"otherAmountThreshold"`
+	OutputAmount         any            `json:"outAmount"`
+	OtherAmountThreshold any            `json:"otherAmountThreshold"`
 	InDecimals           int            `json:"inDecimals"`
 	OutDecimals          int            `json:"outDecimals"`
 	SwapMode             string         `json:"swapMode"`
-	SlippageBps          interface{}    `json:"slippageBps"`
-	PlatformFee          interface{}    `json:"platformFee"`
-	PriceImpactPct       interface{}    `json:"priceImpactPct"`
+	SlippageBps          any            `json:"slippageBps"`
+	PlatformFee          any            `json:"platformFee"`
+	PriceImpactPct       any            `json:"priceImpactPct"`
 	RoutePlan            []*STRoutePlan `json:"routePlan"`
-	TimeTaken            interface{}    `json:"timeTaken"`
+	TimeTaken            any            `json:"timeTaken"`
 }
 
 type STRouterInfo struct {
@@ -144,7 +145,7 @@ func (gtt *TradeTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 
 func (gtt *TradeTool) Swap(inAddress string, outAddress string, amount int, slippage float64, isAntiMev bool) (*STTradeInfo, error) {
 	// GetRouter
-	resp, err := gtt.getSwapRouter(inAddress, outAddress, amount, gtt.pubKey.String(), slippage)
+	resp, err := gtt.GetSwapRouter(inAddress, outAddress, amount, gtt.pubKey.String(), slippage)
 	if err != nil {
 		return nil, err
 	}
@@ -169,13 +170,34 @@ func (gtt *TradeTool) Swap(inAddress string, outAddress string, amount int, slip
 	}, nil
 }
 
-func (gtt *TradeTool) getSwapRouter(inAddress string, outAddress string, amount int,
+func (gtt *TradeTool) SwapByRouter(routerResp *GetRouterResp, isAntiMev bool) (*STTradeInfo, error) {
+	// Sign
+	signStr, err := gtt.signTransaction(routerResp.Data.RawTX)
+	if err != nil {
+		return nil, err
+	}
+
+	transResp, err := gtt.sendTransaction(signStr, isAntiMev)
+	if err != nil {
+		return nil, err
+	}
+	if transResp.Code != 0 {
+		return nil, errors.New("sendTransaction err: " + transResp.Msg)
+	}
+
+	return &STTradeInfo{
+		Hash:       transResp.Data.Hash,
+		RouterInfo: routerResp.Data,
+	}, nil
+}
+
+func (gtt *TradeTool) GetSwapRouter(inAddress string, outAddress string, amount int,
 	walletPubkey string, slippage float64) (*GetRouterResp, error) {
 	tmpUrl := "/get_swap_route?token_in_address=" + inAddress
 	tmpUrl += "&token_out_address=" + outAddress
 	tmpUrl += "&in_amount=" + strconv.Itoa(amount)
 	tmpUrl += "&from_address=" + walletPubkey
-	tmpUrl += "&fee=0.006"
+	tmpUrl += "&fee=0.001"
 	tmpUrl += "&slippage=" + strconv.FormatFloat(slippage, 'f', 2, 64)
 	data, err := HttpGet(gtt.baseUrl+tmpUrl, gtt.proxyInfo)
 	if err != nil {
