@@ -14,7 +14,7 @@ func main() {
 	deviceInfo := &gmgn_mobi.DeviceInfo{}
 	json.Unmarshal(data, deviceInfo)
 	gmgnTool := gmgn.NewGmgnTool("", "", deviceInfo)
-	resp, err := gmgnTool.GetMobiTool().GetTokenRecommendSlippageTool().Get("2mU4wMdQGmugVvTZJ7GcSY2orr7h4bA9VHBX7W6zbonk")
+	resp, err := gmgnTool.GetMobiTool().GetWalletStatTool().Get("4S9U8HckRngscHWrW418cG6Suw62dhEZzmyrT2hxSye5", "7d")
 	if err != nil {
 		fmt.Println(err)
 		return

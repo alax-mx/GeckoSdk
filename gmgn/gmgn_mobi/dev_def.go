@@ -1,6 +1,7 @@
 package gmgn_mobi
 
 const (
+	CANDLES_1M  string = "1m"
 	CANDLES_5M  string = "5m"
 	CANDLES_15M string = "15m"
 	CANDLES_30M string = "30m"
