@@ -8,7 +8,7 @@ const (
 	CANDLES_1H  string = "1h"
 	CANDLES_4H  string = "4h"
 	CANDLES_12H string = "12h"
-	CANDLES_1D  string = "1D"
+	CANDLES_1D  string = "1d"
 )
 
 const (
