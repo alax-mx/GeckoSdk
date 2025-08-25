@@ -1,7 +1,5 @@
 package tgbot
 
-import "fmt"
-
 type TGBotTool struct {
 	TGToken string
 	GroupID string
@@ -14,14 +12,13 @@ func NewTGBotTool(token string, groupID string) *TGBotTool {
 	}
 }
 
-func (tgb *TGBotTool) SendText(msg string) {
+func (tgb *TGBotTool) SendText(msg string) error {
 	url := "https://api.telegram.org/bot" + tgb.TGToken + "/sendMessage?chat_id=" + tgb.GroupID
 	url += "&text=" + msg
-	body, err := HttpGetFullURL(url)
+	_, err := HttpGetFullURL(url)
 	if err != nil {
-		fmt.Println(err)
-		return
+		return err
 	}
 
-	fmt.Println(string(body))
+	return nil
 }
