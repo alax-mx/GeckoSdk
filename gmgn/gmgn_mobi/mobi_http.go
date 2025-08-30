@@ -2,6 +2,7 @@ package gmgn_mobi
 
 import (
 	"bytes"
+	"crypto/tls"
 	"io"
 	"net/http"
 
@@ -12,7 +13,18 @@ func HttpGet(url string, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("user-agent", "okhttp/4.9.2")
 	req.Header.Add("Content-Type", "application/json; charset=utf-8")
-	client := http.DefaultClient
+	tlsConfig := &tls.Config{
+		CipherSuites: []uint16{
+			tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, // 示例Cipher Suite
+		},
+		// 可以添加其他配置，如支持的Extensions等
+	}
+	// client := http.DefaultClient
+	client := &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: tlsConfig,
+		},
+	}
 	if proxyInfo != nil {
 		dialer, err := proxyInfo.GetSocks5()
 		if err == nil {
@@ -38,7 +50,18 @@ func HttpGet(url string, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
 }
 
 func HttpPost(url string, param []byte, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
-	client := http.DefaultClient
+	tlsConfig := &tls.Config{
+		CipherSuites: []uint16{
+			tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, // 示例Cipher Suite
+		},
+		// 可以添加其他配置，如支持的Extensions等
+	}
+	// client := http.DefaultClient
+	client := &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: tlsConfig,
+		},
+	}
 	if proxyInfo != nil {
 		dialer, err := proxyInfo.GetSocks5()
 		if err != nil {
