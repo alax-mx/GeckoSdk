@@ -15,7 +15,9 @@ func HttpGet(url string, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
 	req.Header.Add("Content-Type", "application/json; charset=utf-8")
 	tlsConfig := &tls.Config{
 		CipherSuites: []uint16{
-			tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, // 示例Cipher Suite
+			tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+			tls.TLS_ECDHE_RSA_WITH_RC4_128_SHA,
+			tls.TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA,
 		},
 		// 可以添加其他配置，如支持的Extensions等
 	}
@@ -52,7 +54,9 @@ func HttpGet(url string, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
 func HttpPost(url string, param []byte, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
 	tlsConfig := &tls.Config{
 		CipherSuites: []uint16{
-			tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, // 示例Cipher Suite
+			tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+			tls.TLS_ECDHE_RSA_WITH_RC4_128_SHA,
+			tls.TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA,
 		},
 		// 可以添加其他配置，如支持的Extensions等
 	}
