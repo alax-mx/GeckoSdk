@@ -14,15 +14,21 @@ func main() {
 	deviceInfo := &gmgn_mobi.DeviceInfo{}
 	json.Unmarshal(data, deviceInfo)
 	gmgnTool := gmgn.NewGmgnTool("", "", deviceInfo)
-	count := 0
-	for {
-		count++
-		_, err := gmgnTool.GetMobiTool().GetWalletStatTool().Get("4S9U8HckRngscHWrW418cG6Suw62dhEZzmyrT2hxSye5", "7d")
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		// baseutils.ShowObjectValue(resp)
-		fmt.Println("count = ", count)
+	// count := 0
+	// for {
+	// 	count++
+	// 	_, err := gmgnTool.GetMobiTool().GetWalletStatTool().Get("4S9U8HckRngscHWrW418cG6Suw62dhEZzmyrT2hxSye5", "7d")
+	// 	if err != nil {
+	// 		fmt.Println(err)
+	// 		return
+	// 	}
+	// 	// baseutils.ShowObjectValue(resp)
+	// 	fmt.Println("count = ", count)
+	// }
+	resp, err := gmgnTool.GetWebTool().GetTrendingTool().GetTrendingTokens("6h", "desc", 20)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
+	baseutils.ShowObjectValue(resp)
 }

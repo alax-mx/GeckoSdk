@@ -23,6 +23,8 @@ func GetRanomClpherSuites() *tls.Config {
 			MinVersion: tls.VersionTLS10,
 			MaxVersion: tls.VersionTLS13,
 			//可以添加其他配置，如支持的Extensions等
+			ServerName:             "gmgn.mobi",
+			SessionTicketsDisabled: true,
 		})
 		g_configList = append(g_configList, &tls.Config{
 			CipherSuites: []uint16{
@@ -32,6 +34,8 @@ func GetRanomClpherSuites() *tls.Config {
 			MinVersion: tls.VersionTLS10,
 			MaxVersion: tls.VersionTLS13,
 			//可以添加其他配置，如支持的Extensions等
+			ServerName:             "gmgn.mobi",
+			SessionTicketsDisabled: true,
 		})
 		g_configList = append(g_configList, &tls.Config{
 			CipherSuites: []uint16{
@@ -41,6 +45,8 @@ func GetRanomClpherSuites() *tls.Config {
 			MinVersion: tls.VersionTLS10,
 			MaxVersion: tls.VersionTLS13,
 			//可以添加其他配置，如支持的Extensions等
+			ServerName:             "gmgn.mobi",
+			SessionTicketsDisabled: true,
 		})
 		g_configList = append(g_configList, &tls.Config{
 			CipherSuites: []uint16{
@@ -50,6 +56,8 @@ func GetRanomClpherSuites() *tls.Config {
 			MinVersion: tls.VersionTLS10,
 			MaxVersion: tls.VersionTLS13,
 			//可以添加其他配置，如支持的Extensions等
+			ServerName:             "gmgn.mobi",
+			SessionTicketsDisabled: true,
 		})
 		g_configList = append(g_configList, &tls.Config{
 			CipherSuites: []uint16{
@@ -59,6 +67,8 @@ func GetRanomClpherSuites() *tls.Config {
 			MinVersion: tls.VersionTLS10,
 			MaxVersion: tls.VersionTLS13,
 			//可以添加其他配置，如支持的Extensions等
+			ServerName:             "gmgn.mobi",
+			SessionTicketsDisabled: true,
 		})
 	}
 
