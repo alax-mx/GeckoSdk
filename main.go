@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/alax-mx/geckosdk/baseutils"
 	"github.com/alax-mx/geckosdk/gmgn"
@@ -16,9 +17,10 @@ func main() {
 	json.Unmarshal(data, deviceInfo)
 	gmgnTool := gmgn.NewGmgnTool("", "", deviceInfo)
 
-	resp, err := gmgnTool.GetMobiTool().GetTokenStatTool().Get(gmgn_define.CHAIN_TYPE_BSC, "0x5448dff2d2564534befab1bb9266632fd67c4444")
+	resp, err := gmgnTool.GetMobiTool().GetTokenPriceTool().Get(gmgn_define.CHAIN_TYPE_BASE, "0x3ec2156d4c0a9cbdab4a016633b7bcf6a8d68ea2")
 	if err != nil {
 		fmt.Println(err)
+		time.Sleep(50 * time.Second)
 		return
 	}
 

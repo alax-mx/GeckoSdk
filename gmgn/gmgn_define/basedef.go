@@ -8,8 +8,11 @@ const (
 )
 
 const (
-	CHAIN_TYPE_SOL string = "sol"
-	CHAIN_TYPE_BSC string = "bsc"
+	CHAIN_TYPE_SOL  string = "sol"
+	CHAIN_TYPE_BSC  string = "bsc"
+	CHAIN_TYPE_ETH  string = "eth"
+	CHAIN_TYPE_TRON string = "tron"
+	CHAIN_TYPE_BASE string = "base"
 )
 
 const (
