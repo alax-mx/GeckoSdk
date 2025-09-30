@@ -17,7 +17,7 @@ func main() {
 	json.Unmarshal(data, deviceInfo)
 	gmgnTool := gmgn.NewGmgnTool("", "", deviceInfo)
 
-	resp, err := gmgnTool.GetMobiTool().GetTokenPriceTool().Get(gmgn_define.CHAIN_TYPE_BASE, "0x3ec2156d4c0a9cbdab4a016633b7bcf6a8d68ea2")
+	resp, err := gmgnTool.GetMobiTool().GetTokenPoolTool().GetPoolInfoEvm(gmgn_define.CHAIN_TYPE_BASE, "0x3ec2156d4c0a9cbdab4a016633b7bcf6a8d68ea2")
 	if err != nil {
 		fmt.Println(err)
 		time.Sleep(50 * time.Second)
