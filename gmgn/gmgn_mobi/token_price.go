@@ -78,8 +78,8 @@ func (tpt *TokenPriceTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tpt.proxyInfo = proxyInfo
 }
 
-func (tpt *TokenPriceTool) Get(tokenAddress string) (*GetTokenPriceInfoResp, error) {
-	url := "api/v1/token_price_info/sol/" + tokenAddress + "?" + tpt.baseParam
+func (tpt *TokenPriceTool) Get(chainType string, tokenAddress string) (*GetTokenPriceInfoResp, error) {
+	url := "api/v1/token_price_info/" + chainType + "/" + tokenAddress + "?" + tpt.baseParam
 	data, err := HttpGet(tpt.baseUrl+url, tpt.proxyInfo)
 	if err != nil {
 		return nil, err

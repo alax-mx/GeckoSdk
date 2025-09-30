@@ -93,8 +93,8 @@ func (wht *WalletStatTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	wht.proxyInfo = proxyInfo
 }
 
-func (wht *WalletStatTool) Get(walletAddress string, period string) (*GetWalletStatResp, error) {
-	url := "api/v1/wallet_stat/sol/" + walletAddress + "/" + period + "?" + wht.baseParam
+func (wht *WalletStatTool) Get(chainType string, walletAddress string, period string) (*GetWalletStatResp, error) {
+	url := "api/v1/wallet_stat/" + chainType + "/" + walletAddress + "/" + period + "?" + wht.baseParam
 	url += "&period=" + period
 	data, err := HttpGet(wht.baseUrl+url, wht.proxyInfo)
 	if err != nil {

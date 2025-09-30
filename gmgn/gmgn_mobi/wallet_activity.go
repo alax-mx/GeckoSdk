@@ -71,8 +71,8 @@ func (wa *WalletActivity) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	wa.proxyInfo = proxyInfo
 }
 
-func (wa *WalletActivity) Get(walletAddress string, limit int) (*GetWalletActivityResp, error) {
-	url := "api/v1/wallet_activity/sol?" + wa.baseParam
+func (wa *WalletActivity) Get(chainType string, walletAddress string, limit int) (*GetWalletActivityResp, error) {
+	url := "api/v1/wallet_activity/" + chainType + "?" + wa.baseParam
 	url += "&wallet=" + walletAddress
 	url += "&limit=" + strconv.Itoa(limit)
 	url += "&type=buy"

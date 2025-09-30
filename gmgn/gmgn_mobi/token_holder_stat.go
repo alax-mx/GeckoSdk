@@ -43,8 +43,8 @@ func (thst *TokenHolderStatTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	thst.proxyInfo = proxyInfo
 }
 
-func (thst *TokenHolderStatTool) Get(tokenAddress string) (*GetTokenHolderStatResp, error) {
-	url := "vas/api/v1/token_holder_stat/sol/" + tokenAddress + "?" + thst.baseParam
+func (thst *TokenHolderStatTool) Get(chainType string, tokenAddress string) (*GetTokenHolderStatResp, error) {
+	url := "vas/api/v1/token_holder_stat/" + chainType + "/" + tokenAddress + "?" + thst.baseParam
 	data, err := HttpGet(thst.baseUrl+url, thst.proxyInfo)
 	if err != nil {
 		return nil, err

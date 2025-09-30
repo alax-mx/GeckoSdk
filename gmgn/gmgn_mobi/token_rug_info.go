@@ -46,8 +46,8 @@ func (tit *TokenRugInfoTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tit.proxyInfo = proxyInfo
 }
 
-func (tit *TokenRugInfoTool) Get(tokenAddress string) (*GetTokenRugInfoResp, error) {
-	url := "api/v1/token_rug_info/sol/" + tokenAddress + "?" + tit.baseParam
+func (tit *TokenRugInfoTool) Get(chainType string, tokenAddress string) (*GetTokenRugInfoResp, error) {
+	url := "api/v1/token_rug_info/" + chainType + "/" + tokenAddress + "?" + tit.baseParam
 	data, err := HttpGet(tit.baseUrl+url, tit.proxyInfo)
 	if err != nil {
 		return nil, err

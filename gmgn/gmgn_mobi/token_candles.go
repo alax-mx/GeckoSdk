@@ -54,8 +54,8 @@ func (tct *TokenCandlesTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tct.proxyInfo = proxyInfo
 }
 
-func (tct *TokenCandlesTool) Get(tokenAddress string, resolution string, limit int) (*GetTokenCandlesResp, error) {
-	url := "api/v1/token_candles/sol/" + tokenAddress + "?" + tct.baseParam
+func (tct *TokenCandlesTool) Get(chainType string, tokenAddress string, resolution string, limit int) (*GetTokenCandlesResp, error) {
+	url := "api/v1/token_candles/" + chainType + "/" + tokenAddress + "?" + tct.baseParam
 	url += "&resolution=" + resolution
 	url += "&limit=" + strconv.Itoa(limit)
 	data, err := HttpGet(tct.baseUrl+url, tct.proxyInfo)

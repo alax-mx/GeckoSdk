@@ -36,8 +36,8 @@ func (wta *WalletTokenActivity) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	wta.proxyInfo = proxyInfo
 }
 
-func (wa *WalletTokenActivity) Get(walletAddress string, tokenAddress string, limit int) (*GetWalletTokenActivityResp, error) {
-	url := "defi/quotation/v1/wallet_token_activity/sol?" + wa.baseParam
+func (wa *WalletTokenActivity) Get(chainType string, walletAddress string, tokenAddress string, limit int) (*GetWalletTokenActivityResp, error) {
+	url := "defi/quotation/v1/wallet_token_activity/" + chainType + "?" + wa.baseParam
 	url += "&wallet=" + walletAddress
 	url += "&token=" + tokenAddress
 	url += "&limit=" + strconv.Itoa(limit)

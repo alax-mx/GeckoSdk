@@ -93,8 +93,8 @@ func (tst *TokenSwapsTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tst.proxyInfo = proxyInfo
 }
 
-func (tst *TokenSwapsTool) Get(interval string, limit int) (*GetTokenSwapsResp, error) {
-	url := "defi/quotation/v1/rank/sol/swaps/" + interval + "?" + tst.baseParam
+func (tst *TokenSwapsTool) Get(chainType string, interval string, limit int) (*GetTokenSwapsResp, error) {
+	url := "defi/quotation/v1/rank/" + chainType + "/swaps/" + interval + "?" + tst.baseParam
 	url += "&limit=" + strconv.Itoa(limit)
 	url += "&orderby=marketcap"
 	url += "&direction=desc"

@@ -46,8 +46,8 @@ func (tpt *TokenLiquidityStatsTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tpt.proxyInfo = proxyInfo
 }
 
-func (tpt *TokenLiquidityStatsTool) Get(tokenAddress string) (*GetTokenLiquidityStatsResp, error) {
-	url := "api/v1/token_liquidity_stats/sol/" + tokenAddress + "?" + tpt.baseParam
+func (tpt *TokenLiquidityStatsTool) Get(chainType string, tokenAddress string) (*GetTokenLiquidityStatsResp, error) {
+	url := "api/v1/token_liquidity_stats/" + chainType + "/" + tokenAddress + "?" + tpt.baseParam
 	data, err := HttpGet(tpt.baseUrl+url, tpt.proxyInfo)
 	if err != nil {
 		return nil, err

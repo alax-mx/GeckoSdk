@@ -42,8 +42,8 @@ func (tst *TokenStatTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tst.proxyInfo = proxyInfo
 }
 
-func (tst *TokenStatTool) Get(tokenAddress string) (*GetTokenStatResp, error) {
-	url := "api/v1/token_stat/sol/" + tokenAddress + "?" + tst.baseParam
+func (tst *TokenStatTool) Get(chainType string, tokenAddress string) (*GetTokenStatResp, error) {
+	url := "api/v1/token_stat/" + chainType + "/" + tokenAddress + "?" + tst.baseParam
 	data, err := HttpGet(tst.baseUrl+url, tst.proxyInfo)
 	if err != nil {
 		return nil, err

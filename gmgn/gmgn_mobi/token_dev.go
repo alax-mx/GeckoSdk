@@ -43,8 +43,8 @@ func (tdt *TokenDevTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tdt.proxyInfo = proxyInfo
 }
 
-func (tdt *TokenDevTool) Get(tokenAddress string) (*GetTokenDevInfoResp, error) {
-	url := "api/v1/token_dev_info/sol/" + tokenAddress + "?" + tdt.baseParam
+func (tdt *TokenDevTool) Get(chainType string, tokenAddress string) (*GetTokenDevInfoResp, error) {
+	url := "api/v1/token_dev_info/" + chainType + "/" + tokenAddress + "?" + tdt.baseParam
 	data, err := HttpGet(tdt.baseUrl+url, tdt.proxyInfo)
 	if err != nil {
 		return nil, err

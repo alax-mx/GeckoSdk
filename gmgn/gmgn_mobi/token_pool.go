@@ -52,7 +52,7 @@ func (tpt *TokenPoolTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tpt.proxyInfo = proxyInfo
 }
 
-func (tpt *TokenPoolTool) Get(tokenAddress string) (*GetTokenPoolInfoResp, error) {
+func (tpt *TokenPoolTool) GetSol(tokenAddress string) (*GetTokenPoolInfoResp, error) {
 	url := "api/v1/token_pool_info_sol/sol/" + tokenAddress + "?" + tpt.baseParam
 	data, err := HttpGet(tpt.baseUrl+url, tpt.proxyInfo)
 	if err != nil {

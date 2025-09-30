@@ -100,8 +100,8 @@ func (tbrt *TokenBluchipRankTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tbrt.proxyInfo = proxyInfo
 }
 
-func (tbrt *TokenBluchipRankTool) Get(interval string, limit int) (*GetTokenBluchipRankResp, error) {
-	url := "api/v1/bluechip_rank/sol?"
+func (tbrt *TokenBluchipRankTool) Get(chainType string, interval string, limit int) (*GetTokenBluchipRankResp, error) {
+	url := "api/v1/bluechip_rank/" + chainType + "?"
 	url += "interval=" + interval
 	url += "&" + tbrt.baseParam
 	url += "&limit=" + strconv.Itoa(limit)

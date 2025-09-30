@@ -52,8 +52,8 @@ func (tpt *TokenLinkTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tpt.proxyInfo = proxyInfo
 }
 
-func (tpt *TokenLinkTool) Get(tokenAddress string) (*GetTokenLinkInfoResp, error) {
-	url := "api/v1/token_link/sol/" + tokenAddress + "?" + tpt.baseParam
+func (tpt *TokenLinkTool) Get(chainType string, tokenAddress string) (*GetTokenLinkInfoResp, error) {
+	url := "api/v1/token_link/" + chainType + "/" + tokenAddress + "?" + tpt.baseParam
 	data, err := HttpGet(tpt.baseUrl+url, tpt.proxyInfo)
 	if err != nil {
 		return nil, err

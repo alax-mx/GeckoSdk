@@ -33,8 +33,8 @@ func (tdt *KolCardsTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tdt.proxyInfo = proxyInfo
 }
 
-func (tdt *KolCardsTool) Get(interval string) (*GetKolCardsResp, error) {
-	url := "api/v1/kol_cards/cards/sol/" + interval + "?" + tdt.baseParam
+func (tdt *KolCardsTool) Get(chainType string, interval string) (*GetKolCardsResp, error) {
+	url := "api/v1/kol_cards/cards/" + chainType + "/" + interval + "?" + tdt.baseParam
 	data, err := HttpPost(tdt.baseUrl+url, tdt.postData, tdt.proxyInfo)
 	if err != nil {
 		return nil, err

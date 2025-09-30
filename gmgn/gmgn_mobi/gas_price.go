@@ -55,8 +55,8 @@ func (gpt *GasPriceTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	gpt.proxyInfo = proxyInfo
 }
 
-func (gpt *GasPriceTool) Get() (*GetGasPriceResp, error) {
-	url := "api/v1/gas_price/sol?" + gpt.baseParam
+func (gpt *GasPriceTool) Get(chainType string) (*GetGasPriceResp, error) {
+	url := "api/v1/gas_price/" + chainType + "?" + gpt.baseParam
 	data, err := HttpGet(gpt.baseUrl+url, gpt.proxyInfo)
 	if err != nil {
 		return nil, err
