@@ -55,7 +55,15 @@ func HttpPostRouter(url string, data []byte, proxyInfo *proxy.STProxyInfo) ([]by
 			}
 		}
 	}
-	res, err := client.Post(url, "application/json", bytes.NewReader(data))
+
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
+	if err != nil {
+		return []byte{}, err
+	}
+	// 添加请求头
+	req.Header.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0")
+	req.Header.Add("Content-Type", "application/json; charset=utf-8")
+	res, err := client.Do(req)
 	if err != nil {
 		return []byte{}, err
 	}

@@ -118,7 +118,7 @@ type GetTransactionStatusResp struct {
 	Data STTradeStatusInfo `json:"data"`
 }
 
-type TradeTool struct {
+type SolTradeTool struct {
 	baseUrl   string
 	pubKey    solana.PublicKey
 	priKey    solana.PrivateKey
@@ -126,12 +126,12 @@ type TradeTool struct {
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTradeTool(baseUrl string, pubKey string, priKey string) *TradeTool {
+func NewSolTradeTool(baseUrl string, pubKey string, priKey string) *SolTradeTool {
 	if pubKey == "" || priKey == "" {
 		fmt.Println("pubKey == nil || priKey == nil")
 		return nil
 	}
-	return &TradeTool{
+	return &SolTradeTool{
 		baseUrl:   baseUrl,
 		pubKey:    solana.MustPublicKeyFromBase58(pubKey),
 		priKey:    solana.MustPrivateKeyFromBase58(priKey),
@@ -139,11 +139,11 @@ func NewTradeTool(baseUrl string, pubKey string, priKey string) *TradeTool {
 		proxyInfo: nil,
 	}
 }
-func (gtt *TradeTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
+func (gtt *SolTradeTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	gtt.proxyInfo = proxyInfo
 }
 
-func (gtt *TradeTool) Swap(inAddress string, outAddress string, amount int, slippage float64, isAntiMev bool, fee string) (*STTradeInfo, error) {
+func (gtt *SolTradeTool) Swap(inAddress string, outAddress string, amount int, slippage float64, isAntiMev bool, fee string) (*STTradeInfo, error) {
 	// GetRouter
 	resp, err := gtt.GetSwapRouter(inAddress, outAddress, amount, gtt.pubKey.String(), slippage, fee)
 	if err != nil {
@@ -170,7 +170,7 @@ func (gtt *TradeTool) Swap(inAddress string, outAddress string, amount int, slip
 	}, nil
 }
 
-func (gtt *TradeTool) SwapByRouter(routerResp *GetRouterResp, isAntiMev bool) (*STTradeInfo, error) {
+func (gtt *SolTradeTool) SwapByRouter(routerResp *GetRouterResp, isAntiMev bool) (*STTradeInfo, error) {
 	// Sign
 	signStr, err := gtt.signTransaction(routerResp.Data.RawTX)
 	if err != nil {
@@ -191,7 +191,7 @@ func (gtt *TradeTool) SwapByRouter(routerResp *GetRouterResp, isAntiMev bool) (*
 	}, nil
 }
 
-func (gtt *TradeTool) GetSwapRouter(inAddress string, outAddress string, amount int,
+func (gtt *SolTradeTool) GetSwapRouter(inAddress string, outAddress string, amount int,
 	walletPubkey string, slippage float64, fee string) (*GetRouterResp, error) {
 	tmpUrl := "/get_swap_route?token_in_address=" + inAddress
 	tmpUrl += "&token_out_address=" + outAddress
@@ -213,7 +213,7 @@ func (gtt *TradeTool) GetSwapRouter(inAddress string, outAddress string, amount 
 	return ret, nil
 }
 
-func (gtt *TradeTool) signTransaction(rawTx STRawTx) (string, error) {
+func (gtt *SolTradeTool) signTransaction(rawTx STRawTx) (string, error) {
 	// Decode base64 transaction
 	txBytes, err := base64.StdEncoding.DecodeString(rawTx.SwapTransaction)
 	if err != nil {
@@ -237,7 +237,7 @@ func (gtt *TradeTool) signTransaction(rawTx STRawTx) (string, error) {
 	return tx.MustToBase64(), nil
 }
 
-func (gtt *TradeTool) sendTransaction(signedTx string, isAntiMev bool) (*SendTransactionResp, error) {
+func (gtt *SolTradeTool) sendTransaction(signedTx string, isAntiMev bool) (*SendTransactionResp, error) {
 	tmpUrl := "https://gmgn.ai/txproxy/v1/send_transaction"
 	param := make(map[string]interface{})
 	param["chain"] = "sol"
@@ -258,7 +258,7 @@ func (gtt *TradeTool) sendTransaction(signedTx string, isAntiMev bool) (*SendTra
 	return ret, nil
 }
 
-func (gtt *TradeTool) GetTransactionStatus(hash string, lastValidHeight int) (*GetTransactionStatusResp, error) {
+func (gtt *SolTradeTool) GetTransactionStatus(hash string, lastValidHeight int) (*GetTransactionStatusResp, error) {
 	tmpUrl := "/get_transaction_status?"
 	tmpUrl += "hash=" + hash
 	tmpUrl += "&last_valid_height" + strconv.Itoa(lastValidHeight)
@@ -275,7 +275,7 @@ func (gtt *TradeTool) GetTransactionStatus(hash string, lastValidHeight int) (*G
 	return ret, nil
 }
 
-func (gtt *TradeTool) GetSolBalance() (*rpc.GetBalanceResult, error) {
+func (gtt *SolTradeTool) GetSolBalance() (*rpc.GetBalanceResult, error) {
 	out, err := gtt.rpcClinet.GetBalance(context.Background(), gtt.pubKey, rpc.CommitmentFinalized)
 	if err != nil {
 		return nil, err
@@ -284,7 +284,7 @@ func (gtt *TradeTool) GetSolBalance() (*rpc.GetBalanceResult, error) {
 	return out, nil
 }
 
-func (gtt *TradeTool) GetTokenBalance(tokenAddress string) (*STTokenBalanceInfo, error) {
+func (gtt *SolTradeTool) GetTokenBalance(tokenAddress string) (*STTokenBalanceInfo, error) {
 	tokenmint := solana.MustPublicKeyFromBase58(tokenAddress)                  //token 地址
 	tokenacc, _, _ := solana.FindAssociatedTokenAddress(gtt.pubKey, tokenmint) //算出token账号地址
 	outtbl, err := gtt.rpcClinet.GetTokenAccountBalance(context.Background(), tokenacc, rpc.CommitmentFinalized)

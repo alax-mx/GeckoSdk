@@ -9,17 +9,27 @@ import (
 )
 
 type GmgnTool struct {
-	webTool   *gmgn_web.WebTool
-	mobiTool  *gmgn_mobi.MobiTool
-	tradeTool *gmgn_trade.TradeTool
+	webTool      *gmgn_web.WebTool
+	mobiTool     *gmgn_mobi.MobiTool
+	solTradeTool *gmgn_trade.SolTradeTool
+	ethTradeTool *gmgn_trade.EthTradeTool
 }
 
-func NewGmgnTool(pubKey string, priKey string, deviceInfo *gmgn_mobi.DeviceInfo) *GmgnTool {
-	return &GmgnTool{
-		webTool:   gmgn_web.NewWebTool(gmgn_define.G_BASE_GMGN_WEB_DEFI_URL),
-		mobiTool:  gmgn_mobi.NewMobiTool(gmgn_define.G_BASE_GMGN_MOBI_URL, deviceInfo),
-		tradeTool: gmgn_trade.NewTradeTool(gmgn_define.G_BASE_GMGN_TRADE_URL, pubKey, priKey),
+func NewGmgnTool(pubKey string, priKey string, deviceInfo *gmgn_mobi.DeviceInfo, chainType string) *GmgnTool {
+	ret := &GmgnTool{
+		webTool:      gmgn_web.NewWebTool(gmgn_define.G_BASE_GMGN_WEB_DEFI_URL),
+		mobiTool:     gmgn_mobi.NewMobiTool(gmgn_define.G_BASE_GMGN_MOBI_URL, deviceInfo),
+		solTradeTool: nil,
+		ethTradeTool: nil,
 	}
+	if chainType == gmgn_define.CHAIN_TYPE_SOL {
+		ret.solTradeTool = gmgn_trade.NewSolTradeTool(gmgn_define.G_BASE_GMGN_SOL_TRADE_URL, pubKey, priKey)
+	}
+	if chainType == gmgn_define.CHAIN_TYPE_ETH {
+		ret.ethTradeTool = gmgn_trade.NewEthTradeTool(gmgn_define.G_BASE_GMGN_ETH_TRADE_URL, pubKey, priKey)
+	}
+
+	return ret
 }
 
 func (gt *GmgnTool) GetWebTool() *gmgn_web.WebTool {
@@ -30,13 +40,17 @@ func (gt *GmgnTool) GetMobiTool() *gmgn_mobi.MobiTool {
 	return gt.mobiTool
 }
 
-func (gt *GmgnTool) GetTradeTool() *gmgn_trade.TradeTool {
-	return gt.tradeTool
+func (gt *GmgnTool) GetSolTradeTool() *gmgn_trade.SolTradeTool {
+	return gt.solTradeTool
+}
+
+func (gt *GmgnTool) GetEthTradeTool() *gmgn_trade.EthTradeTool {
+	return gt.ethTradeTool
 }
 
 func (gt *GmgnTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	gt.mobiTool.SetProxy(proxyInfo)
-	if gt.tradeTool != nil {
-		gt.tradeTool.SetProxy(proxyInfo)
+	if gt.solTradeTool != nil {
+		gt.solTradeTool.SetProxy(proxyInfo)
 	}
 }

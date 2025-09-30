@@ -16,8 +16,9 @@ const (
 )
 
 const (
-	G_BASE_GMGN_WEB_DEFI_URL string = "https://gmgn.ai/defi/quotation/"
-	G_BASE_GMGN_TRADE_URL    string = "https://gmgn.ai/defi/router/v1/sol/tx"
+	G_BASE_GMGN_WEB_DEFI_URL  string = "https://gmgn.ai/defi/quotation/"
+	G_BASE_GMGN_SOL_TRADE_URL string = "https://gmgn.ai/defi/router/v1/sol/tx"
+	G_BASE_GMGN_ETH_TRADE_URL string = "https://gmgn.ai/defi/router/v1/tx"
 	// G_BASE_GMGN_MOBI_URL     string = "https://gmgn.mobi/"
 	G_BASE_GMGN_MOBI_URL string = "https://gmgn.gracematrix.net/" //新版本改了域名，增加了风控,待解决
 )
