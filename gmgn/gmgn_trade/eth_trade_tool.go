@@ -121,7 +121,7 @@ func NewEthTradeTool(baseUrl string, pubKey string, priKey string) *EthTradeTool
 		return nil
 	}
 
-	ethClient, err := ethclient.Dial("https://eth.llamarpc.com")
+	ethClient, err := ethclient.Dial("https://ethereum.publicnode.com")
 	if err != nil {
 		fmt.Println(err)
 		return nil
