@@ -17,12 +17,7 @@ type Wallet struct {
 	publicKey  common.Address
 }
 
-func NewWallet(rpcURL, privateKeyStr string) (*Wallet, error) {
-	client, err := ethclient.Dial(rpcURL)
-	if err != nil {
-		return nil, err
-	}
-
+func NewWallet(client *ethclient.Client, privateKeyStr string) (*Wallet, error) {
 	privateKey, err := crypto.HexToECDSA(privateKeyStr)
 	if err != nil {
 		return nil, err

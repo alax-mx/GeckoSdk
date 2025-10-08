@@ -56,7 +56,7 @@ func (tool *ETHTadeTool2) Swap(inAddress string, outAddress string, amount float
 	defer client.Close()
 
 	// Load private key from env
-	privateKey, err := crypto.HexToECDSA("5af616d5aad4b117da457cf8719ee4b6a113dbbe987f431e72508c0549834aae")
+	privateKey, err := crypto.HexToECDSA("")
 	if err != nil {
 		fmt.Println("Invalid private key")
 		return
