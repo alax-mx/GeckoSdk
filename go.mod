@@ -5,6 +5,8 @@ go 1.24.0
 require github.com/gagliardetto/solana-go v1.14.0
 
 require (
+	github.com/1inch/1inch-sdk-go v1.0.0-beta.3 // indirect
+	github.com/BurntSushi/toml v1.4.1-0.20240526193622-a339e1f7089c // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/StackExchange/wmi v1.2.1 // indirect
 	github.com/bits-and-blooms/bitset v1.20.0 // indirect
@@ -18,16 +20,22 @@ require (
 	github.com/ethereum/go-verkle v0.2.2 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
+	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/holiman/uint256 v1.3.2 // indirect
+	github.com/jerrychan807/1inch-trading-bot v0.0.0-20230215071631-b31b66df2b7f // indirect
+	github.com/jon4hz/go-1inch v0.1.1 // indirect
 	github.com/metachris/flashbots v0.3.0 // indirect
 	github.com/metachris/flashbotsrpc v0.7.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/shirou/gopsutil v3.21.4-0.20210419000835-c7a38de76ee5+incompatible // indirect
+	github.com/shopspring/decimal v1.3.1 // indirect
+	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/supranational/blst v0.3.16-0.20250831170142-f48500c1fdbe // indirect
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
 	github.com/tklauser/numcpus v0.6.1 // indirect
 	golang.org/x/sync v0.12.0 // indirect
+	golang.org/x/tools v0.30.0 // indirect
 )
 
 require (
@@ -61,4 +69,5 @@ require (
 	golang.org/x/sys v0.36.0 // indirect
 	golang.org/x/term v0.32.0 // indirect
 	golang.org/x/time v0.9.0 // indirect
+	honnef.co/go/tools v0.6.1
 )
