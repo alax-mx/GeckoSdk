@@ -206,7 +206,7 @@ func (ett *EvmTradeTool) MakeTokenApporveAll(tokenAddress string) error {
 
 	allowanceInt := new(big.Int)
 	allowanceInt.SetString(balanceStr, 10)
-	_, err = ett.Approve(tokenAddress, allowanceInt)
+	_, err = ett.Approve(tokenAddress)
 	if err != nil {
 		return err
 	}
@@ -257,10 +257,9 @@ func (ett *EvmTradeTool) GetPermit(tokenIn string, amount *big.Int) (string, err
 }
 
 // Approve 申请批准额度
-func (ett *EvmTradeTool) Approve(tokenIn string, amount *big.Int) (common.Hash, error) {
+func (ett *EvmTradeTool) Approve(tokenIn string) (common.Hash, error) {
 	approveData, err := ett.client.GetApproveTransaction(ett.ctx, aggregation.GetApproveParams{
 		TokenAddress: tokenIn,
-		Amount:       amount.String(),
 	})
 	if err != nil {
 		return common.Hash{}, errors.New("Failed to get approve data: " + err.Error())
@@ -270,8 +269,19 @@ func (ett *EvmTradeTool) Approve(tokenIn string, amount *big.Int) (common.Hash, 
 		return common.Hash{}, errors.New("Failed to decode approve data: " + err.Error())
 	}
 
+	maxFeePerGas, maxPriorityFeePerGas, err := ett.GetGasByLegacy(ett.evmConfig.GasLegacy)
+	if err != nil {
+		return common.Hash{}, err
+	}
+
 	to := common.HexToAddress(approveData.To)
-	tx, err := ett.client.TxBuilder.New().SetData(data).SetTo(&to).SetGas(1000000).Build(ett.ctx)
+	tx, err := ett.client.TxBuilder.New().
+		SetData(data).
+		SetTo(&to).
+		SetGas(500000).
+		SetGasFeeCap(maxFeePerGas).
+		SetGasTipCap(maxPriorityFeePerGas).
+		Build(ett.ctx)
 	if err != nil {
 		return common.Hash{}, errors.New("Failed to build approve transaction: " + err.Error())
 	}
