@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"math/rand"
 	"strconv"
+	"strings"
 	"time"
 	"unsafe"
 )
@@ -530,4 +531,17 @@ func GetAnyFloatValue(data any) float64 {
 	}
 
 	return 0
+}
+
+func ToLowerHex(hexString string) string {
+	// 处理 0x 或 # 前缀
+	prefix := ""
+	if strings.HasPrefix(hexString, "0x") {
+		prefix = "0x"
+		hexString = hexString[2:]
+	} else if strings.HasPrefix(hexString, "#") {
+		prefix = "#"
+		hexString = hexString[1:]
+	}
+	return prefix + strings.ToLower(hexString)
 }

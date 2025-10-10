@@ -12,14 +12,23 @@ type GmgnTool struct {
 	webTool      *gmgn_web.WebTool
 	mobiTool     *gmgn_mobi.MobiTool
 	solTradeTool *gmgn_trade.SolTradeTool
+	evmTradeTool *gmgn_trade.EvmTradeTool
 }
 
-func NewGmgnTool(pubKey string, priKey string, deviceInfo *gmgn_mobi.DeviceInfo) *GmgnTool {
-	return &GmgnTool{
+func NewGmgnTool(pubKey string, priKey string, deviceInfo *gmgn_mobi.DeviceInfo, evmConfig *gmgn_trade.STEvmConfig) *GmgnTool {
+	ret := &GmgnTool{
 		webTool:      gmgn_web.NewWebTool(gmgn_define.G_BASE_GMGN_WEB_DEFI_URL),
 		mobiTool:     gmgn_mobi.NewMobiTool(gmgn_define.G_BASE_GMGN_MOBI_URL, deviceInfo),
-		solTradeTool: gmgn_trade.NewSolTradeTool(gmgn_define.G_BASE_GMGN_SOL_TRADE_URL, pubKey, priKey),
+		solTradeTool: nil,
+		evmTradeTool: nil,
 	}
+	if pubKey != "" && priKey != "" {
+		ret.solTradeTool = gmgn_trade.NewSolTradeTool(gmgn_define.G_BASE_GMGN_SOL_TRADE_URL, pubKey, priKey)
+	}
+	if evmConfig != nil {
+		ret.evmTradeTool = gmgn_trade.NewEvmTradeTool(evmConfig)
+	}
+	return ret
 }
 
 func (gt *GmgnTool) GetWebTool() *gmgn_web.WebTool {
@@ -32,6 +41,10 @@ func (gt *GmgnTool) GetMobiTool() *gmgn_mobi.MobiTool {
 
 func (gt *GmgnTool) GetSolTradeTool() *gmgn_trade.SolTradeTool {
 	return gt.solTradeTool
+}
+
+func (gt *GmgnTool) GetEvmTradeTool() *gmgn_trade.EvmTradeTool {
+	return gt.evmTradeTool
 }
 
 func (gt *GmgnTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
