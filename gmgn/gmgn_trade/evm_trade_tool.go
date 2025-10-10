@@ -138,7 +138,6 @@ func (ett *EvmTradeTool) Swap(tokenIn string, tokenOut string, amount *big.Int, 
 		SetGasTipCap(maxPriorityFeePerGas).
 		SetValue(swapData.TxNormalized.Value).
 		Build(ett.ctx)
-	fmt.Println("swapData.TxNormalized.Gas = ", swapData.TxNormalized.GasPrice)
 	if err != nil {
 		return common.Hash{}, errors.New("StartSwap: Failed to build transaction: " + err.Error())
 	}
@@ -230,30 +229,6 @@ func (ett *EvmTradeTool) CheckAllowance(tokenIn string, amount *big.Int) (bool, 
 		return false, nil
 	}
 	return true, nil
-}
-
-func (ett *EvmTradeTool) GetPermit(tokenIn string, amount *big.Int) (string, error) {
-	spender, err := ett.client.GetApproveSpender(ett.ctx)
-	if err != nil {
-		return "", errors.New("GetPermit err: " + err.Error())
-	}
-	fmt.Println("spender = ", spender)
-	now := time.Now()
-	twoDaysLater := now.Add(time.Hour * 24 * 2)
-	permitData, err := ett.client.Wallet.GetContractDetailsForPermit(ett.ctx,
-		common.HexToAddress(tokenIn),
-		common.HexToAddress(spender.Address),
-		amount, twoDaysLater.Unix())
-	if err != nil {
-		return "", errors.New("GetPermit err: Failed to get permit data:" + err.Error())
-	}
-
-	permit, err := ett.client.Wallet.TokenPermit(*permitData)
-	if err != nil {
-		return "", errors.New("GetPermit err: Failed to sign permit:" + err.Error())
-	}
-
-	return permit, nil
 }
 
 // Approve 申请批准额度
