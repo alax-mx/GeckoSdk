@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	TestEvmTradeTool()
 }
 
 func TestEvmTradeTool() {

@@ -16,7 +16,15 @@ const (
 	CHAIN_TYPE_POLYGON string = "polygon"
 )
 
+const (
+	GAS_PRICE_LEGACY_LOW     string = "low"
+	GAS_PRICE_LEGACY_MEDIUM  string = "medium"
+	GAS_PRICE_LEGACY_HIGH    string = "high"
+	GAS_PRICE_LEGACY_INSTANT string = "instant"
+)
+
 type STEvmConfig struct {
+	GasLegacy string
 	ChainType string
 	RpcURL    string
 	PriKey    string

@@ -12,6 +12,7 @@ import (
 	"github.com/1inch/1inch-sdk-go/constants"
 	"github.com/1inch/1inch-sdk-go/sdk-clients/aggregation"
 	"github.com/1inch/1inch-sdk-go/sdk-clients/balances"
+	"github.com/1inch/1inch-sdk-go/sdk-clients/gasprices"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -22,7 +23,9 @@ import (
 )
 
 type EvmTradeTool struct {
+	evmConfig     *STEvmConfig
 	client        *aggregation.Client
+	gasClient     *gasprices.Client
 	balanceClient *balances.Client
 	ethClient     *ethclient.Client
 	ctx           context.Context
@@ -49,6 +52,7 @@ func NewEvmTradeTool(evmConfig *STEvmConfig) *EvmTradeTool {
 		return nil
 	}
 
+	// aggregation client
 	config, err := aggregation.NewConfiguration(param)
 	if err != nil {
 		fmt.Println("NewEvmTradeTool err: Failed to create configuration ", err)
@@ -66,6 +70,7 @@ func NewEvmTradeTool(evmConfig *STEvmConfig) *EvmTradeTool {
 		return nil
 	}
 
+	// balance client
 	balanceConfig, err := balances.NewConfiguration(balances.ConfigurationParams{
 		ChainId: param.ChainId,
 		ApiUrl:  "https://api.1inch.dev",
@@ -82,11 +87,27 @@ func NewEvmTradeTool(evmConfig *STEvmConfig) *EvmTradeTool {
 		return nil
 	}
 
+	// gasprices client
+	gasClientConfig, err := gasprices.NewConfiguration(gasprices.ConfigurationParams{
+		ChainId: param.ChainId, // 或其他链 ID，如 constants.PolygonChainId
+		ApiUrl:  "https://api.1inch.dev",
+		ApiKey:  evmConfig.OinchKey,
+	})
+	if err != nil {
+		log.Fatalf("Failed to create configuration: %v\n", err)
+	}
+	gasClient, err := gasprices.NewClient(gasClientConfig)
+	if err != nil {
+		log.Fatalf("Failed to create client: %v\n", err)
+	}
+
 	return &EvmTradeTool{
+		evmConfig:     evmConfig,
 		client:        client,
 		ctx:           context.Background(),
 		ethClient:     ethClient,
 		balanceClient: balanceClient,
+		gasClient:     gasClient,
 	}
 }
 
@@ -104,9 +125,17 @@ func (ett *EvmTradeTool) Swap(tokenIn string, tokenOut string, amount *big.Int, 
 	if err != nil {
 		return common.Hash{}, errors.New("StartSwap: Failed to get swap data: " + err.Error())
 	}
+
+	maxFeePerGas, maxPriorityFeePerGas, err := ett.GetGasByLegacy(ett.evmConfig.GasLegacy)
+	if err != nil {
+		return common.Hash{}, err
+	}
+
 	tx, err := ett.client.TxBuilder.New().SetData(swapData.TxNormalized.Data).
 		SetTo(&swapData.TxNormalized.To).
-		SetGas(1000000).
+		SetGas(500000).
+		SetGasFeeCap(maxFeePerGas).
+		SetGasTipCap(maxPriorityFeePerGas).
 		SetValue(swapData.TxNormalized.Value).
 		Build(ett.ctx)
 	fmt.Println("swapData.TxNormalized.Gas = ", swapData.TxNormalized.GasPrice)
@@ -124,6 +153,36 @@ func (ett *EvmTradeTool) Swap(tokenIn string, tokenOut string, amount *big.Int, 
 	}
 
 	return signedTx.Hash(), nil
+}
+
+// GetGasByLegacy 获取gas优先级信息
+func (ett *EvmTradeTool) GetGasByLegacy(legacy string) (*big.Int, *big.Int, error) {
+	ctx := context.Background()
+	gasPriceLegacy, err := ett.gasClient.GetGasPriceEIP1559(ctx)
+	if err != nil {
+		return nil, nil, errors.New("GetGasByLegacy err: " + err.Error())
+	}
+
+	maxFeePerGasStr := gasPriceLegacy.Low.MaxFeePerGas
+	maxPriorityFeePerGasStr := gasPriceLegacy.Low.MaxPriorityFeePerGas
+	switch legacy {
+	case GAS_PRICE_LEGACY_MEDIUM:
+		maxFeePerGasStr = gasPriceLegacy.Medium.MaxFeePerGas
+		maxPriorityFeePerGasStr = gasPriceLegacy.Medium.MaxPriorityFeePerGas
+	case GAS_PRICE_LEGACY_HIGH:
+		maxFeePerGasStr = gasPriceLegacy.High.MaxFeePerGas
+		maxPriorityFeePerGasStr = gasPriceLegacy.High.MaxPriorityFeePerGas
+	case GAS_PRICE_LEGACY_INSTANT:
+		maxFeePerGasStr = gasPriceLegacy.Instant.MaxFeePerGas
+		maxPriorityFeePerGasStr = gasPriceLegacy.Instant.MaxPriorityFeePerGas
+	}
+
+	maxFeePerGas := new(big.Int)
+	maxFeePerGas.SetString(maxFeePerGasStr, 10)
+	maxPriorityFeePerGas := new(big.Int)
+	maxPriorityFeePerGas.SetString(maxPriorityFeePerGasStr, 10)
+
+	return maxFeePerGas, maxPriorityFeePerGas, nil
 }
 
 // CheckTokenAllAllowance 检测token是否所有额度都批准了
