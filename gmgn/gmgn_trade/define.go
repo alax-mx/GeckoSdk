@@ -24,9 +24,9 @@ const (
 )
 
 type STEvmConfig struct {
-	GasLegacy string
 	ChainType string
 	RpcURL    string
 	PriKey    string
 	OinchKey  string
+	GasLegacy string
 }
