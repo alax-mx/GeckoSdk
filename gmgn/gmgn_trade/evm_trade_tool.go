@@ -133,7 +133,7 @@ func (ett *EvmTradeTool) Swap(tokenIn string, tokenOut string, amount *big.Int, 
 
 	tx, err := ett.client.TxBuilder.New().SetData(swapData.TxNormalized.Data).
 		SetTo(&swapData.TxNormalized.To).
-		SetGas(500000).
+		SetGas(1000000).
 		SetGasFeeCap(maxFeePerGas).
 		SetGasTipCap(maxPriorityFeePerGas).
 		SetValue(swapData.TxNormalized.Value).
@@ -253,7 +253,7 @@ func (ett *EvmTradeTool) Approve(tokenIn string) (common.Hash, error) {
 	tx, err := ett.client.TxBuilder.New().
 		SetData(data).
 		SetTo(&to).
-		SetGas(500000).
+		SetGas(1000000).
 		SetGasFeeCap(maxFeePerGas).
 		SetGasTipCap(maxPriorityFeePerGas).
 		Build(ett.ctx)
