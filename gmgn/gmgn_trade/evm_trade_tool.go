@@ -94,11 +94,11 @@ func NewEvmTradeTool(evmConfig *STEvmConfig) *EvmTradeTool {
 		ApiKey:  evmConfig.OinchKey,
 	})
 	if err != nil {
-		log.Fatalf("Failed to create configuration: %v\n", err)
+		log.Fatalf("NewEvmTradeTool err: Failed to create gasprices configuration: %v\n", err)
 	}
 	gasClient, err := gasprices.NewClient(gasClientConfig)
 	if err != nil {
-		log.Fatalf("Failed to create client: %v\n", err)
+		log.Fatalf("NewEvmTradeTool err: Failed to create gasprices client: %v\n", err)
 	}
 
 	return &EvmTradeTool{
@@ -121,41 +121,74 @@ func (ett *EvmTradeTool) Swap(tokenIn string, tokenOut string, amount *big.Int, 
 		DisableEstimate: false,
 	}
 
+	// 如果支持 permit 则设置
+	if tokenIn != MAIN_ETH20_ADDRESS {
+		spender, err := ett.client.GetApproveSpender(ett.ctx)
+		if err == nil {
+			now := time.Now()
+			twoDaysLater := now.Add(time.Minute * 10)
+			permitData, err := ett.client.Wallet.GetContractDetailsForPermit(ett.ctx, common.HexToAddress(tokenIn), common.HexToAddress(spender.Address), amount, twoDaysLater.Unix())
+			if err == nil {
+				permit, err := ett.client.Wallet.TokenPermit(*permitData)
+				if err == nil {
+					swapParams.Permit = permit
+				}
+			}
+		}
+	}
+
 	swapData, err := ett.client.GetSwap(ett.ctx, swapParams)
 	if err != nil {
-		return common.Hash{}, errors.New("StartSwap: Failed to get swap data: " + err.Error())
+		return common.Hash{}, errors.New("Swap: Failed to get swap data: " + err.Error())
 	}
 
-	maxFeePerGas, maxPriorityFeePerGas, err := ett.GetGasByLegacy(ett.evmConfig.GasLegacy)
-	if err != nil {
-		return common.Hash{}, err
-	}
-
-	tx, err := ett.client.TxBuilder.New().SetData(swapData.TxNormalized.Data).
+	builder := ett.client.TxBuilder.New()
+	builder.SetData(swapData.TxNormalized.Data).
 		SetTo(&swapData.TxNormalized.To).
 		SetGas(1000000).
-		SetGasFeeCap(maxFeePerGas).
-		SetGasTipCap(maxPriorityFeePerGas).
-		SetValue(swapData.TxNormalized.Value).
-		Build(ett.ctx)
+		SetValue(swapData.TxNormalized.Value)
+
+	// 根据不同的链设置GasPrice
+	switch ett.evmConfig.ChainType {
+	case CHAIN_TYPE_ETH:
+		maxFeePerGas, maxPriorityFeePerGas, err := ett.GetGasLegacyEIP1559(ett.evmConfig.GasLegacy)
+		if err != nil {
+			return common.Hash{}, err
+		}
+		builder.SetGasFeeCap(maxFeePerGas).SetGasTipCap(maxPriorityFeePerGas)
+	case CHAIN_TYPE_BSC:
+		gasPrice, err := ett.GetGasLegacy(ett.evmConfig.GasLegacy)
+		if err != nil {
+			return common.Hash{}, err
+		}
+		builder.SetGasPrice(gasPrice)
+	case CHAIN_TYPE_POLYGON:
+		gasPrice, err := ett.GetGasLegacy(ett.evmConfig.GasLegacy)
+		if err != nil {
+			return common.Hash{}, err
+		}
+		builder.SetGasPrice(gasPrice)
+	}
+
+	tx, err := builder.Build(ett.ctx)
 	if err != nil {
-		return common.Hash{}, errors.New("StartSwap: Failed to build transaction: " + err.Error())
+		return common.Hash{}, errors.New("Swap: Failed to build transaction: " + err.Error())
 	}
 	signedTx, err := ett.client.Wallet.Sign(tx)
 	if err != nil {
-		return common.Hash{}, errors.New("StartSwap: Failed to sign transaction: " + err.Error())
+		return common.Hash{}, errors.New("Swap: Failed to sign transaction: " + err.Error())
 	}
 
 	err = ett.client.Wallet.BroadcastTransaction(ett.ctx, signedTx)
 	if err != nil {
-		return common.Hash{}, errors.New("StartSwap: Failed to broadcast transaction: " + err.Error())
+		return common.Hash{}, errors.New("Swap: Failed to broadcast transaction: " + err.Error())
 	}
 
 	return signedTx.Hash(), nil
 }
 
 // GetGasByLegacy 获取gas优先级信息
-func (ett *EvmTradeTool) GetGasByLegacy(legacy string) (*big.Int, *big.Int, error) {
+func (ett *EvmTradeTool) GetGasLegacyEIP1559(legacy string) (*big.Int, *big.Int, error) {
 	ctx := context.Background()
 	gasPriceLegacy, err := ett.gasClient.GetGasPriceEIP1559(ctx)
 	if err != nil {
@@ -182,6 +215,28 @@ func (ett *EvmTradeTool) GetGasByLegacy(legacy string) (*big.Int, *big.Int, erro
 	maxPriorityFeePerGas.SetString(maxPriorityFeePerGasStr, 10)
 
 	return maxFeePerGas, maxPriorityFeePerGas, nil
+}
+
+// GetGasByLegacy 获取gas优先级信息
+func (ett *EvmTradeTool) GetGasLegacy(legacy string) (*big.Int, error) {
+	ctx := context.Background()
+	gasPriceLegacyResp, err := ett.gasClient.GetGasPriceLegacy(ctx)
+	if err != nil {
+		return nil, errors.New("GetGasLegacy err: " + err.Error())
+	}
+
+	gasPriceStr := gasPriceLegacyResp.Standard
+	switch legacy {
+	case GAS_PRICE_LEGACY_HIGH:
+		gasPriceStr = gasPriceLegacyResp.Fast
+	case GAS_PRICE_LEGACY_INSTANT:
+		gasPriceStr = gasPriceLegacyResp.Instant
+	}
+
+	gasPrice := new(big.Int)
+	gasPrice.SetString(gasPriceStr, 10)
+
+	return gasPrice, nil
 }
 
 // CheckTokenAllAllowance 检测token是否所有额度都批准了
@@ -237,38 +292,45 @@ func (ett *EvmTradeTool) Approve(tokenIn string) (common.Hash, error) {
 		TokenAddress: tokenIn,
 	})
 	if err != nil {
-		return common.Hash{}, errors.New("Failed to get approve data: " + err.Error())
+		return common.Hash{}, errors.New("Approve: Failed to get approve data: " + err.Error())
 	}
 	data, err := hexutil.Decode(approveData.Data)
 	if err != nil {
-		return common.Hash{}, errors.New("Failed to decode approve data: " + err.Error())
-	}
-
-	maxFeePerGas, maxPriorityFeePerGas, err := ett.GetGasByLegacy(ett.evmConfig.GasLegacy)
-	if err != nil {
-		return common.Hash{}, err
+		return common.Hash{}, errors.New("Approve: Failed to decode approve data: " + err.Error())
 	}
 
 	to := common.HexToAddress(approveData.To)
-	tx, err := ett.client.TxBuilder.New().
-		SetData(data).
-		SetTo(&to).
-		SetGas(1000000).
-		SetGasFeeCap(maxFeePerGas).
-		SetGasTipCap(maxPriorityFeePerGas).
-		Build(ett.ctx)
+	builder := ett.client.TxBuilder.New()
+	builder.SetData(data).SetTo(&to).SetGas(1000000)
+
+	switch ett.evmConfig.ChainType {
+	case CHAIN_TYPE_ETH:
+		maxFeePerGas, maxPriorityFeePerGas, err := ett.GetGasLegacyEIP1559(ett.evmConfig.GasLegacy)
+		if err != nil {
+			return common.Hash{}, err
+		}
+		builder.SetGasFeeCap(maxFeePerGas).SetGasTipCap(maxPriorityFeePerGas)
+	case CHAIN_TYPE_BSC:
+		gasPrice, err := ett.GetGasLegacy(ett.evmConfig.GasLegacy)
+		if err != nil {
+			return common.Hash{}, err
+		}
+		builder.SetGasPrice(gasPrice)
+	}
+
+	tx, err := builder.Build(ett.ctx)
 	if err != nil {
-		return common.Hash{}, errors.New("Failed to build approve transaction: " + err.Error())
+		return common.Hash{}, errors.New("Approve: Failed to build approve transaction: " + err.Error())
 	}
 
 	signedTx, err := ett.client.Wallet.Sign(tx)
 	if err != nil {
-		return common.Hash{}, errors.New("Failed to sign approve transaction: " + err.Error())
+		return common.Hash{}, errors.New("Approve: Failed to sign approve transaction: " + err.Error())
 	}
 
 	err = ett.client.Wallet.BroadcastTransaction(ett.ctx, signedTx)
 	if err != nil {
-		return common.Hash{}, errors.New("Failed to broadcast approve transaction: " + err.Error())
+		return common.Hash{}, errors.New("Approve: Failed to broadcast approve transaction: " + err.Error())
 	}
 
 	return signedTx.Hash(), nil
