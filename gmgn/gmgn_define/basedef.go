@@ -1,6 +1,19 @@
 package gmgn_define
 
 const (
+	ETH_MAIN_ADDRESS  string = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+	ETH_ETH_DECIMALS  int    = 18
+	ETH_USDC_ADDRESS  string = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+	ETH_USDC_DECIMALS int    = 6
+
+	SOL_SOL_MINT     string = "So11111111111111111111111111111111111111112"
+	SOL_USDC_MINT    string = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+	SOLUSDT__MINT    string = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB"
+	SOL_SOL_DECIMALS int    = 9
+	SOL_USDC_ECIMALS int    = 6
+)
+
+const (
 	ORDER_BY_OPEN_TIME   = "open_timestamp"
 	ORDER_BY_CREATE_TIME = "creation_timestamp"
 

@@ -123,7 +123,7 @@ func (ett *EvmTradeTool) Swap(tokenIn string, tokenOut string, amount *big.Int, 
 	}
 
 	// 如果支持 permit 则设置
-	if tokenIn != MAIN_ETH20_ADDRESS {
+	if tokenIn != gmgn_define.ETH_MAIN_ADDRESS {
 		spender, err := ett.client.GetApproveSpender(ett.ctx)
 		if err == nil {
 			now := time.Now()

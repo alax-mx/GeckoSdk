@@ -34,10 +34,10 @@ func TestEvmTradeTool() {
 	// }
 	// fmt.Println(balanceStr)
 	tokenOut := "0x23D3F4EaaA515403C6765bb623F287a8Cca28F2b"
-	ethDecimals := solana.DecimalsInBigInt(uint32(gmgn_trade.ETH_DECIMALS))
+	ethDecimals := solana.DecimalsInBigInt(uint32(gmgn_define.ETH_ETH_DECIMALS))
 	amount := big.NewInt(int64(0.01 * float64(ethDecimals.Int64()))) // 0.01个BNB
 	slippage := float32(1)                                           // 滑点1%
-	hash, err := evmTradeTool.Swap(gmgn_trade.MAIN_ETH20_ADDRESS, tokenOut, amount, slippage)
+	hash, err := evmTradeTool.Swap(gmgn_define.ETH_MAIN_ADDRESS, tokenOut, amount, slippage)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -57,7 +57,7 @@ func SellToken(evmTradeTool *gmgn_trade.EvmTradeTool, tokenAddress string) {
 	amount := big.NewInt(0)
 	amount.SetString(balanceStr, 10)
 	slippage := float32(1)
-	hash, err := evmTradeTool.Swap(tokenAddress, gmgn_trade.MAIN_ETH20_ADDRESS, amount, slippage)
+	hash, err := evmTradeTool.Swap(tokenAddress, gmgn_define.ETH_MAIN_ADDRESS, amount, slippage)
 	if err != nil {
 		fmt.Println(err)
 		return
