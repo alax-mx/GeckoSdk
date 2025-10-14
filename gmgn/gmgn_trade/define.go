@@ -14,4 +14,5 @@ type STEvmConfig struct {
 	OinchKey  string  `json:"oinch_key"`
 	GasLegacy string  `json:"gas_legacy"`
 	BuyNum    float64 `json:"buy_num"`
+	Slippage  float64 `json:"slippage"`
 }
