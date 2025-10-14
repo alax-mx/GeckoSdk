@@ -162,12 +162,12 @@ func (ett *EvmTradeTool) Swap(tokenIn string, tokenOut string, amount *big.Int, 
 			return common.Hash{}, err
 		}
 		builder.SetGasPrice(gasPrice)
-	case CHAIN_TYPE_POLYGON:
-		gasPrice, err := ett.GetGasLegacy(ett.evmConfig.GasLegacy)
+	case CHAIN_TYPE_BASE:
+		maxFeePerGas, maxPriorityFeePerGas, err := ett.GetGasLegacyEIP1559(ett.evmConfig.GasLegacy)
 		if err != nil {
 			return common.Hash{}, err
 		}
-		builder.SetGasPrice(gasPrice)
+		builder.SetGasFeeCap(maxFeePerGas).SetGasTipCap(maxPriorityFeePerGas)
 	}
 
 	tx, err := builder.Build(ett.ctx)
