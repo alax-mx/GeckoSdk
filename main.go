@@ -6,6 +6,7 @@ import (
 
 	"github.com/gagliardetto/solana-go"
 
+	"github.com/alax-mx/geckosdk/gmgn/gmgn_define"
 	"github.com/alax-mx/geckosdk/gmgn/gmgn_trade"
 )
 
@@ -15,7 +16,7 @@ func main() {
 
 func TestEvmTradeTool() {
 	config := &gmgn_trade.STEvmConfig{
-		ChainType: gmgn_trade.CHAIN_TYPE_BSC,
+		ChainType: gmgn_define.CHAIN_TYPE_BSC,
 		RpcURL:    "",
 		OinchKey:  "",
 		PriKey:    "",

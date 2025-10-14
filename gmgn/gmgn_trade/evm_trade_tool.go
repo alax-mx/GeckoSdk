@@ -20,6 +20,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 
 	"github.com/alax-mx/geckosdk/baseutils"
+	"github.com/alax-mx/geckosdk/gmgn/gmgn_define"
 )
 
 type EvmTradeTool struct {
@@ -39,13 +40,13 @@ func NewEvmTradeTool(evmConfig *STEvmConfig) *EvmTradeTool {
 		ApiKey:     evmConfig.OinchKey,
 	}
 	switch evmConfig.ChainType {
-	case CHAIN_TYPE_ETH:
+	case gmgn_define.CHAIN_TYPE_ETH:
 		param.ChainId = constants.EthereumChainId
-	case CHAIN_TYPE_BSC:
+	case gmgn_define.CHAIN_TYPE_BSC:
 		param.ChainId = constants.BscChainId
-	case CHAIN_TYPE_BASE:
+	case gmgn_define.CHAIN_TYPE_BASE:
 		param.ChainId = constants.BaseChainId
-	case CHAIN_TYPE_POLYGON:
+	case gmgn_define.CHAIN_TYPE_POLYGON:
 		param.ChainId = constants.PolygonChainId
 	default:
 		fmt.Println("NewEvmTradeTool err: unknow chaintype ", evmConfig.ChainType)
@@ -150,19 +151,19 @@ func (ett *EvmTradeTool) Swap(tokenIn string, tokenOut string, amount *big.Int, 
 
 	// 根据不同的链设置GasPrice
 	switch ett.evmConfig.ChainType {
-	case CHAIN_TYPE_ETH:
+	case gmgn_define.CHAIN_TYPE_ETH:
 		maxFeePerGas, maxPriorityFeePerGas, err := ett.GetGasLegacyEIP1559(ett.evmConfig.GasLegacy)
 		if err != nil {
 			return common.Hash{}, err
 		}
 		builder.SetGasFeeCap(maxFeePerGas).SetGasTipCap(maxPriorityFeePerGas)
-	case CHAIN_TYPE_BSC:
+	case gmgn_define.CHAIN_TYPE_BSC:
 		gasPrice, err := ett.GetGasLegacy(ett.evmConfig.GasLegacy)
 		if err != nil {
 			return common.Hash{}, err
 		}
 		builder.SetGasPrice(gasPrice)
-	case CHAIN_TYPE_BASE:
+	case gmgn_define.CHAIN_TYPE_BASE:
 		maxFeePerGas, maxPriorityFeePerGas, err := ett.GetGasLegacyEIP1559(ett.evmConfig.GasLegacy)
 		if err != nil {
 			return common.Hash{}, err
@@ -304,13 +305,13 @@ func (ett *EvmTradeTool) Approve(tokenIn string) (common.Hash, error) {
 	builder.SetData(data).SetTo(&to).SetGas(1000000)
 
 	switch ett.evmConfig.ChainType {
-	case CHAIN_TYPE_ETH:
+	case gmgn_define.CHAIN_TYPE_ETH:
 		maxFeePerGas, maxPriorityFeePerGas, err := ett.GetGasLegacyEIP1559(ett.evmConfig.GasLegacy)
 		if err != nil {
 			return common.Hash{}, err
 		}
 		builder.SetGasFeeCap(maxFeePerGas).SetGasTipCap(maxPriorityFeePerGas)
-	case CHAIN_TYPE_BSC:
+	case gmgn_define.CHAIN_TYPE_BSC:
 		gasPrice, err := ett.GetGasLegacy(ett.evmConfig.GasLegacy)
 		if err != nil {
 			return common.Hash{}, err
