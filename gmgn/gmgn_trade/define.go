@@ -8,9 +8,10 @@ const (
 )
 
 type STEvmConfig struct {
-	ChainType string `json:"chain_type"`
-	RpcURL    string `json:"rpc_url"`
-	PriKey    string `json:"pri_key"`
-	OinchKey  string `json:"oinch_key"`
-	GasLegacy string `json:"gas_legacy"`
+	ChainType string  `json:"chain_type"`
+	RpcURL    string  `json:"rpc_url"`
+	PriKey    string  `json:"pri_key"`
+	OinchKey  string  `json:"oinch_key"`
+	GasLegacy string  `json:"gas_legacy"`
+	BuyNum    float64 `json:"buy_num"`
 }
