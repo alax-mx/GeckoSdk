@@ -8,15 +8,6 @@ const (
 )
 
 const (
-	CHAIN_TYPE_ETH     string = "eth"
-	CHAIN_TYPE_BSC     string = "bsc"
-	CHAIN_TYPE_BASE    string = "base"
-	CHAIN_TYPE_TRON    string = "tron"
-	CHAIN_TYPE_SOLANA  string = "sol"
-	CHAIN_TYPE_POLYGON string = "polygon"
-)
-
-const (
 	GAS_PRICE_LEGACY_LOW     string = "low"
 	GAS_PRICE_LEGACY_MEDIUM  string = "medium"
 	GAS_PRICE_LEGACY_HIGH    string = "high"
