@@ -352,7 +352,7 @@ func (ett *EvmTradeTool) TransactionReceipt(hash common.Hash) {
 	}
 }
 
-func (ett *EvmTradeTool) CheckPermitSupport(tokenAddr, owner common.Address) error {
+func (ett *EvmTradeTool) CheckPermitSupport(tokenAddr string) error {
 	// 代币 ABI，仅包含 nonces 和 name
 	tokenABI, err := abi.JSON(strings.NewReader(`[
         {"constant":true,"inputs":[{"name":"owner","type":"address"}],"name":"nonces","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
@@ -362,11 +362,11 @@ func (ett *EvmTradeTool) CheckPermitSupport(tokenAddr, owner common.Address) err
 		return err
 	}
 
-	contract := bind.NewBoundContract(tokenAddr, tokenABI, ett.ethClient, ett.ethClient, ett.ethClient)
+	contract := bind.NewBoundContract(common.HexToAddress(tokenAddr), tokenABI, ett.ethClient, ett.ethClient, ett.ethClient)
 
 	// 查询 nonce
 	var nonceResults []interface{}
-	err = contract.Call(nil, &nonceResults, "nonces", owner)
+	err = contract.Call(nil, &nonceResults, "nonces", ett.client.Wallet.Address)
 	if err != nil {
 		return err
 	}
