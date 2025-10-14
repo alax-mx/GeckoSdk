@@ -24,9 +24,9 @@ const (
 )
 
 type STEvmConfig struct {
-	ChainType string
-	RpcURL    string
-	PriKey    string
-	OinchKey  string
-	GasLegacy string
+	ChainType string `json:"chain_type"`
+	RpcURL    string `json:"rpc_url"`
+	PriKey    string `json:"pri_key"`
+	OinchKey  string `json:"oinch_key"`
+	GasLegacy string `json:"gas_legacy"`
 }
