@@ -13,6 +13,7 @@ import (
 	"github.com/1inch/1inch-sdk-go/sdk-clients/aggregation"
 	"github.com/1inch/1inch-sdk-go/sdk-clients/balances"
 	"github.com/1inch/1inch-sdk-go/sdk-clients/gasprices"
+	"github.com/1inch/1inch-sdk-go/sdk-clients/tokens"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -29,6 +30,7 @@ type EvmTradeTool struct {
 	gasClient     *gasprices.Client
 	balanceClient *balances.Client
 	ethClient     *ethclient.Client
+	tokenClient   *tokens.Client
 	ctx           context.Context
 }
 
@@ -39,19 +41,13 @@ func NewEvmTradeTool(evmConfig *STEvmConfig) *EvmTradeTool {
 		ApiUrl:     "https://api.1inch.dev",
 		ApiKey:     evmConfig.OinchKey,
 	}
-	switch evmConfig.ChainType {
-	case gmgn_define.CHAIN_TYPE_ETH:
-		param.ChainId = constants.EthereumChainId
-	case gmgn_define.CHAIN_TYPE_BSC:
-		param.ChainId = constants.BscChainId
-	case gmgn_define.CHAIN_TYPE_BASE:
-		param.ChainId = constants.BaseChainId
-	case gmgn_define.CHAIN_TYPE_POLYGON:
-		param.ChainId = constants.PolygonChainId
-	default:
-		fmt.Println("NewEvmTradeTool err: unknow chaintype ", evmConfig.ChainType)
+
+	chainID, err := GetChainIdByType(evmConfig.ChainType)
+	if err != nil {
+		fmt.Println("NewEvmTradeTool err: Failed to get chain ID ", err)
 		return nil
 	}
+	param.ChainId = uint64(chainID)
 
 	// aggregation client
 	config, err := aggregation.NewConfiguration(param)
@@ -95,13 +91,29 @@ func NewEvmTradeTool(evmConfig *STEvmConfig) *EvmTradeTool {
 		ApiKey:  evmConfig.OinchKey,
 	})
 	if err != nil {
-		log.Fatalf("NewEvmTradeTool err: Failed to create gasprices configuration: %v\n", err)
+		fmt.Println("NewEvmTradeTool err: Failed to create gasprices configuration ", err)
+		return nil
 	}
 	gasClient, err := gasprices.NewClient(gasClientConfig)
 	if err != nil {
-		log.Fatalf("NewEvmTradeTool err: Failed to create gasprices client: %v\n", err)
+		fmt.Println("NewEvmTradeTool err: Failed to create gasprices client: ", err)
+		return nil
 	}
 
+	tokenClientConfig, err := tokens.NewConfiguration(tokens.ConfigurationParams{
+		ChainId: uint64(chainID),
+		ApiUrl:  "https://api.1inch.dev",
+		ApiKey:  evmConfig.OinchKey,
+	})
+	if err != nil {
+		fmt.Println("NewEvmTradeTool err: Failed to create token configuration ", err)
+		return nil
+	}
+	tokenClient, err := tokens.NewClient(tokenClientConfig)
+	if err != nil {
+		fmt.Println("NewEvmTradeTool err: Failed to create token client: ", err)
+		return nil
+	}
 	return &EvmTradeTool{
 		evmConfig:     evmConfig,
 		client:        client,
@@ -109,6 +121,22 @@ func NewEvmTradeTool(evmConfig *STEvmConfig) *EvmTradeTool {
 		ethClient:     ethClient,
 		balanceClient: balanceClient,
 		gasClient:     gasClient,
+		tokenClient:   tokenClient,
+	}
+}
+
+func GetChainIdByType(chainType string) (int, error) {
+	switch chainType {
+	case gmgn_define.CHAIN_TYPE_ETH:
+		return constants.EthereumChainId, nil
+	case gmgn_define.CHAIN_TYPE_BSC:
+		return constants.BscChainId, nil
+	case gmgn_define.CHAIN_TYPE_BASE:
+		return constants.BaseChainId, nil
+	case gmgn_define.CHAIN_TYPE_POLYGON:
+		return constants.PolygonChainId, nil
+	default:
+		return 0, errors.New("GetChainIdByType err: unknow chaintype " + chainType)
 	}
 }
 
@@ -398,4 +426,10 @@ func (ett *EvmTradeTool) GetTokenBalance(tokenAddress string) (string, error) {
 
 	retMap := *response
 	return retMap[baseutils.ToLowerHex(tokenAddress)], nil
+}
+
+func (ett *EvmTradeTool) GetTokenData(tokenAddress string) (*tokens.ProviderTokenDtoFixed, error) {
+	return ett.tokenClient.GetCustomToken(ett.ctx, tokens.CustomTokensControllerGetTokenInfoParams{
+		Address: tokenAddress,
+	})
 }

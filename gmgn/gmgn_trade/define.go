@@ -16,3 +16,11 @@ type STEvmConfig struct {
 	BuyNum    float64 `json:"buy_num"`
 	Slippage  float32 `json:"slippage"`
 }
+
+type STTokenInfo struct {
+	Address  string `json:"address"`
+	Name     string `json:"name"`
+	Symbol   string `json:"symbol"`
+	Decimals int    `json:"decimals"`
+	ChainID  int    `json:"chainId"`
+}

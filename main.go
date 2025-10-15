@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/gagliardetto/solana-go"
-
+	"github.com/alax-mx/geckosdk/baseutils"
 	"github.com/alax-mx/geckosdk/gmgn/gmgn_define"
 	"github.com/alax-mx/geckosdk/gmgn/gmgn_trade"
 )
@@ -21,29 +20,37 @@ func TestEvmTradeTool() {
 		OinchKey:  "",
 		PriKey:    "",
 		GasLegacy: gmgn_trade.GAS_PRICE_LEGACY_INSTANT,
+		BuyNum:    0.1,
+		Slippage:  1,
 	}
 	evmTradeTool := gmgn_trade.NewEvmTradeTool(config)
 	if evmTradeTool == nil {
 		return
 	}
 
+	tokenData, err := evmTradeTool.GetTokenData("0xcaa9ab6f25c6c5f3a997fc02788059b67f964444")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	baseutils.ShowObjectValue(tokenData)
 	// balanceStr, err := evmTradeTool.GetTokenBalance(gmgn_trade.MAIN_ETH20_ADDRESS)
 	// if err != nil {
 	// 	fmt.Println(err)
 	// 	return
 	// }
 	// fmt.Println(balanceStr)
-	tokenOut := "0x23D3F4EaaA515403C6765bb623F287a8Cca28F2b"
-	ethDecimals := solana.DecimalsInBigInt(uint32(gmgn_define.ETH20_MAIN_DECIMALS))
-	amount := big.NewInt(int64(0.01 * float64(ethDecimals.Int64()))) // 0.01个BNB
-	slippage := float32(1)                                           // 滑点1%
-	hash, err := evmTradeTool.Swap(gmgn_define.ETH20_MAIN_ADDRESS, tokenOut, amount, slippage)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Println("hash = ", hash)
-	SellToken(evmTradeTool, tokenOut)
+	// tokenOut := "0x23D3F4EaaA515403C6765bb623F287a8Cca28F2b"
+	// ethDecimals := solana.DecimalsInBigInt(uint32(gmgn_define.ETH20_MAIN_DECIMALS))
+	// amount := big.NewInt(int64(0.01 * float64(ethDecimals.Int64()))) // 0.01个BNB
+	// slippage := float32(1)                                           // 滑点1%
+	// hash, err := evmTradeTool.Swap(gmgn_define.ETH20_MAIN_ADDRESS, tokenOut, amount, slippage)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
+	// fmt.Println("hash = ", hash)
+	// SellToken(evmTradeTool, tokenOut)
 }
 
 func SellToken(evmTradeTool *gmgn_trade.EvmTradeTool, tokenAddress string) {
