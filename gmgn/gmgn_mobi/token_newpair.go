@@ -2,7 +2,6 @@ package gmgn_mobi
 
 import (
 	"encoding/json"
-	"fmt"
 	"strconv"
 
 	"github.com/alax-mx/geckosdk/proxy"
@@ -131,7 +130,6 @@ func (tnpt *TokenNewPairTool) Get(chainType string, period string, limit int, or
 		return nil, err
 	}
 
-	fmt.Println(string(data))
 	ret := &GetTokenNewPairResp{}
 	err = json.Unmarshal(data, ret)
 	if err != nil {
