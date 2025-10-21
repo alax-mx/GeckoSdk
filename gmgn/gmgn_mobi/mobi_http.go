@@ -21,7 +21,7 @@ func GetRanomClpherSuites() *tls.Config {
 				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
 			},
 			MinVersion: tls.VersionTLS10,
-			MaxVersion: tls.VersionTLS13,
+			MaxVersion: tls.VersionTLS12,
 			//可以添加其他配置，如支持的Extensions等
 			ServerName:             "gmgn.gracematrix.net",
 			SessionTicketsDisabled: true,
@@ -32,7 +32,7 @@ func GetRanomClpherSuites() *tls.Config {
 				tls.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
 			},
 			MinVersion: tls.VersionTLS10,
-			MaxVersion: tls.VersionTLS13,
+			MaxVersion: tls.VersionTLS12,
 			//可以添加其他配置，如支持的Extensions等
 			ServerName:             "gmgn.gracematrix.net",
 			SessionTicketsDisabled: true,
@@ -43,7 +43,7 @@ func GetRanomClpherSuites() *tls.Config {
 				tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
 			},
 			MinVersion: tls.VersionTLS10,
-			MaxVersion: tls.VersionTLS13,
+			MaxVersion: tls.VersionTLS12,
 			//可以添加其他配置，如支持的Extensions等
 			ServerName:             "gmgn.gracematrix.net",
 			SessionTicketsDisabled: true,
@@ -54,7 +54,7 @@ func GetRanomClpherSuites() *tls.Config {
 				tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
 			},
 			MinVersion: tls.VersionTLS10,
-			MaxVersion: tls.VersionTLS13,
+			MaxVersion: tls.VersionTLS12,
 			//可以添加其他配置，如支持的Extensions等
 			ServerName:             "gmgn.gracematrix.net",
 			SessionTicketsDisabled: true,
@@ -65,7 +65,7 @@ func GetRanomClpherSuites() *tls.Config {
 				tls.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
 			},
 			MinVersion: tls.VersionTLS10,
-			MaxVersion: tls.VersionTLS13,
+			MaxVersion: tls.VersionTLS12,
 			//可以添加其他配置，如支持的Extensions等
 			ServerName:             "gmgn.gracematrix.net",
 			SessionTicketsDisabled: true,
@@ -126,6 +126,11 @@ func HttpPost(url string, param []byte, proxyInfo *proxy.STProxyInfo) ([]byte, e
 			tls.TLS_RSA_WITH_AES_128_CBC_SHA,
 			tls.TLS_RSA_WITH_AES_256_CBC_SHA,
 		},
+		MinVersion: tls.VersionTLS10,
+		MaxVersion: tls.VersionTLS12,
+		//可以添加其他配置，如支持的Extensions等
+		ServerName:             "gmgn.gracematrix.net",
+		SessionTicketsDisabled: true,
 		// 可以添加其他配置，如支持的Extensions等
 	}
 	// client := http.DefaultClient
