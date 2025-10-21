@@ -1,16 +1,43 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/big"
 
 	"github.com/alax-mx/geckosdk/baseutils"
+	"github.com/alax-mx/geckosdk/gmgn"
 	"github.com/alax-mx/geckosdk/gmgn/gmgn_define"
+	"github.com/alax-mx/geckosdk/gmgn/gmgn_mobi"
 	"github.com/alax-mx/geckosdk/gmgn/gmgn_trade"
 )
 
 func main() {
-	TestEvmTradeTool()
+	// TestEvmTradeTool()
+	deviceInfo := loaddevice("device.json")
+	if deviceInfo == nil {
+		return
+	}
+	gmgnTool := gmgn.NewGmgnTool("", "", deviceInfo, nil)
+	_, err := gmgnTool.GetMobiTool().GetTokenNewPairTool().Get("bsc", gmgn_mobi.NEW_PAIR_PERIOD_1M, 2, gmgn_mobi.NEW_PAIR_ORDER_BY_CREATE_TIMESTAMP)
+	if err != nil {
+		fmt.Println("TokenLaunchpadMonitor err:", err)
+	}
+}
+
+func loaddevice(path string) *gmgn_mobi.DeviceInfo {
+	data, err := baseutils.ReadFile(path)
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+	cfg := &gmgn_mobi.DeviceInfo{}
+	err2 := json.Unmarshal(data, cfg)
+	if err2 != nil {
+		fmt.Println(err)
+		return nil
+	}
+	return cfg
 }
 
 func TestEvmTradeTool() {

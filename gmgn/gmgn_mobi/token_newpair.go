@@ -2,10 +2,18 @@ package gmgn_mobi
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 
 	"github.com/alax-mx/geckosdk/proxy"
 )
+
+type STLockInfo struct {
+	IsLock          bool  `json:"isLock"`
+	LockTag         []any `json:"lockTag"`
+	LockPercent     int   `json:"lockPercent"`
+	LeftLockPercent int   `json:"leftLockPercent"`
+}
 
 type STSocialLinks struct {
 	TwitterUsername string `json:"twitter_username"`
@@ -62,6 +70,7 @@ type STBaseTokenInfo struct {
 	Swaps                   any           `json:"swaps"`
 	Buys                    any           `json:"buys"`
 	Sells                   any           `json:"sells"`
+	LockInfo                STLockInfo    `json:"lockInfo"`
 }
 type STPairs struct {
 	ID                  any             `json:"id"`
@@ -122,6 +131,7 @@ func (tnpt *TokenNewPairTool) Get(chainType string, period string, limit int, or
 		return nil, err
 	}
 
+	fmt.Println(string(data))
 	ret := &GetTokenNewPairResp{}
 	err = json.Unmarshal(data, ret)
 	if err != nil {
