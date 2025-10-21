@@ -11,8 +11,8 @@ import (
 type STLockInfo struct {
 	IsLock          bool  `json:"isLock"`
 	LockTag         []any `json:"lockTag"`
-	LockPercent     int   `json:"lockPercent"`
-	LeftLockPercent int   `json:"leftLockPercent"`
+	LockPercent     any   `json:"lockPercent"`
+	LeftLockPercent any   `json:"leftLockPercent"`
 }
 
 type STSocialLinks struct {
