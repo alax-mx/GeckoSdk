@@ -45,7 +45,7 @@ type STBaseTokenInfo struct {
 	DevTokenBurnAmount      any           `json:"dev_token_burn_amount"`
 	DevTokenBurnRatio       any           `json:"dev_token_burn_ratio"`
 	DexscrAd                int           `json:"dexscr_ad"`
-	DexscrUpdateLink        int           `json:"dexscr_update_link"`
+	DexscrUpdateLink        any           `json:"dexscr_update_link"`
 	CtoFlag                 int           `json:"cto_flag"`
 	TwitterChangeFlag       int           `json:"twitter_change_flag"`
 	TwitterRenameCount      int           `json:"twitter_rename_count"`
