@@ -28,13 +28,15 @@ type GetTokenHolderStatResp struct {
 type TokenHolderStatTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenHolderStatTool(baseUrl string, baseParam string) *TokenHolderStatTool {
+func NewTokenHolderStatTool(baseUrl string, baseParam string, authStr string) *TokenHolderStatTool {
 	return &TokenHolderStatTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -45,7 +47,7 @@ func (thst *TokenHolderStatTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 
 func (thst *TokenHolderStatTool) Get(chainType string, tokenAddress string) (*GetTokenHolderStatResp, error) {
 	url := "vas/api/v1/token_holder_stat/" + chainType + "/" + tokenAddress + "?" + thst.baseParam
-	data, err := HttpGet(thst.baseUrl+url, thst.proxyInfo)
+	data, err := HttpGet(thst.baseUrl+url, thst.authStr, thst.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

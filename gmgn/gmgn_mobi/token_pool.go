@@ -64,13 +64,15 @@ type GetTokenPoolInfoEvmResp struct {
 type TokenPoolTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenPoolTool(baseUrl string, baseParam string) *TokenPoolTool {
+func NewTokenPoolTool(baseUrl string, baseParam string, authStr string) *TokenPoolTool {
 	return &TokenPoolTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -81,7 +83,7 @@ func (tpt *TokenPoolTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 
 func (tpt *TokenPoolTool) GetPoolInfoSol(tokenAddress string) (*GetTokenPoolInfoSolResp, error) {
 	url := "api/v1/token_pool_info_sol/sol/" + tokenAddress + "?" + tpt.baseParam
-	data, err := HttpGet(tpt.baseUrl+url, tpt.proxyInfo)
+	data, err := HttpGet(tpt.baseUrl+url, tpt.authStr, tpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +98,7 @@ func (tpt *TokenPoolTool) GetPoolInfoSol(tokenAddress string) (*GetTokenPoolInfo
 
 func (tpt *TokenPoolTool) GetPoolInfoEvm(chainType string, tokenAddress string) (*GetTokenPoolInfoEvmResp, error) {
 	url := "api/v1/token_pool_info_evm/" + chainType + "/" + tokenAddress + "?" + tpt.baseParam
-	data, err := HttpGet(tpt.baseUrl+url, tpt.proxyInfo)
+	data, err := HttpGet(tpt.baseUrl+url, tpt.authStr, tpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

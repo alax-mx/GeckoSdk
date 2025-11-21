@@ -73,14 +73,16 @@ type SmartMoneyCardsTool struct {
 	baseUrl   string
 	baseParam string
 	postData  []byte
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewSmartMoneyCardsTool(baseUrl string, baseParam string, postData []byte) *SmartMoneyCardsTool {
+func NewSmartMoneyCardsTool(baseUrl string, baseParam string, postData []byte, authStr string) *SmartMoneyCardsTool {
 	return &SmartMoneyCardsTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
 		postData:  postData,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -91,7 +93,7 @@ func (tdt *SmartMoneyCardsTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 
 func (tdt *SmartMoneyCardsTool) Get(chainType string, interval string) (*GetSmartMoneyCardsResp, error) {
 	url := "api/v1/smartmoney_cards/cards/" + chainType + "/" + interval + "?" + tdt.baseParam
-	data, err := HttpPost(tdt.baseUrl+url, tdt.postData, tdt.proxyInfo)
+	data, err := HttpPost(tdt.baseUrl+url, tdt.postData, tdt.authStr, tdt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

@@ -244,13 +244,15 @@ type GetTokenPumpRankResp struct {
 type TokenPumpRankTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenPumpRankTool(baseUrl string, baseParam string) *TokenPumpRankTool {
+func NewTokenPumpRankTool(baseUrl string, baseParam string, authStr string) *TokenPumpRankTool {
 	return &TokenPumpRankTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -265,7 +267,7 @@ func (tpt *TokenPumpRankTool) Get(chainType string, interval string, limit int) 
 	url += "&new_creation=" + tmpParam
 	url += "&completed=" + tmpParam
 	url += "&pump=" + tmpParam
-	data, err := HttpGet(tpt.baseUrl+url, tpt.proxyInfo)
+	data, err := HttpGet(tpt.baseUrl+url, tpt.authStr, tpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

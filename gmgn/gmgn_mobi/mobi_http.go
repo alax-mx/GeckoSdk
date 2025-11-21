@@ -76,10 +76,13 @@ func GetRanomClpherSuites() *tls.Config {
 	return g_configList[tmpRand.Intn(5)]
 }
 
-func HttpGet(url string, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
+func HttpGet(url string, authStr string, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("user-agent", "okhttp/4.9.2")
 	req.Header.Add("Content-Type", "application/json; charset=utf-8")
+	if len(authStr) > 0 {
+		req.Header.Add("authorization", authStr)
+	}
 	// client := http.DefaultClient
 	client := &http.Client{
 		Transport: &http.Transport{
@@ -110,7 +113,7 @@ func HttpGet(url string, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
 	return body, nil
 }
 
-func HttpPost(url string, param []byte, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
+func HttpPost(url string, param []byte, authStr string, proxyInfo *proxy.STProxyInfo) ([]byte, error) {
 	client := &http.Client{
 		Transport: &http.Transport{
 			TLSClientConfig: GetRanomClpherSuites(),
@@ -129,6 +132,9 @@ func HttpPost(url string, param []byte, proxyInfo *proxy.STProxyInfo) ([]byte, e
 	req, _ := http.NewRequest("POST", url, bytes.NewReader(param))
 	req.Header.Add("user-agent", "okhttp/4.9.2")
 	req.Header.Add("Content-Type", "application/json; charset=utf-8")
+	if len(authStr) > 0 {
+		req.Header.Add("authorization", authStr)
+	}
 	res, err := client.Do(req)
 	if err != nil {
 		return nil, err

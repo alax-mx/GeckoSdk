@@ -104,13 +104,15 @@ type GetTokenNewPairResp struct {
 type TokenNewPairTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenNewPairTool(baseUrl string, baseParam string) *TokenNewPairTool {
+func NewTokenNewPairTool(baseUrl string, baseParam string, authStr string) *TokenNewPairTool {
 	return &TokenNewPairTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -125,7 +127,7 @@ func (tnpt *TokenNewPairTool) Get(chainType string, period string, limit int, or
 	url += "&limit=" + strconv.Itoa(limit)
 	url += "&orderby=" + orderBy
 	url += "&direction=desc"
-	data, err := HttpGet(tnpt.baseUrl+url, tnpt.proxyInfo)
+	data, err := HttpGet(tnpt.baseUrl+url, tnpt.authStr, tnpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

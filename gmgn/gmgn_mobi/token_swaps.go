@@ -78,13 +78,15 @@ type GetTokenSwapsResp struct {
 type TokenSwapsTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenSwapsTool(baseUrl string, baseParam string) *TokenSwapsTool {
+func NewTokenSwapsTool(baseUrl string, baseParam string, authStr string) *TokenSwapsTool {
 	return &TokenSwapsTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -102,7 +104,7 @@ func (tst *TokenSwapsTool) Get(chainType string, interval string, limit int) (*G
 	url += "&filters=renounced"
 	url += "&filters=frozen"
 
-	data, err := HttpGet(tst.baseUrl+url, tst.proxyInfo)
+	data, err := HttpGet(tst.baseUrl+url, tst.authStr, tst.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

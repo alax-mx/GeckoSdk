@@ -78,13 +78,15 @@ type GetWalletStatResp struct {
 type WalletStatTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewWalletStatTool(baseUrl string, baseParam string) *WalletStatTool {
+func NewWalletStatTool(baseUrl string, baseParam string, authStr string) *WalletStatTool {
 	return &WalletStatTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -96,7 +98,7 @@ func (wht *WalletStatTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 func (wht *WalletStatTool) Get(chainType string, walletAddress string, period string) (*GetWalletStatResp, error) {
 	url := "api/v1/wallet_stat/" + chainType + "/" + walletAddress + "/" + period + "?" + wht.baseParam
 	url += "&period=" + period
-	data, err := HttpGet(wht.baseUrl+url, wht.proxyInfo)
+	data, err := HttpGet(wht.baseUrl+url, wht.authStr, wht.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

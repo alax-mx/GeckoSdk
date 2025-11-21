@@ -21,13 +21,15 @@ type GetWalletTokenActivityResp struct {
 type WalletTokenActivity struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewWalletTokenActivity(baseUrl string, baseParam string) *WalletTokenActivity {
+func NewWalletTokenActivity(baseUrl string, baseParam string, authStr string) *WalletTokenActivity {
 	return &WalletTokenActivity{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -41,7 +43,7 @@ func (wa *WalletTokenActivity) Get(chainType string, walletAddress string, token
 	url += "&wallet=" + walletAddress
 	url += "&token=" + tokenAddress
 	url += "&limit=" + strconv.Itoa(limit)
-	data, err := HttpGet(wa.baseUrl+url, wa.proxyInfo)
+	data, err := HttpGet(wa.baseUrl+url, wa.authStr, wa.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

@@ -40,13 +40,15 @@ type GetGasPriceResp struct {
 type GasPriceTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewGasPriceTool(baseUrl string, baseParam string) *GasPriceTool {
+func NewGasPriceTool(baseUrl string, baseParam string, authStr string) *GasPriceTool {
 	return &GasPriceTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -57,7 +59,7 @@ func (gpt *GasPriceTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 
 func (gpt *GasPriceTool) Get(chainType string) (*GetGasPriceResp, error) {
 	url := "api/v1/gas_price/" + chainType + "?" + gpt.baseParam
-	data, err := HttpGet(gpt.baseUrl+url, gpt.proxyInfo)
+	data, err := HttpGet(gpt.baseUrl+url, gpt.authStr, gpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

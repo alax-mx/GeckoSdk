@@ -46,13 +46,15 @@ type GetTokenDevCreatedResp struct {
 type TokenDevCreatedTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenDevCreatedTool(baseUrl string, baseParam string) *TokenDevCreatedTool {
+func NewTokenDevCreatedTool(baseUrl string, baseParam string, authStr string) *TokenDevCreatedTool {
 	return &TokenDevCreatedTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -63,7 +65,7 @@ func (tdt *TokenDevCreatedTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 
 func (tdt *TokenDevCreatedTool) Get(chainType string, tokenAddress string) (*GetTokenDevCreatedResp, error) {
 	url := "api/v1/dev_created_tokens/" + chainType + "/" + tokenAddress + "?" + tdt.baseParam
-	data, err := HttpGet(tdt.baseUrl+url, tdt.proxyInfo)
+	data, err := HttpGet(tdt.baseUrl+url, tdt.authStr, tdt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

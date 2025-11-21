@@ -21,13 +21,15 @@ type GetTokenLiquidityTrendResp struct {
 type TokenLiquidityTrendTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenLiquidityTrendTool(baseUrl string, baseParam string) *TokenLiquidityTrendTool {
+func NewTokenLiquidityTrendTool(baseUrl string, baseParam string, authStr string) *TokenLiquidityTrendTool {
 	return &TokenLiquidityTrendTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -38,7 +40,7 @@ func (tpt *TokenLiquidityTrendTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 
 func (tpt *TokenLiquidityTrendTool) Get(chainType string, tokenAddress string) (*GetTokenLiquidityTrendResp, error) {
 	url := "vas/api/v1/token_liquidity_trend/" + chainType + "/" + tokenAddress + "?" + tpt.baseParam
-	data, err := HttpGet(tpt.baseUrl+url, tpt.proxyInfo)
+	data, err := HttpGet(tpt.baseUrl+url, tpt.authStr, tpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

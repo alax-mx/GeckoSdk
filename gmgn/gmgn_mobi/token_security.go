@@ -58,13 +58,15 @@ type GetMutilWindowTokenSecurityResp struct {
 type TokenSecurityTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenSecurityTool(baseUrl string, baseParam string) *TokenSecurityTool {
+func NewTokenSecurityTool(baseUrl string, baseParam string, authStr string) *TokenSecurityTool {
 	return &TokenSecurityTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -75,7 +77,7 @@ func (gst *TokenSecurityTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 
 func (gst *TokenSecurityTool) Get(chainType string, tokenAddress string) (*GetMutilWindowTokenSecurityResp, error) {
 	url := "api/v1/mutil_window_token_security_launchpad/" + chainType + "/" + tokenAddress + "?" + gst.baseParam
-	data, err := HttpGet(gst.baseUrl+url, gst.proxyInfo)
+	data, err := HttpGet(gst.baseUrl+url, gst.authStr, gst.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

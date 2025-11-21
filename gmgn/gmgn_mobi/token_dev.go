@@ -28,13 +28,15 @@ type GetTokenDevInfoResp struct {
 type TokenDevTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenDevTool(baseUrl string, baseParam string) *TokenDevTool {
+func NewTokenDevTool(baseUrl string, baseParam string, authStr string) *TokenDevTool {
 	return &TokenDevTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -45,7 +47,7 @@ func (tdt *TokenDevTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 
 func (tdt *TokenDevTool) Get(chainType string, tokenAddress string) (*GetTokenDevInfoResp, error) {
 	url := "api/v1/token_dev_info/" + chainType + "/" + tokenAddress + "?" + tdt.baseParam
-	data, err := HttpGet(tdt.baseUrl+url, tdt.proxyInfo)
+	data, err := HttpGet(tdt.baseUrl+url, tdt.authStr, tdt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

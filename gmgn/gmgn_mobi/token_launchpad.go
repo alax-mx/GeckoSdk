@@ -25,13 +25,15 @@ type GetTokenLaunchpadInfoResp struct {
 type TokenLaunchpadInfoTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenLaunchpadInfoTool(baseUrl string, baseParam string) *TokenLaunchpadInfoTool {
+func NewTokenLaunchpadInfoTool(baseUrl string, baseParam string, authStr string) *TokenLaunchpadInfoTool {
 	return &TokenLaunchpadInfoTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -42,7 +44,7 @@ func (tpt *TokenLaunchpadInfoTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 
 func (tpt *TokenLaunchpadInfoTool) Get(chainType string, tokenAddress string) (*GetTokenLaunchpadInfoResp, error) {
 	url := "api/v1/token_launchpad_info/" + chainType + "/" + tokenAddress + "?" + tpt.baseParam
-	data, err := HttpGet(tpt.baseUrl+url, tpt.proxyInfo)
+	data, err := HttpGet(tpt.baseUrl+url, tpt.authStr, tpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

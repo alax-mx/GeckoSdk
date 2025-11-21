@@ -92,13 +92,15 @@ type GetTokenWalletMonitorResp struct {
 type TokenWalletMonitorTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenWalletMonitorTool(baseUrl string, baseParam string) *TokenWalletMonitorTool {
+func NewTokenWalletMonitorTool(baseUrl string, baseParam string, authStr string) *TokenWalletMonitorTool {
 	return &TokenWalletMonitorTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -115,7 +117,7 @@ func (tst *TokenWalletMonitorTool) Get(chainType string, orderBy string, limit i
 	for i := 0; i < len(tag); i++ {
 		url += "&tag[]=" + tag[i]
 	}
-	data, err := HttpGet(tst.baseUrl+url, tst.proxyInfo)
+	data, err := HttpGet(tst.baseUrl+url, tst.authStr, tst.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

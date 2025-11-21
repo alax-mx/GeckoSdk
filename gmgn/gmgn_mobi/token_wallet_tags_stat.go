@@ -31,13 +31,15 @@ type GetTokenWalletTagStatResp struct {
 type TokenWalletTagStatTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenWalletTagStatTool(baseUrl string, baseParam string) *TokenWalletTagStatTool {
+func NewTokenWalletTagStatTool(baseUrl string, baseParam string, authStr string) *TokenWalletTagStatTool {
 	return &TokenWalletTagStatTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -48,7 +50,7 @@ func (twtst *TokenWalletTagStatTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 
 func (twtst *TokenWalletTagStatTool) Get(chainType string, tokenAddress string) (*GetTokenWalletTagStatResp, error) {
 	url := "api/v1/token_wallet_tags_stat/" + chainType + "/" + tokenAddress + "?" + twtst.baseParam
-	data, err := HttpGet(twtst.baseUrl+url, twtst.proxyInfo)
+	data, err := HttpGet(twtst.baseUrl+url, twtst.authStr, twtst.proxyInfo)
 	if err != nil {
 		return nil, err
 

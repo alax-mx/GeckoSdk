@@ -39,13 +39,15 @@ type GetTokenCandlesResp struct {
 type TokenCandlesTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenCandlesTool(baseUrl string, baseParam string) *TokenCandlesTool {
+func NewTokenCandlesTool(baseUrl string, baseParam string, authStr string) *TokenCandlesTool {
 	return &TokenCandlesTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -58,7 +60,7 @@ func (tct *TokenCandlesTool) Get(chainType string, tokenAddress string, resoluti
 	url := "api/v1/token_candles/" + chainType + "/" + tokenAddress + "?" + tct.baseParam
 	url += "&resolution=" + resolution
 	url += "&limit=" + strconv.Itoa(limit)
-	data, err := HttpGet(tct.baseUrl+url, tct.proxyInfo)
+	data, err := HttpGet(tct.baseUrl+url, tct.authStr, tct.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

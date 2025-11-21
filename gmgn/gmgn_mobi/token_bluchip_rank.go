@@ -85,13 +85,15 @@ type GetTokenBluchipRankResp struct {
 type TokenBluchipRankTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenBluchipRankTool(baseUrl string, baseParam string) *TokenBluchipRankTool {
+func NewTokenBluchipRankTool(baseUrl string, baseParam string, authStr string) *TokenBluchipRankTool {
 	return &TokenBluchipRankTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -111,7 +113,7 @@ func (tbrt *TokenBluchipRankTool) Get(chainType string, interval string, limit i
 	url += "&filters=not_wash_trading"
 	url += "&filters=renounced"
 	url += "&filters=frozen"
-	data, err := HttpGet(tbrt.baseUrl+url, tbrt.proxyInfo)
+	data, err := HttpGet(tbrt.baseUrl+url, tbrt.authStr, tbrt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

@@ -61,6 +61,10 @@ const (
 	WALLET_TOKEN_ACTIVITY_EVENT_SELL string = "sell"
 )
 
+const (
+	SWAP_SOURCE_APP string = "swap_app"
+)
+
 type DeviceInfo struct {
 	DeviceID string `json:"device_id"`
 	ClientID string `json:"client_id"`

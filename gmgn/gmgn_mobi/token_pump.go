@@ -99,13 +99,15 @@ type GetTokenPumpResp struct {
 type TokenPumpTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenPumpTool(baseUrl string, baseParam string) *TokenPumpTool {
+func NewTokenPumpTool(baseUrl string, baseParam string, authStr string) *TokenPumpTool {
 	return &TokenPumpTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -122,7 +124,7 @@ func (tpt *TokenPumpTool) Get(chainType string, interval string, limit int) (*Ge
 	url += "&filters[]=not_wash_trading"
 	url += "&soaring=true"
 
-	data, err := HttpGet(tpt.baseUrl+url, tpt.proxyInfo)
+	data, err := HttpGet(tpt.baseUrl+url, tpt.authStr, tpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

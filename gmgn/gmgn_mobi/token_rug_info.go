@@ -31,13 +31,15 @@ type GetTokenRugInfoResp struct {
 type TokenRugInfoTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenRugInfoTool(baseUrl string, baseParam string) *TokenRugInfoTool {
+func NewTokenRugInfoTool(baseUrl string, baseParam string, authStr string) *TokenRugInfoTool {
 	return &TokenRugInfoTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -48,7 +50,7 @@ func (tit *TokenRugInfoTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 
 func (tit *TokenRugInfoTool) Get(chainType string, tokenAddress string) (*GetTokenRugInfoResp, error) {
 	url := "api/v1/token_rug_info/" + chainType + "/" + tokenAddress + "?" + tit.baseParam
-	data, err := HttpGet(tit.baseUrl+url, tit.proxyInfo)
+	data, err := HttpGet(tit.baseUrl+url, tit.authStr, tit.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

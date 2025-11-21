@@ -64,13 +64,15 @@ type GetWalletHoldingsResp struct {
 type WalletHoldingsTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewWalletHoldingsTool(baseUrl string, baseParam string) *WalletHoldingsTool {
+func NewWalletHoldingsTool(baseUrl string, baseParam string, authStr string) *WalletHoldingsTool {
 	return &WalletHoldingsTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -100,7 +102,7 @@ func (wht *WalletHoldingsTool) Get(chainType string, walletAddress string, limit
 	} else {
 		url += "&hide_abnormal=false"
 	}
-	data, err := HttpGet(wht.baseUrl+url, wht.proxyInfo)
+	data, err := HttpGet(wht.baseUrl+url, wht.authStr, wht.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

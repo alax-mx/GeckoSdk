@@ -15,10 +15,10 @@ type GmgnTool struct {
 	evmTradeTool *gmgn_trade.EvmTradeTool
 }
 
-func NewGmgnTool(pubKey string, priKey string, deviceInfo *gmgn_mobi.DeviceInfo, evmConfig *gmgn_trade.STEvmConfig) *GmgnTool {
+func NewGmgnTool(pubKey string, priKey string, deviceInfo *gmgn_mobi.DeviceInfo, evmConfig *gmgn_trade.STEvmConfig, authStr string) *GmgnTool {
 	ret := &GmgnTool{
 		webTool:      gmgn_web.NewWebTool(gmgn_define.G_BASE_GMGN_WEB_DEFI_URL),
-		mobiTool:     gmgn_mobi.NewMobiTool(gmgn_define.G_BASE_GMGN_MOBI_URL, deviceInfo),
+		mobiTool:     gmgn_mobi.NewMobiTool(gmgn_define.G_BASE_GMGN_MOBI_URL, deviceInfo, authStr),
 		solTradeTool: nil,
 		evmTradeTool: nil,
 	}

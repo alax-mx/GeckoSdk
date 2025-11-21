@@ -53,13 +53,15 @@ type SwapOrderResp struct {
 type SwapBatchOrderTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewSwapBatchOrderTool(baseUrl string, baseParam string) *SwapBatchOrderTool {
+func NewSwapBatchOrderTool(baseUrl string, baseParam string, authStr string) *SwapBatchOrderTool {
 	return &SwapBatchOrderTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -75,7 +77,7 @@ func (tdt *SwapBatchOrderTool) Swap(orderData *STSwapOrderData) (*SwapOrderResp,
 	}
 
 	url := "mrtapi/v2/swap_batch_order" + "?" + tdt.baseParam
-	data, err := HttpPost(tdt.baseUrl+url, postData, tdt.proxyInfo)
+	data, err := HttpPost(tdt.baseUrl+url, postData, tdt.authStr, tdt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

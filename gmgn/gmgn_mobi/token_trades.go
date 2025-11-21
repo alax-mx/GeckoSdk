@@ -52,13 +52,15 @@ type GetTokenTradesResp struct {
 type TokenTradesTool struct {
 	baseUrl   string
 	baseParam string
+	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenTradesTool(baseUrl string, baseParam string) *TokenTradesTool {
+func NewTokenTradesTool(baseUrl string, baseParam string, authStr string) *TokenTradesTool {
 	return &TokenTradesTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
+		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -73,7 +75,7 @@ func (tst *TokenTradesTool) Get(chainType string, tokenAddress string, limit int
 	url += "&event=sell"
 	url += "&limit=" + strconv.Itoa(limit)
 	url += "&dev=dev"
-	data, err := HttpGet(tst.baseUrl+url, tst.proxyInfo)
+	data, err := HttpGet(tst.baseUrl+url, tst.authStr, tst.proxyInfo)
 	if err != nil {
 		return nil, err
 	}
