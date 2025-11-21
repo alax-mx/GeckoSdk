@@ -41,6 +41,7 @@ type MobiTool struct {
 	tokenLiquidityStatsTool    *TokenLiquidityStatsTool
 	tokenRecommendSlippageTool *TokenRecommendSlippageTool
 	swapBatchOrderTool         *SwapBatchOrderTool
+	accountTool                *AccountTool
 }
 
 func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo, authStr string) *MobiTool {
@@ -87,6 +88,7 @@ func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo, authStr string) *MobiTo
 	ret.tokenLiquidityStatsTool = NewTokenLiquidityStatsTool(baseUrl, baseGetParam, authStr)
 	ret.tokenRecommendSlippageTool = NewTokenRecommendSlippageTool(baseUrl, baseGetParam, authStr)
 	ret.swapBatchOrderTool = NewSwapBatchOrderTool(baseUrl, baseGetParam, authStr)
+	ret.accountTool = NewAccountTool(baseUrl, baseGetParam)
 
 	return ret
 }
@@ -223,6 +225,10 @@ func (mt *MobiTool) GetSwapBatchOrderTool() *SwapBatchOrderTool {
 	return mt.swapBatchOrderTool
 }
 
+func (mt *MobiTool) GetAccountTool() *AccountTool {
+	return mt.accountTool
+}
+
 func (mt *MobiTool) GetBaseGetParam(deviceInfo *DeviceInfo) string {
 	retStr := "device_id=" + deviceInfo.DeviceID
 	retStr += "&client_id=" + deviceInfo.ClientID
@@ -267,6 +273,8 @@ func (mt *MobiTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	mt.kolCardsTool.SetProxy(proxyInfo)
 	mt.tokenWalletMonitorTool.SetProxy(proxyInfo)
 	mt.tokenDevCreatedTool.SetProxy(proxyInfo)
+	mt.swapBatchOrderTool.SetProxy(proxyInfo)
+	mt.accountTool.SetProxy(proxyInfo)
 }
 
 func (mt *MobiTool) SetAuthString(authStr string) {
@@ -295,4 +303,5 @@ func (mt *MobiTool) SetAuthString(authStr string) {
 	mt.kolCardsTool.SetAuthString(authStr)
 	mt.tokenWalletMonitorTool.SetAuthString(authStr)
 	mt.tokenDevCreatedTool.SetAuthString(authStr)
+	mt.swapBatchOrderTool.SetAuthString(authStr)
 }
