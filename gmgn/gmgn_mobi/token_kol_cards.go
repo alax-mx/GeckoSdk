@@ -35,6 +35,10 @@ func (tdt *KolCardsTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tdt.proxyInfo = proxyInfo
 }
 
+func (tdt *KolCardsTool) SetAuthString(authStr string) {
+	tdt.authStr = authStr
+}
+
 func (tdt *KolCardsTool) Get(chainType string, interval string) (*GetKolCardsResp, error) {
 	url := "api/v1/kol_cards/cards/" + chainType + "/" + interval + "?" + tdt.baseParam
 	data, err := HttpPost(tdt.baseUrl+url, tdt.postData, tdt.authStr, tdt.proxyInfo)

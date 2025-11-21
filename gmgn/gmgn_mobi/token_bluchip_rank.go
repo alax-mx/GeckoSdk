@@ -102,6 +102,10 @@ func (tbrt *TokenBluchipRankTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tbrt.proxyInfo = proxyInfo
 }
 
+func (tdt *TokenBluchipRankTool) SetAuthString(authStr string) {
+	tdt.authStr = authStr
+}
+
 func (tbrt *TokenBluchipRankTool) Get(chainType string, interval string, limit int) (*GetTokenBluchipRankResp, error) {
 	url := "api/v1/bluechip_rank/" + chainType + "?"
 	url += "interval=" + interval

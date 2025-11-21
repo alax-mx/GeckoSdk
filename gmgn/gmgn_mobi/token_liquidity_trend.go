@@ -38,6 +38,10 @@ func (tpt *TokenLiquidityTrendTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tpt.proxyInfo = proxyInfo
 }
 
+func (tpt *TokenLiquidityTrendTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (tpt *TokenLiquidityTrendTool) Get(chainType string, tokenAddress string) (*GetTokenLiquidityTrendResp, error) {
 	url := "vas/api/v1/token_liquidity_trend/" + chainType + "/" + tokenAddress + "?" + tpt.baseParam
 	data, err := HttpGet(tpt.baseUrl+url, tpt.authStr, tpt.proxyInfo)

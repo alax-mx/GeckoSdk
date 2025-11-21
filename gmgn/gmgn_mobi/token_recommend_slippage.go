@@ -40,6 +40,10 @@ func (tpt *TokenRecommendSlippageTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tpt.proxyInfo = proxyInfo
 }
 
+func (tpt *TokenRecommendSlippageTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (tpt *TokenRecommendSlippageTool) Get(chainType string, tokenAddress string) (*GetTokenRecommendSlippageResp, error) {
 	url := "api/v1/recommend_slippage/" + chainType + "/" + tokenAddress + "?" + tpt.baseParam
 	data, err := HttpGet(tpt.baseUrl+url, tpt.authStr, tpt.proxyInfo)

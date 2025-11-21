@@ -56,6 +56,10 @@ func (tct *TokenCandlesTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tct.proxyInfo = proxyInfo
 }
 
+func (tdt *TokenCandlesTool) SetAuthString(authStr string) {
+	tdt.authStr = authStr
+}
+
 func (tct *TokenCandlesTool) Get(chainType string, tokenAddress string, resolution string, limit int) (*GetTokenCandlesResp, error) {
 	url := "api/v1/token_candles/" + chainType + "/" + tokenAddress + "?" + tct.baseParam
 	url += "&resolution=" + resolution

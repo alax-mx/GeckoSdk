@@ -48,6 +48,10 @@ func (tit *TokenRugInfoTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tit.proxyInfo = proxyInfo
 }
 
+func (tpt *TokenRugInfoTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (tit *TokenRugInfoTool) Get(chainType string, tokenAddress string) (*GetTokenRugInfoResp, error) {
 	url := "api/v1/token_rug_info/" + chainType + "/" + tokenAddress + "?" + tit.baseParam
 	data, err := HttpGet(tit.baseUrl+url, tit.authStr, tit.proxyInfo)

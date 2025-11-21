@@ -69,6 +69,10 @@ func (tst *TokenTradesTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tst.proxyInfo = proxyInfo
 }
 
+func (tpt *TokenTradesTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (tst *TokenTradesTool) Get(chainType string, tokenAddress string, limit int) (*GetTokenTradesResp, error) {
 	url := "vas/api/v1/token_trades/" + chainType + "/" + tokenAddress + "?" + tst.baseParam
 	url += "&event=buy"

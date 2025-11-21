@@ -45,6 +45,10 @@ func (tdt *TokenDevTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tdt.proxyInfo = proxyInfo
 }
 
+func (tdt *TokenDevTool) SetAuthString(authStr string) {
+	tdt.authStr = authStr
+}
+
 func (tdt *TokenDevTool) Get(chainType string, tokenAddress string) (*GetTokenDevInfoResp, error) {
 	url := "api/v1/token_dev_info/" + chainType + "/" + tokenAddress + "?" + tdt.baseParam
 	data, err := HttpGet(tdt.baseUrl+url, tdt.authStr, tdt.proxyInfo)

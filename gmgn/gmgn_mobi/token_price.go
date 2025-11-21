@@ -80,6 +80,10 @@ func (tpt *TokenPriceTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tpt.proxyInfo = proxyInfo
 }
 
+func (tpt *TokenPriceTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (tpt *TokenPriceTool) Get(chainType string, tokenAddress string) (*GetTokenPriceInfoResp, error) {
 	url := "api/v1/token_price_info/" + chainType + "/" + tokenAddress + "?" + tpt.baseParam
 	data, err := HttpGet(tpt.baseUrl+url, tpt.authStr, tpt.proxyInfo)

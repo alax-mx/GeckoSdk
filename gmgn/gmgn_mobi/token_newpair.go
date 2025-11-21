@@ -121,6 +121,10 @@ func (tnpt *TokenNewPairTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tnpt.proxyInfo = proxyInfo
 }
 
+func (tpt *TokenNewPairTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (tnpt *TokenNewPairTool) Get(chainType string, period string, limit int, orderBy string) (*GetTokenNewPairResp, error) {
 	url := "defi/quotation/v1/pairs/" + chainType + "/new_pairs/" + period + "?" + tnpt.baseParam
 	url += "&period=" + period

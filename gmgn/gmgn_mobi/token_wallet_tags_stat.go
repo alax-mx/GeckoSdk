@@ -48,6 +48,10 @@ func (twtst *TokenWalletTagStatTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	twtst.proxyInfo = proxyInfo
 }
 
+func (tpt *TokenWalletTagStatTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (twtst *TokenWalletTagStatTool) Get(chainType string, tokenAddress string) (*GetTokenWalletTagStatResp, error) {
 	url := "api/v1/token_wallet_tags_stat/" + chainType + "/" + tokenAddress + "?" + twtst.baseParam
 	data, err := HttpGet(twtst.baseUrl+url, twtst.authStr, twtst.proxyInfo)

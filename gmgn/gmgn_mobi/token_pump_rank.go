@@ -261,6 +261,10 @@ func (tpt *TokenPumpRankTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tpt.proxyInfo = proxyInfo
 }
 
+func (tpt *TokenPumpRankTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (tpt *TokenPumpRankTool) Get(chainType string, interval string, limit int) (*GetTokenPumpRankResp, error) {
 	url := "defi/quotation/v1/rank/" + chainType + "/pump_ranks/" + interval + "?" + tpt.baseParam
 	tmpParam := "{\"filters\":[\"not_wash_trading\"],\"limit\":" + strconv.Itoa(limit) + "}"

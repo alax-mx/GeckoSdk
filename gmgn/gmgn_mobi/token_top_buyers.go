@@ -69,6 +69,10 @@ func (ttbt *TokenTopBuyersTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	ttbt.proxyInfo = proxyInfo
 }
 
+func (tpt *TokenTopBuyersTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (ttbt *TokenTopBuyersTool) Get(chainType string, tokenAddress string) (*GetTokenTopBuyersResp, error) {
 	url := "defi/quotation/v1/tokens/top_buyers/" + chainType + "/" + tokenAddress + "?" + ttbt.baseParam
 	data, err := HttpGet(ttbt.baseUrl+url, ttbt.authStr, ttbt.proxyInfo)

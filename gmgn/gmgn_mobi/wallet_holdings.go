@@ -81,6 +81,10 @@ func (wht *WalletHoldingsTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	wht.proxyInfo = proxyInfo
 }
 
+func (tpt *WalletHoldingsTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (wht *WalletHoldingsTool) Get(chainType string, walletAddress string, limit int, orderBy string,
 	direction string, showSmall bool, sellOout bool, hideABNormal bool) (*GetWalletHoldingsResp, error) {
 	url := "api/v1/wallet_holdings/" + chainType + "/" + walletAddress + "?" + wht.baseParam

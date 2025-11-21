@@ -85,6 +85,10 @@ func (tht *TokenHoldersTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tht.proxyInfo = proxyInfo
 }
 
+func (tdt *TokenHoldersTool) SetAuthString(authStr string) {
+	tdt.authStr = authStr
+}
+
 func (tht *TokenHoldersTool) Get(chainType string, tokenAddress string, limit int) (*GetTokenHoldersResp, error) {
 	url := "vas/api/v1/token_holders/" + chainType + "/" + tokenAddress + "?" + tht.baseParam
 	url += "&limit=" + strconv.Itoa(limit)

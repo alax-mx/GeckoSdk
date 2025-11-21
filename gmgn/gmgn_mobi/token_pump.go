@@ -116,6 +116,10 @@ func (tpt *TokenPumpTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tpt.proxyInfo = proxyInfo
 }
 
+func (tpt *TokenPumpTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (tpt *TokenPumpTool) Get(chainType string, interval string, limit int) (*GetTokenPumpResp, error) {
 	url := "defi/quotation/v1/rank/" + chainType + "/pump/" + interval + "?" + tpt.baseParam
 	url += "&limit=" + strconv.Itoa(limit)

@@ -95,6 +95,10 @@ func (tst *TokenSwapsTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tst.proxyInfo = proxyInfo
 }
 
+func (tpt *TokenSwapsTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (tst *TokenSwapsTool) Get(chainType string, interval string, limit int) (*GetTokenSwapsResp, error) {
 	url := "defi/quotation/v1/rank/" + chainType + "/swaps/" + interval + "?" + tst.baseParam
 	url += "&limit=" + strconv.Itoa(limit)

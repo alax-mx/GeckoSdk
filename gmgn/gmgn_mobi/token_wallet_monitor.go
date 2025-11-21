@@ -109,6 +109,10 @@ func (tst *TokenWalletMonitorTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tst.proxyInfo = proxyInfo
 }
 
+func (tpt *TokenWalletMonitorTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (tst *TokenWalletMonitorTool) Get(chainType string, orderBy string, limit int, tag []string) (*GetTokenWalletMonitorResp, error) {
 	url := "defi/quotation/v1/rank/" + chainType + "/wallets/7d?" + tst.baseParam
 	url += "&orderby=" + orderBy

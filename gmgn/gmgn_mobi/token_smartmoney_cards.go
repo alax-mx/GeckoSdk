@@ -91,6 +91,10 @@ func (tdt *SmartMoneyCardsTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tdt.proxyInfo = proxyInfo
 }
 
+func (tpt *SmartMoneyCardsTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (tdt *SmartMoneyCardsTool) Get(chainType string, interval string) (*GetSmartMoneyCardsResp, error) {
 	url := "api/v1/smartmoney_cards/cards/" + chainType + "/" + interval + "?" + tdt.baseParam
 	data, err := HttpPost(tdt.baseUrl+url, tdt.postData, tdt.authStr, tdt.proxyInfo)

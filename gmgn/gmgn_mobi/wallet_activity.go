@@ -73,6 +73,10 @@ func (wa *WalletActivity) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	wa.proxyInfo = proxyInfo
 }
 
+func (tpt *WalletActivity) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (wa *WalletActivity) Get(chainType string, walletAddress string, limit int) (*GetWalletActivityResp, error) {
 	url := "api/v1/wallet_activity/" + chainType + "?" + wa.baseParam
 	url += "&wallet=" + walletAddress

@@ -42,6 +42,10 @@ func (tpt *TokenLaunchpadInfoTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tpt.proxyInfo = proxyInfo
 }
 
+func (tdt *TokenLaunchpadInfoTool) SetAuthString(authStr string) {
+	tdt.authStr = authStr
+}
+
 func (tpt *TokenLaunchpadInfoTool) Get(chainType string, tokenAddress string) (*GetTokenLaunchpadInfoResp, error) {
 	url := "api/v1/token_launchpad_info/" + chainType + "/" + tokenAddress + "?" + tpt.baseParam
 	data, err := HttpGet(tpt.baseUrl+url, tpt.authStr, tpt.proxyInfo)

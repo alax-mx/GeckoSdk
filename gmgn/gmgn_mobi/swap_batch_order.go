@@ -70,6 +70,10 @@ func (tdt *SwapBatchOrderTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tdt.proxyInfo = proxyInfo
 }
 
+func (tdt *SwapBatchOrderTool) SetAuthString(authStr string) {
+	tdt.authStr = authStr
+}
+
 func (tdt *SwapBatchOrderTool) Swap(orderData *STSwapOrderData) (*SwapOrderResp, error) {
 	postData, err := json.Marshal(orderData)
 	if err != nil {

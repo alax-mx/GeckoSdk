@@ -75,6 +75,10 @@ func (gst *TokenSecurityTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	gst.proxyInfo = proxyInfo
 }
 
+func (tpt *TokenSecurityTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (gst *TokenSecurityTool) Get(chainType string, tokenAddress string) (*GetMutilWindowTokenSecurityResp, error) {
 	url := "api/v1/mutil_window_token_security_launchpad/" + chainType + "/" + tokenAddress + "?" + gst.baseParam
 	data, err := HttpGet(gst.baseUrl+url, gst.authStr, gst.proxyInfo)

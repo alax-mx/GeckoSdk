@@ -81,6 +81,10 @@ func (tpt *TokenPoolTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tpt.proxyInfo = proxyInfo
 }
 
+func (tpt *TokenPoolTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (tpt *TokenPoolTool) GetPoolInfoSol(tokenAddress string) (*GetTokenPoolInfoSolResp, error) {
 	url := "api/v1/token_pool_info_sol/sol/" + tokenAddress + "?" + tpt.baseParam
 	data, err := HttpGet(tpt.baseUrl+url, tpt.authStr, tpt.proxyInfo)

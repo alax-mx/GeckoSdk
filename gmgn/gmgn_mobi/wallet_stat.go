@@ -95,6 +95,10 @@ func (wht *WalletStatTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	wht.proxyInfo = proxyInfo
 }
 
+func (tpt *WalletStatTool) SetAuthString(authStr string) {
+	tpt.authStr = authStr
+}
+
 func (wht *WalletStatTool) Get(chainType string, walletAddress string, period string) (*GetWalletStatResp, error) {
 	url := "api/v1/wallet_stat/" + chainType + "/" + walletAddress + "/" + period + "?" + wht.baseParam
 	url += "&period=" + period
