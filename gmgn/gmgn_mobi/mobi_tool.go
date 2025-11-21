@@ -40,6 +40,7 @@ type MobiTool struct {
 	tokenLiquidityDetailTool   *TokenLiquidityDetailTool
 	tokenLiquidityStatsTool    *TokenLiquidityStatsTool
 	tokenRecommendSlippageTool *TokenRecommendSlippageTool
+	swapBatchOrderTool         *SwapBatchOrderTool
 }
 
 func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
@@ -85,6 +86,7 @@ func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo) *MobiTool {
 	ret.tokenLiquidityDetailTool = NewTokenLiquidityDetailTool(baseUrl, baseGetParam)
 	ret.tokenLiquidityStatsTool = NewTokenLiquidityStatsTool(baseUrl, baseGetParam)
 	ret.tokenRecommendSlippageTool = NewTokenRecommendSlippageTool(baseUrl, baseGetParam)
+	ret.swapBatchOrderTool = NewSwapBatchOrderTool(baseUrl, baseGetParam)
 
 	return ret
 }
@@ -215,6 +217,10 @@ func (mt *MobiTool) GetTokenLiquidityStatsTool() *TokenLiquidityStatsTool {
 
 func (mt *MobiTool) GetTokenRecommendSlippageTool() *TokenRecommendSlippageTool {
 	return mt.tokenRecommendSlippageTool
+}
+
+func (mt *MobiTool) GetSwapBatchOrderTool() *SwapBatchOrderTool {
+	return mt.swapBatchOrderTool
 }
 
 func (mt *MobiTool) GetBaseGetParam(deviceInfo *DeviceInfo) string {
