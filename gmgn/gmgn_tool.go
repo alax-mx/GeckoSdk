@@ -22,11 +22,10 @@ func NewGmgnTool(pubKey string, priKey string, deviceInfo *gmgn_mobi.DeviceInfo,
 		solTradeTool: nil,
 		evmTradeTool: nil,
 	}
-	if pubKey != "" && priKey != "" {
-		ret.solTradeTool = gmgn_trade.NewSolTradeTool(gmgn_define.G_BASE_GMGN_SOL_TRADE_URL, pubKey, priKey)
-	}
 	if evmConfig != nil {
 		ret.evmTradeTool = gmgn_trade.NewEvmTradeTool(evmConfig)
+	} else {
+		ret.solTradeTool = gmgn_trade.NewSolTradeTool(gmgn_define.G_BASE_GMGN_SOL_TRADE_URL, pubKey, priKey)
 	}
 	return ret
 }
