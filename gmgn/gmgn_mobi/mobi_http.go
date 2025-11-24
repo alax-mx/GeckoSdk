@@ -81,7 +81,7 @@ func HttpGet(url string, authStr string, proxyInfo *proxy.STProxyInfo) ([]byte, 
 	req.Header.Add("user-agent", "okhttp/4.9.2")
 	req.Header.Add("Content-Type", "application/json; charset=utf-8")
 	if len(authStr) > 0 {
-		req.Header.Add("authorization", authStr)
+		req.Header.Add("authorization", "Bearer "+authStr)
 	}
 	// client := http.DefaultClient
 	client := &http.Client{
@@ -133,7 +133,7 @@ func HttpPost(url string, param []byte, authStr string, proxyInfo *proxy.STProxy
 	req.Header.Add("user-agent", "okhttp/4.9.2")
 	req.Header.Add("Content-Type", "application/json; charset=utf-8")
 	if len(authStr) > 0 {
-		req.Header.Add("authorization", authStr)
+		req.Header.Add("authorization", "Bearer "+authStr)
 	}
 	res, err := client.Do(req)
 	if err != nil {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/alax-mx/geckosdk/baseutils"
+	"github.com/alax-mx/geckosdk/gmgn"
 	"github.com/alax-mx/geckosdk/gmgn/gmgn_mobi"
 )
 
@@ -15,6 +16,12 @@ func main() {
 func TestFreshToken() {
 	deviceInfo := loaddevice("device.json")
 	if deviceInfo == nil {
+		return
+	}
+	gmgnTool := gmgn.NewGmgnTool("", "", deviceInfo, nil, "")
+	_, err := gmgnTool.GetMobiTool().GetTokenNewPairTool().Get("sol", gmgn_mobi.NEW_PAIR_PERIOD_1M, 5, gmgn_mobi.NEW_PAIR_ORDER_BY_CREATE_TIMESTAMP)
+	if err != nil {
+		fmt.Println(err)
 		return
 	}
 }
