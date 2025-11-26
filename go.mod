@@ -36,6 +36,7 @@ require (
 	github.com/tklauser/numcpus v0.6.1 // indirect
 	golang.org/x/sync v0.12.0 // indirect
 	golang.org/x/tools v0.30.0 // indirect
+	nhooyr.io/websocket v1.8.17 // indirect
 )
 
 require (

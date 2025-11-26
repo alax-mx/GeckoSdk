@@ -23,15 +23,13 @@ type GetTokenRecommendSlippageResp struct {
 type TokenRecommendSlippageTool struct {
 	baseUrl   string
 	baseParam string
-	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenRecommendSlippageTool(baseUrl string, baseParam string, authStr string) *TokenRecommendSlippageTool {
+func NewTokenRecommendSlippageTool(baseUrl string, baseParam string) *TokenRecommendSlippageTool {
 	return &TokenRecommendSlippageTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
-		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -40,13 +38,9 @@ func (tpt *TokenRecommendSlippageTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tpt.proxyInfo = proxyInfo
 }
 
-func (tpt *TokenRecommendSlippageTool) SetAuthString(authStr string) {
-	tpt.authStr = authStr
-}
-
 func (tpt *TokenRecommendSlippageTool) Get(chainType string, tokenAddress string) (*GetTokenRecommendSlippageResp, error) {
 	url := "api/v1/recommend_slippage/" + chainType + "/" + tokenAddress + "?" + tpt.baseParam
-	data, err := HttpGet(tpt.baseUrl+url, tpt.authStr, tpt.proxyInfo)
+	data, err := HttpGet(tpt.baseUrl+url, "", tpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

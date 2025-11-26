@@ -37,15 +37,13 @@ type GetTokenLinkInfoResp struct {
 type TokenLinkTool struct {
 	baseUrl   string
 	baseParam string
-	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenLinkTool(baseUrl string, baseParam string, authStr string) *TokenLinkTool {
+func NewTokenLinkTool(baseUrl string, baseParam string) *TokenLinkTool {
 	return &TokenLinkTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
-		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -54,13 +52,9 @@ func (tpt *TokenLinkTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tpt.proxyInfo = proxyInfo
 }
 
-func (tdt *TokenLinkTool) SetAuthString(authStr string) {
-	tdt.authStr = authStr
-}
-
 func (tpt *TokenLinkTool) Get(chainType string, tokenAddress string) (*GetTokenLinkInfoResp, error) {
 	url := "api/v1/token_link/" + chainType + "/" + tokenAddress + "?" + tpt.baseParam
-	data, err := HttpGet(tpt.baseUrl+url, tpt.authStr, tpt.proxyInfo)
+	data, err := HttpGet(tpt.baseUrl+url, "", tpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

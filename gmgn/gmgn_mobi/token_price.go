@@ -63,15 +63,13 @@ type GetTokenPriceInfoResp struct {
 type TokenPriceTool struct {
 	baseUrl   string
 	baseParam string
-	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenPriceTool(baseUrl string, baseParam string, authStr string) *TokenPriceTool {
+func NewTokenPriceTool(baseUrl string, baseParam string) *TokenPriceTool {
 	return &TokenPriceTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
-		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -80,13 +78,9 @@ func (tpt *TokenPriceTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tpt.proxyInfo = proxyInfo
 }
 
-func (tpt *TokenPriceTool) SetAuthString(authStr string) {
-	tpt.authStr = authStr
-}
-
 func (tpt *TokenPriceTool) Get(chainType string, tokenAddress string) (*GetTokenPriceInfoResp, error) {
 	url := "api/v1/token_price_info/" + chainType + "/" + tokenAddress + "?" + tpt.baseParam
-	data, err := HttpGet(tpt.baseUrl+url, tpt.authStr, tpt.proxyInfo)
+	data, err := HttpGet(tpt.baseUrl+url, "", tpt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

@@ -52,15 +52,13 @@ type GetTokenTopBuyersResp struct {
 type TokenTopBuyersTool struct {
 	baseUrl   string
 	baseParam string
-	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenTopBuyersTool(baseUrl string, baseParam string, authStr string) *TokenTopBuyersTool {
+func NewTokenTopBuyersTool(baseUrl string, baseParam string) *TokenTopBuyersTool {
 	return &TokenTopBuyersTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
-		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -69,13 +67,9 @@ func (ttbt *TokenTopBuyersTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	ttbt.proxyInfo = proxyInfo
 }
 
-func (tpt *TokenTopBuyersTool) SetAuthString(authStr string) {
-	tpt.authStr = authStr
-}
-
 func (ttbt *TokenTopBuyersTool) Get(chainType string, tokenAddress string) (*GetTokenTopBuyersResp, error) {
 	url := "defi/quotation/v1/tokens/top_buyers/" + chainType + "/" + tokenAddress + "?" + ttbt.baseParam
-	data, err := HttpGet(ttbt.baseUrl+url, ttbt.authStr, ttbt.proxyInfo)
+	data, err := HttpGet(ttbt.baseUrl+url, "", ttbt.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

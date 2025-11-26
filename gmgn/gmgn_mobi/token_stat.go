@@ -27,15 +27,13 @@ type GetTokenStatResp struct {
 type TokenStatTool struct {
 	baseUrl   string
 	baseParam string
-	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewTokenStatTool(baseUrl string, baseParam string, authStr string) *TokenStatTool {
+func NewTokenStatTool(baseUrl string, baseParam string) *TokenStatTool {
 	return &TokenStatTool{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
-		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -44,13 +42,9 @@ func (tst *TokenStatTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tst.proxyInfo = proxyInfo
 }
 
-func (tpt *TokenStatTool) SetAuthString(authStr string) {
-	tpt.authStr = authStr
-}
-
 func (tst *TokenStatTool) Get(chainType string, tokenAddress string) (*GetTokenStatResp, error) {
 	url := "api/v1/token_stat/" + chainType + "/" + tokenAddress + "?" + tst.baseParam
-	data, err := HttpGet(tst.baseUrl+url, tst.authStr, tst.proxyInfo)
+	data, err := HttpGet(tst.baseUrl+url, "", tst.proxyInfo)
 	if err != nil {
 		return nil, err
 	}

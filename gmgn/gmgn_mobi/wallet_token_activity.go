@@ -21,15 +21,13 @@ type GetWalletTokenActivityResp struct {
 type WalletTokenActivity struct {
 	baseUrl   string
 	baseParam string
-	authStr   string
 	proxyInfo *proxy.STProxyInfo
 }
 
-func NewWalletTokenActivity(baseUrl string, baseParam string, authStr string) *WalletTokenActivity {
+func NewWalletTokenActivity(baseUrl string, baseParam string) *WalletTokenActivity {
 	return &WalletTokenActivity{
 		baseUrl:   baseUrl,
 		baseParam: baseParam,
-		authStr:   authStr,
 		proxyInfo: nil,
 	}
 }
@@ -38,16 +36,12 @@ func (wta *WalletTokenActivity) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	wta.proxyInfo = proxyInfo
 }
 
-func (tpt *WalletTokenActivity) SetAuthString(authStr string) {
-	tpt.authStr = authStr
-}
-
 func (wa *WalletTokenActivity) Get(chainType string, walletAddress string, tokenAddress string, limit int) (*GetWalletTokenActivityResp, error) {
 	url := "defi/quotation/v1/wallet_token_activity/" + chainType + "?" + wa.baseParam
 	url += "&wallet=" + walletAddress
 	url += "&token=" + tokenAddress
 	url += "&limit=" + strconv.Itoa(limit)
-	data, err := HttpGet(wa.baseUrl+url, wa.authStr, wa.proxyInfo)
+	data, err := HttpGet(wa.baseUrl+url, "", wa.proxyInfo)
 	if err != nil {
 		return nil, err
 	}
