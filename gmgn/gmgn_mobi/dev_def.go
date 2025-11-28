@@ -53,7 +53,12 @@ const (
 
 const (
 	WALLET_TOKEN_ORDER_BY_LAST_ACTIVE_TIMESTAMP string = "last_active_timestamp"
-	WALLET_TOKEN_DIRECTION_DESC                 string = "desc"
+	WALLET_TOKEN_ORDER_BY_UNREALIZED_PNL        string = "unrealized_pnl"
+	WALLET_TOKEN_ORDER_BY_TOTAL_VALUE           string = "total_value"
+	WALLET_TOKEN_ORDER_BY_REALIZED_PNL          string = "realized_pnl"
+
+	WALLET_TOKEN_DIRECTION_DESC string = "desc"
+	WALLET_TOKEN_DIRECTION_ASC  string = "asc"
 )
 
 const (
