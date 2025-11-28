@@ -83,9 +83,12 @@ func (tht *TokenHoldersTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
 	tht.proxyInfo = proxyInfo
 }
 
-func (tht *TokenHoldersTool) Get(chainType string, tokenAddress string, limit int) (*GetTokenHoldersResp, error) {
+func (tht *TokenHoldersTool) Get(chainType string, tokenAddress string, limit int, cursor string) (*GetTokenHoldersResp, error) {
 	url := "vas/api/v1/token_holders/" + chainType + "/" + tokenAddress + "?" + tht.baseParam
 	url += "&limit=" + strconv.Itoa(limit)
+	if len(cursor) > 0 {
+		url += "&cursor=" + cursor
+	}
 	data, err := HttpGet(tht.baseUrl+url, "", tht.proxyInfo)
 	if err != nil {
 		return nil, err
