@@ -52,12 +52,12 @@ type STSwapsRank struct {
 	CreatorTokenStatus       string  `json:"creator_token_status"`
 	CreatorClose             bool    `json:"creator_close,omitempty"`
 	Creator                  string  `json:"creator,omitempty"`
-	LaunchpadStatus          int     `json:"launchpad_status"`
-	RatTraderAmountRate      float64 `json:"rat_trader_amount_rate"`
-	CreatorCreatedInnerCount int     `json:"creator_created_inner_count"`
-	CreatorCreatedOpenCount  int     `json:"creator_created_open_count"`
+	LaunchpadStatus          any     `json:"launchpad_status"`
+	RatTraderAmountRate      any     `json:"rat_trader_amount_rate"`
+	CreatorCreatedInnerCount any     `json:"creator_created_inner_count"`
+	CreatorCreatedOpenCount  any     `json:"creator_created_open_count"`
 	CreatorCreatedOpenRatio  any     `json:"creator_created_open_ratio"`
-	BluechipOwnerPercentage  float64 `json:"bluechip_owner_percentage"`
+	BluechipOwnerPercentage  any     `json:"bluechip_owner_percentage"`
 	RugRatio                 any     `json:"rug_ratio"`
 	SniperCount              int     `json:"sniper_count"`
 	SmartDegenCount          int     `json:"smart_degen_count"`
