@@ -27,6 +27,7 @@ type STWallets struct {
 }
 type STCards struct {
 	Address            string       `json:"address"`
+	CreateTimestamp    int          `json:"create_timestamp"`
 	OpenTimestamp      int          `json:"open_timestamp"`
 	TotalSupply        string       `json:"total_supply"`
 	Liquidity          string       `json:"liquidity"`
