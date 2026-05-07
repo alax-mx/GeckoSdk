@@ -77,7 +77,7 @@ func TestWSS() {
 	// dialer := websocket.DefaultDialer // 默认就是这个，已经自动加载系统根证书
 
 	// 3. 连接 wss
-	url := "wss://ws.gmgn.mobi/ws?uuid=4771f5f1d64e9f1c&device_id=b7ba5da142fa2e16&client_id=gmgn_android_2010303&from_app=gmgn&app_ver=2010303&pkg=com.gmgn.app&app_lang=zh-CN&sys_lang=zh-CN&brand=Xiaomi&model=23116PN5BC&os=android&os_api=9&tz_name=Asia%2FShanghai&tz_offset=-480&gpv=10000001" // 必须是 wss://
+	url := "wss://ws.gmgn.mobi/bg_ws?uuid=63ee67fad1f2cdf0&device_id=1d51590f146adc56&client_id=gmgn_android_20405001&from_app=gmgn&app_ver=20405001&pkg=com.gmgn.app&app_lang=zh-CN&sys_lang=zh-CN&brand=HUAWEI&model=LMR-AL10&os=android&os_api=9&tz_name=Asia%2FShanghai&tz_offset=-480&gpv=10000001" // 必须是 wss://
 	// 如果你需要带 token
 	header := http.Header{}
 	header.Add("User-Agent", "ReactNative")
@@ -94,7 +94,7 @@ func TestWSS() {
 
 	log.Println("wss 连接成功！")
 
-	data := []byte("{\"id\":\"080835e8119765e9\",\"action\":\"subscribe\",\"channel\":\"new_pool_info\",\"data\":[{\"chain\":\"sol\"}]}")
+	data := []byte("{\"id\":\"00e1fad8d50ba404\",\"action\":\"subscribe\",\"channel\":\"new_pool_info\",\"data\":[{\"chain\":\"sol\"}]}")
 	conn.WriteMessage(websocket.TextMessage, data)
 
 	for {

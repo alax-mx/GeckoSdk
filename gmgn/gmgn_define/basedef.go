@@ -35,6 +35,10 @@ const (
 	G_BASE_GMGN_ETH_TRADE_URL string = "https://gmgn.ai/defi/router/v1/tx"
 	// G_BASE_GMGN_MOBI_URL     string = "https://gmgn.mobi/"
 	G_BASE_GMGN_MOBI_URL string = "https://gmgn.gracematrix.net/" //新版本改了域名，增加了风控,待解决
+
+	// Endpoints
+	BaseWsMainURL = "wss://ws.gmgn.mobi/ws"
+	BaseWsBGURL   = "wss://ws.gmgn.mobi/bg_ws"
 )
 
 type STTokenInfo struct {

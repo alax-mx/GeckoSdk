@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 
 	"github.com/alax-mx/geckosdk/baseutils"
+	"github.com/alax-mx/geckosdk/gmgn/gmgn_define"
+	"github.com/alax-mx/geckosdk/gmgn/gmgn_mobi/wss_mobi"
 	"github.com/alax-mx/geckosdk/proxy"
 )
 
@@ -42,6 +44,8 @@ type MobiTool struct {
 	tokenRecommendSlippageTool *TokenRecommendSlippageTool
 	swapBatchOrderTool         *SwapBatchOrderTool
 	accountTool                *AccountTool
+	wssMainTool                *wss_mobi.WSSTool
+	wssBGTool                  *wss_mobi.WSSTool
 }
 
 func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo, authStr string) *MobiTool {
@@ -89,7 +93,8 @@ func NewMobiTool(baseUrl string, deviceInfo *DeviceInfo, authStr string) *MobiTo
 	ret.tokenRecommendSlippageTool = NewTokenRecommendSlippageTool(baseUrl, baseGetParam)
 	ret.swapBatchOrderTool = NewSwapBatchOrderTool(baseUrl, baseGetParam, authStr)
 	ret.accountTool = NewAccountTool(baseUrl, baseGetParam)
-
+	ret.wssMainTool = wss_mobi.NewWSSTool(gmgn_define.BaseWsMainURL, baseGetParam)
+	ret.wssBGTool = wss_mobi.NewWSSTool(gmgn_define.BaseWsBGURL, baseGetParam)
 	return ret
 }
 
@@ -229,22 +234,12 @@ func (mt *MobiTool) GetAccountTool() *AccountTool {
 	return mt.accountTool
 }
 
-func (mt *MobiTool) GetBaseGetParam(deviceInfo *DeviceInfo) string {
-	retStr := "device_id=" + deviceInfo.DeviceID
-	retStr += "&client_id=" + deviceInfo.ClientID
-	retStr += "&from_app=" + deviceInfo.FromApp
-	retStr += "&app_ver=" + deviceInfo.AppVer
-	retStr += "&pkg=" + deviceInfo.Pkg
-	retStr += "&app_lang=" + deviceInfo.AppLang
-	retStr += "&sys_lang=" + deviceInfo.SysLang
-	retStr += "&brand=" + deviceInfo.Brand
-	retStr += "&model=" + deviceInfo.Model
-	retStr += "&os=" + deviceInfo.Os
-	retStr += "&os_api=" + deviceInfo.OsAPI
-	retStr += "&tz_name=" + deviceInfo.TzName
-	retStr += "&tz_offset=" + deviceInfo.TzOffset
-	retStr += "&gpv=" + deviceInfo.Gpv
-	return retStr
+func (mt *MobiTool) GetWSSMainTool() *wss_mobi.WSSTool {
+	return mt.wssMainTool
+}
+
+func (mt *MobiTool) GetWSSBGTool() *wss_mobi.WSSTool {
+	return mt.wssBGTool
 }
 
 func (mt *MobiTool) SetProxy(proxyInfo *proxy.STProxyInfo) {
@@ -293,4 +288,22 @@ func (mt *MobiTool) SetAuthString(authStr string) {
 	mt.kolCardsTool.SetAuthString(authStr)
 	mt.tokenWalletMonitorTool.SetAuthString(authStr)
 	mt.swapBatchOrderTool.SetAuthString(authStr)
+}
+
+func (mt *MobiTool) GetBaseGetParam(deviceInfo *DeviceInfo) string {
+	retStr := "device_id=" + deviceInfo.DeviceID
+	retStr += "&client_id=" + deviceInfo.ClientID
+	retStr += "&from_app=" + deviceInfo.FromApp
+	retStr += "&app_ver=" + deviceInfo.AppVer
+	retStr += "&pkg=" + deviceInfo.Pkg
+	retStr += "&app_lang=" + deviceInfo.AppLang
+	retStr += "&sys_lang=" + deviceInfo.SysLang
+	retStr += "&brand=" + deviceInfo.Brand
+	retStr += "&model=" + deviceInfo.Model
+	retStr += "&os=" + deviceInfo.Os
+	retStr += "&os_api=" + deviceInfo.OsAPI
+	retStr += "&tz_name=" + deviceInfo.TzName
+	retStr += "&tz_offset=" + deviceInfo.TzOffset
+	retStr += "&gpv=" + deviceInfo.Gpv
+	return retStr
 }

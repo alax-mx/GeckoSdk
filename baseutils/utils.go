@@ -545,3 +545,4 @@ func ToLowerHex(hexString string) string {
 	}
 	return prefix + strings.ToLower(hexString)
 }
+
